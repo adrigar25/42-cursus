@@ -4,7 +4,7 @@ CFLAGS = -Wall -Werror -Wextra
 NAME = libft.a
 SRCS = $(wildcard ft_*.c)
 OBJS = $(SRCS:.c=.o)
-EXEC = program_name
+EXEC = libft
 MAIN = main.c
 
 # Reglas
@@ -17,7 +17,7 @@ $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(EXEC): $(NAME) $(MAIN)
-	$(CC) $(CFLAGS) $(MAIN) -L. -lft -o $(EXEC)
+	$(CC) $(CFLAGS) $(MAIN) -L. -lft -lbsd -o $(EXEC)
 
 run: $(EXEC)
 	./$(EXEC)

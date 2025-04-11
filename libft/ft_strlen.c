@@ -6,18 +6,20 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:08:33 by agarcia           #+#    #+#             */
-/*   Updated: 2025/04/09 13:17:15 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/04/11 10:10:25 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <string.h>
 
-size_t ft_strlen(const char *str)
+size_t	ft_strlen(const char *str)
 {
-	size_t len = 0;
+	size_t	len;
+
+	len = 0;
 	while (str[len] != '\0')
 	{
 		len++;
 	}
-	return len;
+	return (len);
 }

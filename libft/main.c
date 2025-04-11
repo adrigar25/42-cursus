@@ -1,9 +1,47 @@
-#include "libft.h" // Para tus funciones
-#include <ctype.h> // Para las funciones originales
+#include "libft.h"
+#include <bsd/string.h>
+#include <ctype.h>
 #include <stdio.h>
+#include <string.h>
+
+void	ft_result(char *expected, char *actual)
+{
+	if (expected == NULL && actual == NULL)
+	{
+		printf("\033[0;32m[PASS]\033[0m\n");
+		return ;
+	}
+	if (strcmp(expected, actual) == 0)
+		printf("\033[0;32m[PASS]\033[0m\n");
+	else
+		printf("\033[0;31m[FAIL]\033[0m\n");
+}
 
 int	main(void)
 {
+	char	src[100] = "Hello World";
+	char	dest_memset[100];
+	char	dest2_memset[100];
+	char	dest_bzero[100] = "hola";
+	char	dest2_bzero[100] = "hola";
+	char	dest_memcpy[100];
+	char	dest2_memcpy[100];
+	char	src1[] = "Hola Mundo";
+	char	dest1[100];
+	char	dest2[100];
+	char	src2_ft[100] = "Solapamiento hacia adelante";
+	char	src2_mem[100] = "Solapamiento hacia adelante";
+	char	src3_ft[100] = "Solapamiento hacia atrás";
+	char	src3_mem[100] = "Solapamiento hacia atrás";
+	char	src4_ft[100] = "1234567890";
+	char	src4_mem[100] = "1234567890";
+	char	src_strlcpy[] = "Hello, 42!";
+	char	dest_ft[20];
+	char	dest_std[20];
+	char	dest_strlcat[100] = "Hola ";
+	char	dest2_strlcat[100] = "Hola ";
+	char	src_strlcat[] = "Mundo!";
+
 	// Pruebas para ft_isalpha vs isalpha
 	printf("=== Pruebas para ft_isalpha vs isalpha ===\n");
 	printf("ft_isalpha('A'): %d | isalpha('A'): %d\n", ft_isalpha('A'),
@@ -13,7 +51,6 @@ int	main(void)
 	printf("ft_isalpha('$'): %d | isalpha('$'): %d\n", ft_isalpha('$'),
 		isalpha('$'));
 	printf("\n");
-
 	// Pruebas para ft_isdigit vs isdigit
 	printf("=== Pruebas para ft_isdigit vs isdigit ===\n");
 	printf("ft_isdigit('5'): %d | isdigit('5'): %d\n", ft_isdigit('5'),
@@ -22,8 +59,9 @@ int	main(void)
 		isdigit('A'));
 	printf("ft_isdigit('#'): %d | isdigit('#'): %d\n", ft_isdigit('#'),
 		isdigit('#'));
+	printf("ft_isdigit('\\0'): %d | isdigit('\\0'): %d\n", ft_isdigit('\0'),
+		isdigit('\0'));
 	printf("\n");
-
 	// Pruebas para ft_isalnum vs isalnum
 	printf("=== Pruebas para ft_isalnum vs isalnum ===\n");
 	printf("ft_isalnum('B'): %d | isalnum('B'): %d\n", ft_isalnum('B'),
@@ -33,7 +71,6 @@ int	main(void)
 	printf("ft_isalnum('*'): %d | isalnum('*'): %d\n", ft_isalnum('*'),
 		isalnum('*'));
 	printf("\n");
-
 	// Pruebas para ft_isascii vs isascii
 	printf("=== Pruebas para ft_isascii vs isascii ===\n");
 	printf("ft_isascii(65): %d | isascii(65): %d\n", ft_isascii(65),
@@ -43,7 +80,6 @@ int	main(void)
 	printf("ft_isascii(33): %d | isascii(33): %d\n", ft_isascii(33),
 		isascii(33));
 	printf("\n");
-
 	// Pruebas para ft_isprint vs isprint
 	printf("=== Pruebas para ft_isprint vs isprint ===\n");
 	printf("ft_isprint(32): %d | isprint(32): %d\n", ft_isprint(32),
@@ -53,34 +89,162 @@ int	main(void)
 	printf("ft_isprint(65): %d | isprint(65): %d\n", ft_isprint(65),
 		isprint(65));
 	printf("\n");
-
 	// Pruebas para ft_strlen vs strlen
 	printf("=== Pruebas para ft_strlen vs strlen ===\n");
-	char str[] = "Hello, world!";
-	printf("ft_strlen(\"%s\"): %d | strlen(\"%s\"): %lu\n", str, ft_strlen(str),
-		str, strlen(str));
+	printf("ft_strlen(\"%s\"): %d | strlen(\"%s\"): %lu\n", src, ft_strlen(src),
+		src, strlen(src));
 	printf("\n");
-
 	// Pruebas para ft_memset vs memset
 	printf("=== Pruebas para ft_memset vs memset ===\n");
-	char buffer1[11]; // Espacio para 10 caracteres + '\0'
-	char buffer2[11]; // Espacio para 10 caracteres + '\0'
-
-	ft_memset(buffer1, '*', 10);
-	buffer1[10] = '\0'; // Agregar el carácter nulo
-
-	memset(buffer2, '*', 10);
-	buffer2[10] = '\0'; // Agregar el carácter nulo
-
-	printf("ft_memset: %s | memset: %s\n", buffer1, buffer2);
+	ft_memset(dest_memset, '*', 10);
+	dest_memset[10] = '\0';
+	memset(dest2_memset, '*', 10);
+	dest2_memset[10] = '\0';
+	printf("ft_memset: %s | memset: %s\n", dest_memset, dest2_memset);
+	ft_result(dest_memset, dest2_memset);
 	printf("\n");
-
 	// Pruebas para ft_bzero vs bzero
 	printf("=== Pruebas para ft_bzero vs bzero ===\n");
-	ft_bzero(buffer1, 10);
-	bzero(buffer2, 10);
-	printf("ft_bzero: %s | bzero: %s\n", buffer1, buffer2);
+	ft_bzero(&dest_bzero[3], 10);
+	bzero(&dest2_bzero[3], 10);
+	printf("ft_bzero: %s | bzero: %s\n", dest_bzero, dest2_bzero);
+	ft_result(dest_bzero, dest2_bzero);
 	printf("\n");
-
+	// Pruebas para ft_memcpy vs memcpy
+	printf("=== Pruebas para ft_memcpy vs memcpy ===\n");
+	ft_memcpy(dest_memcpy, src, 5);
+	memcpy(dest2_memcpy, src, 5);
+	dest_memcpy[5] = '\0';  // Agregar el carácter nulo
+	dest2_memcpy[5] = '\0'; // Agregar el carácter nulo
+	printf("ft_memcpy: %s | memcpy: %s\n", dest_memcpy, dest2_memcpy);
+	ft_result(dest_memcpy, dest2_memcpy);
+	printf("\n");
+	// Pruebas para ft_memmove vs memmove
+	printf("=== Prueba para ft_memmove vs memmove ===\n");
+	// Caso 1: Sin solapamiento
+	ft_memmove(dest1, src1, 5);
+	memmove(dest2, src1, 5);
+	dest1[5] = '\0';
+	dest2[5] = '\0';
+	printf("Sin solapamiento:\n");
+	printf("ft_memmove: %s | memmove: %s\n", dest1, dest2);
+	ft_result(dest1, dest2);
+	// Caso 2: Solapamiento hacia adelante
+	ft_memmove(src2_ft + 5, src2_ft, 10);
+	memmove(src2_mem + 5, src2_mem, 10);
+	printf("\nSolapamiento hacia adelante:\n");
+	printf("ft_memmove: %s\n", src2_ft);
+	printf("memmove: %s\n", src2_mem);
+	ft_result(src2_ft, src2_mem);
+	// Caso 3: Solapamiento hacia atrás
+	ft_memmove(src3_ft, src3_ft + 5, 10);
+	memmove(src3_mem, src3_mem + 5, 10);
+	printf("\nSolapamiento hacia atrás:\n");
+	printf("ft_memmove: %s\n", src3_ft);
+	printf("memmove: %s\n", src3_mem);
+	ft_result(src3_ft, src3_mem);
+	// Caso 4: Copia completa dentro del mismo buffer
+	ft_memmove(src4_ft + 2, src4_ft, 8);
+	memmove(src4_mem + 2, src4_mem, 8);
+	printf("\nCopia completa dentro del mismo buffer:\n");
+	printf("ft_memmove: %s\n", src4_ft);
+	printf("memmove: %s\n", src4_mem);
+	ft_result(src4_ft, src4_mem);
+	// Pruebas para ft_strlcpy vs strlcpy
+	printf("\n=== Pruebas para ft_strlcpy vs strlcpy ===\n");
+	size_t ret_ft, ret_std;
+	// Caso 1: Copia completa con espacio suficiente
+	ret_ft = ft_strlcpy(dest_ft, src_strlcpy, sizeof(dest_ft));
+	ret_std = strlcpy(dest_std, src_strlcpy, sizeof(dest_std));
+	printf("Caso 1: Copia completa con espacio suficiente\n");
+	printf("ft_strlcpy: %s (ret: %zu) | strlcpy: %s (ret: %zu)\n", dest_ft,
+		ret_ft, dest_std, ret_std);
+	ft_result(dest_ft, dest_std);
+	// Caso 2: Copia truncada
+	ret_ft = ft_strlcpy(dest_ft, src_strlcpy, 6);
+	ret_std = strlcpy(dest_std, src_strlcpy, 6);
+	printf("\nCaso 2: Copia truncada\n");
+	printf("ft_strlcpy: %s (ret: %zu) | strlcpy: %s (ret: %zu)\n", dest_ft,
+		ret_ft, dest_std, ret_std);
+	ft_result(dest_ft, dest_std);
+	// Caso 3: dstsize es 0
+	ret_ft = ft_strlcpy(dest_ft, src_strlcpy, 0);
+	ret_std = strlcpy(dest_std, src_strlcpy, 0);
+	printf("\nCaso 3: dstsize es 0\n");
+	printf("ft_strlcpy: %s (ret: %zu) | strlcpy: %s (ret: %zu)\n", dest_ft,
+		ret_ft, dest_std, ret_std);
+	ft_result(dest_ft, dest_std);
+	// Caso 4: src es una cadena vacía
+	ret_ft = ft_strlcpy(dest_ft, "", sizeof(dest_ft));
+	ret_std = strlcpy(dest_std, "", sizeof(dest_std));
+	printf("\nCaso 4: src es una cadena vacía\n");
+	printf("ft_strlcpy: %s (ret: %zu) | strlcpy: %s (ret: %zu)\n", dest_ft,
+		ret_ft, dest_std, ret_std);
+	ft_result(dest_ft, dest_std);
+	// Pruebas para ft_strlcat vs strlcat
+	printf("\n=== Pruebas para ft_strlcat vs strlcat ===\n");
+	size_t ret_ft_strlcat, ret_std_strlcat;
+	// Caso 1: Concatenación completa con espacio suficiente
+	ret_ft_strlcat = ft_strlcat(dest_strlcat, src_strlcat,
+			sizeof(dest_strlcat));
+	ret_std_strlcat = strlcat(dest2_strlcat, src_strlcat,
+			sizeof(dest2_strlcat));
+	printf("Caso 1: Concatenación completa con espacio suficiente\n");
+	printf("ft_strlcat: %s (ret: %zu) | strlcat: %s (ret: %zu)\n", dest_strlcat,
+		ret_ft_strlcat, dest2_strlcat, ret_std_strlcat);
+	ft_result(dest_strlcat, dest2_strlcat);
+	// Caso 2: Concatenación truncada
+	ret_ft_strlcat = ft_strlcat(dest_strlcat, src_strlcat, 10);
+	ret_std_strlcat = strlcat(dest2_strlcat, src_strlcat, 10);
+	printf("\nCaso 2: Concatenación truncada\n");
+	printf("ft_strlcat: %s (ret: %zu) | strlcat: %s (ret: %zu)\n", dest_strlcat,
+		ret_ft_strlcat, dest2_strlcat, ret_std_strlcat);
+	ft_result(dest_strlcat, dest2_strlcat);
+	// Caso 3: dstsize es 0
+	ret_ft_strlcat = ft_strlcat(dest_strlcat, src_strlcat, 0);
+	ret_std_strlcat = strlcat(dest2_strlcat, src_strlcat, 0);
+	printf("\nCaso 3: dstsize es 0\n");
+	printf("ft_strlcat: %s (ret: %zu) | strlcat: %s (ret: %zu)\n", dest_strlcat,
+		ret_ft_strlcat, dest2_strlcat, ret_std_strlcat);
+	ft_result(dest_strlcat, dest2_strlcat);
+	// Pruebas para ft_toupper vs toupper
+	printf("\n=== Pruebas para ft_toupper vs toupper ===\n");
+	printf("ft_toupper('a'): %c | toupper('a'): %c\n", ft_toupper('a'),
+		toupper('a'));
+	printf("ft_toupper('A'): %c | toupper('A'): %c\n", ft_toupper('A'),
+		toupper('A'));
+	printf("ft_toupper('1'): %c | toupper('1'): %c\n", ft_toupper('1'),
+		toupper('1'));
+	// Pruebas para ft_tolower vs tolower
+	printf("\n=== Pruebas para ft_tolower vs tolower ===\n");
+	printf("ft_tolower('a'): %c | tolower('a'): %c\n", ft_tolower('a'),
+		tolower('a'));
+	printf("ft_tolower('A'): %c | tolower('A'): %c\n", ft_tolower('A'),
+		tolower('A'));
+	printf("ft_tolower('1'): %c | tolower('1'): %c\n", ft_tolower('1'),
+		tolower('1'));
+	// Pruebas para ft_strchr vs strchr
+	printf("\n=== Pruebas para ft_strchr vs strchr ===\n");
+	printf("ft_strchr(\"%s\", 'o'): %s | strchr(\"%s\", 'o'): %s\n", src,
+		ft_strchr(src, 'o'), src, strchr(src, 'o'));
+	ft_result(ft_strchr(src, 'o'), strchr(src, 'o'));
+	printf("ft_strchr(\"%s\", 'z'): %s | strchr(\"%s\", 'z'): %s\n", src,
+		ft_strchr(src, 'z'), src, strchr(src, 'z'));
+	ft_result(ft_strchr(src, 'z'), strchr(src, 'z'));
+	printf("ft_strchr(\"%s\", '\\0'): %s | strchr(\"%s\", '\\0'): %s\n", src,
+		ft_strchr(src, '\0'), src, strchr(src, '\0'));
+	ft_result(ft_strchr(src, '\0'), strchr(src, '\0'));
+	printf("\n");
+	// Pruebas para ft_strrchr vs strrchr
+	printf("=== Pruebas para ft_strrchr vs strrchr ===\n");
+	printf("ft_strrchr(\"%s\", 'o'): %s | strrchr(\"%s\", 'o'): %s\n", src,
+		ft_strrchr(src, 'o'), src, strrchr(src, 'o'));
+	ft_result(ft_strrchr(src, 'o'), strrchr(src, 'o'));
+	printf("ft_strrchr(\"%s\", 'z'): %s | strrchr(\"%s\", 'z'): %s\n", src,
+		ft_strrchr(src, 'z'), src, strrchr(src, 'z'));
+	ft_result(ft_strrchr(src, 'z'), strrchr(src, 'z'));
+	printf("ft_strrchr(\"%s\", '\\0'): %s | strrchr(\"%s\", '\\0'): %s\n", src,
+		ft_strrchr(src, '\0'), src, strrchr(src, '\0'));
+	ft_result(ft_strrchr(src, '\0'), strrchr(src, '\0'));
 	return (0);
 }

@@ -1,17 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isalnum.c                                       :+:      :+:    :+:   */
+/*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/09 13:12:52 by agarcia           #+#    #+#             */
-/*   Updated: 2025/04/11 10:09:15 by agarcia          ###   ########.fr       */
+/*   Created: 2025/04/11 09:11:15 by agarcia           #+#    #+#             */
+/*   Updated: 2025/04/11 10:12:02 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_isalnum(int c)
+#include "libft.h"
+
+void	*ft_memmove(void *dest, const void *src, size_t n)
 {
-	return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0'
-			&& c <= '9'));
+	size_t				i;
+	unsigned char		*d;
+	const unsigned char	*s;
+	unsigned char		arraux[n];
+
+	i = 0;
+	d = (unsigned char *)dest;
+	s = (const unsigned char *)src;
+	while (i < n)
+	{
+		arraux[i] = s[i];
+		i++;
+	}
+	ft_memcpy(d, arraux, n);
+	return (dest);
 }
