@@ -2,9 +2,8 @@
 #include <bsd/string.h>
 #include <ctype.h>
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
-
+#include <string.h>
 void	ft_result(char *expected, char *actual)
 {
 	if (expected == NULL && actual == NULL)
@@ -92,7 +91,7 @@ int	main(void)
 	printf("\n");
 	// Pruebas para ft_strlen vs strlen
 	printf("=== Pruebas para ft_strlen vs strlen ===\n");
-	printf("ft_strlen(\"%s\"): %d | strlen(\"%s\"): %lu\n", src, ft_strlen(src),
+	printf("ft_strlen(\"%s\"): %ld | strlen(\"%s\"): %lu\n", src, ft_strlen(src),
 		src, strlen(src));
 	printf("\n");
 	// Pruebas para ft_memset vs memset
@@ -275,19 +274,37 @@ int	main(void)
 		printf("\033[0;32m[PASS]\033[0m\n");
 	else
 		printf("\033[0;31m[FAIL]\033[0m\n");
-
 	// Pruebas para ft_strnstr vs strnstr
 	printf("\n=== Pruebas para ft_strnstr vs strnstr ===\n");
-	printf("ft_strnstr(\"%s\", \"Hello\", 10): %s | strnstr(\"%s\", \"Hello\", 10): %s\n", src, ft_strnstr(src, "\0", 4), src,
-		strnstr(src, "\0", 4));
+	printf("ft_strnstr(\"%s\", \"\\0\", 10): %s | strnstr(\"%s\", \"\\0\", 10): %s\n", src, ft_strnstr(src, "\0", 4), src, strnstr(src, "\0", 4));
 	ft_result(ft_strnstr(src, "Hello", 4), strnstr(src, "Hello", 4));
-
-	//Pruebas para ft_atoi vs atoi
+	// Pruebas para ft_atoi vs atoi
 	printf("\n=== Pruebas para ft_atoi vs atoi ===\n");
-	printf("ft_atoi(\"%s\"): %d | atoi(\"%s\"): %d\n", "    42", ft_atoi("    42"), "    42", atoi("    42"));
+	printf("ft_atoi(\"%s\"): %d | atoi(\"%s\"): %d\n", "    42",
+		ft_atoi("    42"), "    42", atoi("    42"));
 	if (ft_atoi(src) == atoi(src))
 		printf("\033[0;32m[PASS]\033[0m\n");
 	else
 		printf("\033[0;31m[FAIL]\033[0m\n");
+	// Pruebas para ft_calloc vs calloc
+	printf("\n=== Pruebas para ft_calloc vs calloc ===\n");
+	printf("ft_calloc(5, 4): ");
+	int *ft_calloc_array = ft_calloc(5, 4);
+	for (int i = 0; i < 5; i++) {
+		printf("%d ", ft_calloc_array[i]);
+	}
+	printf("| calloc(5, 4): ");
+	int *calloc_array = calloc(5, 4);
+	for (int i = 0; i < 5; i++) {
+		printf("%d ", calloc_array[i]);
+	}
+	printf("\n");
+
+	// Pruebas para ft_strdup vs strdup
+	printf("\n=== Pruebas para ft_strdup vs strdup ===\n");
+	char *ft_strdup_result = ft_strdup(src);
+	char *strdup_result = strdup(src);
+	printf("ft_strdup: %s | strdup: %s\n", ft_strdup_result, strdup_result);
+	ft_result(ft_strdup_result, strdup_result);
 	return (0);
 }
