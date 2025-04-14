@@ -3,6 +3,7 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 void	ft_result(char *expected, char *actual)
 {
@@ -246,5 +247,47 @@ int	main(void)
 	printf("ft_strrchr(\"%s\", '\\0'): %s | strrchr(\"%s\", '\\0'): %s\n", src,
 		ft_strrchr(src, '\0'), src, strrchr(src, '\0'));
 	ft_result(ft_strrchr(src, '\0'), strrchr(src, '\0'));
+	// Pruebas para ft_strncmp vs strncmp
+	printf("\n=== Pruebas para ft_strncmp vs strncmp ===\n");
+	printf("ft_strncmp(\"%s\", \"%s\", 5): %d | strncmp(\"%s\", \"%s\", 5):%d\n", src, src1, ft_strncmp(src, src1, 5), src, src1, strncmp(src,
+			src1, 5));
+	if (ft_strncmp(src, src1, 5) == strncmp(src, src1, 5))
+		printf("\033[0;32m[PASS]\033[0m\n");
+	else
+		printf("\033[0;31m[FAIL]\033[0m\n");
+	printf("ft_strncmp(\"%s\", \"%s\", 5): %d | strncmp(\"%s\", \"%s\", 5):%d\n", src, src, ft_strncmp(src, src, 5), src, src, strncmp(src, src,
+			5));
+	if (ft_strncmp(src, src, 5) == strncmp(src, src, 5))
+		printf("\033[0;32m[PASS]\033[0m\n");
+	else
+		printf("\033[0;31m[FAIL]\033[0m\n");
+	// Pruebas para ft_memchr vs memchr
+	printf("\n=== Pruebas para ft_memchr vs memchr ===\n");
+	printf("ft_memchr(\"%s\", 'o', 5): %s | memchr(\"%s\", 'o', 5): %s\n", src,
+		(unsigned char *)ft_memchr(src, 'o', 2), src,
+		(unsigned char *)memchr(src, 'o', 2));
+	ft_result((char *)ft_memchr(src, 'o', 2), (char *)memchr(src, 'o', 2));
+	// Pruebas para ft_memcmp vs memcmp
+	printf("\n=== Pruebas para ft_memcmp vs memcmp ===\n");
+	printf("ft_memcmp(\"%s\", \"%s\", 5): %d | memcmp(\"%s\", \"%s\", 5): %d\n",
+		src, src1, ft_memcmp(src, src1, 5), src, src1, memcmp(src, src1, 5));
+	if (ft_memcmp(src, src1, 5) == memcmp(src, src1, 5))
+		printf("\033[0;32m[PASS]\033[0m\n");
+	else
+		printf("\033[0;31m[FAIL]\033[0m\n");
+
+	// Pruebas para ft_strnstr vs strnstr
+	printf("\n=== Pruebas para ft_strnstr vs strnstr ===\n");
+	printf("ft_strnstr(\"%s\", \"Hello\", 10): %s | strnstr(\"%s\", \"Hello\", 10): %s\n", src, ft_strnstr(src, "\0", 4), src,
+		strnstr(src, "\0", 4));
+	ft_result(ft_strnstr(src, "Hello", 4), strnstr(src, "Hello", 4));
+
+	//Pruebas para ft_atoi vs atoi
+	printf("\n=== Pruebas para ft_atoi vs atoi ===\n");
+	printf("ft_atoi(\"%s\"): %d | atoi(\"%s\"): %d\n", "    42", ft_atoi("    42"), "    42", atoi("    42"));
+	if (ft_atoi(src) == atoi(src))
+		printf("\033[0;32m[PASS]\033[0m\n");
+	else
+		printf("\033[0;31m[FAIL]\033[0m\n");
 	return (0);
 }
