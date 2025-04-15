@@ -6,11 +6,11 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 11:20:31 by agarcia           #+#    #+#             */
-/*   Updated: 2025/04/11 10:10:15 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/04/15 16:25:04 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_isascii(unsigned char c)
+int	ft_isascii(int c)
 {
-	return (c <= 127);
+	return (c >= 0 && c <= 127);
 }

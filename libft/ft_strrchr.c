@@ -6,26 +6,23 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 11:03:35 by agarcia           #+#    #+#             */
-/*   Updated: 2025/04/11 11:41:53 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/04/15 16:57:52 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 char	*ft_strrchr(const char *s, int c)
 {
-    char *d = 0;
+	char *d = 0;
 
-    if (!s)
-        return (0);
+	while (*s != '\0')
+	{
+		if (*s == (char)c)
+			d = (char *)s;
+		s++;
+	}
 
-    while (*s != '\0')
-    {
-        if (*s == (char)c)
-            d = (char *)s;
-        s++;
-    }
+	if (c == '\0')
+		return ((char *)s);
 
-    if (c == '\0')
-        return ((char *)s);
-
-    return (d);
+	return (d);
 }

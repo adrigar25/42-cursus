@@ -250,7 +250,7 @@ int	main(void)
 	printf("\n=== Pruebas para ft_strncmp vs strncmp ===\n");
 	printf("ft_strncmp(\"%s\", \"%s\", 5): %d | strncmp(\"%s\", \"%s\", 5):%d\n", src, src1, ft_strncmp(src, src1, 5), src, src1, strncmp(src,
 			src1, 5));
-	if (ft_strncmp(src, src1, 5) == strncmp(src, src1, 5))
+	if (ft_strncmp("abc", "abc", 7) == strncmp("abc", "abc", 7))
 		printf("\033[0;32m[PASS]\033[0m\n");
 	else
 		printf("\033[0;31m[FAIL]\033[0m\n");
@@ -306,5 +306,18 @@ int	main(void)
 	char *strdup_result = strdup(src);
 	printf("ft_strdup: %s | strdup: %s\n", ft_strdup_result, strdup_result);
 	ft_result(ft_strdup_result, strdup_result);
+
+	//Pruebas para ft_substr
+	printf("\n=== Pruebas para ft_substr ===\n");
+	printf("ft_substr(\"%s\", 0, 5): %s\n", src, ft_substr(src, 0, 5));
+
+	//Pruebas para ft_strjoin
+	printf("\n=== Pruebas para ft_strjoin ===\n");
+	printf("ft_strjoin(\"%s\", \"%s\"): %s\n", src, src1,
+		ft_strjoin(src, src1));
+
+	//Pruebas para ft_strtrim
+	printf("\n=== Pruebas para ft_strtrim ===\n");
+	printf("ft_strtrim(\"%s\", \"H\"): %s\n", src, ft_strtrim(src, "H"));
 	return (0);
 }

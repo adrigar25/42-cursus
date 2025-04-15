@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 14:23:15 by agarcia           #+#    #+#             */
-/*   Updated: 2025/04/14 14:41:21 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/04/15 17:28:41 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,30 +14,25 @@
 
 char	*ft_strnstr(const char *big, const char *little, size_t len)
 {
-	unsigned int	i;
-	unsigned int	j;
+	size_t	i;
+	size_t	j;
 
-	i = 0;
-	j = 0;
 	if (little[0] == '\0')
 		return ((char *)big);
-	while (len > 0 && big[i] != '\0')
+	i = 0;
+	while (i < len && big[i] != '\0')
 	{
-		if (*big == *little)
+		if (big[i] == little[0])
 		{
 			j = 0;
-			while (big[i + j] == little[j] && len > 0)
+			while (i + j < len && big[i + j] == little[j])
 			{
 				if (little[j + 1] == '\0')
 					return ((char *)&big[i]);
 				j++;
-				len--;
 			}
 		}
 		i++;
-		len--;
-		big++;
 	}
-
 	return (NULL);
 }
