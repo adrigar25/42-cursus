@@ -243,9 +243,9 @@ int	main(void)
 	printf("ft_strrchr(\"%s\", 'z'): %s | strrchr(\"%s\", 'z'): %s\n", src,
 		ft_strrchr(src, 'z'), src, strrchr(src, 'z'));
 	ft_result(ft_strrchr(src, 'z'), strrchr(src, 'z'));
-	printf("ft_strrchr(\"%s\", '\\0'): %s | strrchr(\"%s\", '\\0'): %s\n", src,
-		ft_strrchr(src, '\0'), src, strrchr(src, '\0'));
-	ft_result(ft_strrchr(src, '\0'), strrchr(src, '\0'));
+	printf("ft_strrchr(\"%s\", '\\0'): %s | strrchr(\"%s\", '\\0'): %s\n", "teste",
+		ft_strrchr("teste", '\0'), "teste", strrchr("teste", '\0'));
+	ft_result(ft_strrchr("teste", '\0'), strrchr("teste", '\0'));
 	// Pruebas para ft_strncmp vs strncmp
 	printf("\n=== Pruebas para ft_strncmp vs strncmp ===\n");
 	printf("ft_strncmp(\"%s\", \"%s\", 5): %d | strncmp(\"%s\", \"%s\", 5):%d\n", src, src1, ft_strncmp(src, src1, 5), src, src1, strncmp(src,
@@ -313,8 +313,8 @@ int	main(void)
 
 	//Pruebas para ft_strjoin
 	printf("\n=== Pruebas para ft_strjoin ===\n");
-	printf("ft_strjoin(\"%s\", \"%s\"): %s\n", src, src1,
-		ft_strjoin(src, src1));
+	printf("ft_strjoin(\"%s\", \"%s\"): %s\n", src, "et",
+		ft_strjoin("", ""));
 
 	//Pruebas para ft_strtrim
 	printf("\n=== Pruebas para ft_strtrim ===\n");
