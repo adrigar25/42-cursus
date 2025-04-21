@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 14:10:52 by agarcia           #+#    #+#             */
-/*   Updated: 2025/04/18 17:15:44 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/04/21 16:05:31 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,10 @@ static int	get_length(int n)
 {
 	int	len;
 
-	len = (n <= 0) ? 1 : 0;
+	if (n <= 0)
+		len = 1;
+	else
+		len = 0;
 	while (n)
 	{
 		n /= 10;
@@ -46,7 +49,10 @@ char	*ft_itoa(int n)
 	unsigned int	num;
 
 	sign = (n < 0);
-	num = (n < 0) ? -n : n;
+	if (n < 0)
+		num = -n;
+	else
+		num = n;
 	len = get_length(n);
 	str = (char *)malloc(sizeof(char) * (len + 1));
 	if (!str)

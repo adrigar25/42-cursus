@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 15:48:10 by agarcia           #+#    #+#             */
-/*   Updated: 2025/04/18 16:58:36 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/04/21 16:39:57 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,4 @@ void	ft_striteri(char *s, void (*f)(unsigned int, char *))
 		f(i, &s[i]);
 		i++;
 	}
-	s[i] = '\0';
-	return ;
 }

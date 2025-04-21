@@ -19,40 +19,64 @@ void	ft_result(char *expected, char *actual)
 
 char	my_function(unsigned int i, char c)
 {
-	return (c + i); // Ejemplo: suma el índice al valor ASCII del carácter
+	return (c + i);
+}
+
+void	my_function2(unsigned int i, char *c)
+{
+	if (*c >= 32 && *c <= 126) // Solo modifica caracteres imprimibles
+		*c = (*c + i) % 127;  
+			// Asegura que el resultado esté en el rango ASCII
+	if (*c < 32)               // Si cae fuera del rango imprimible, ajusta
+		*c += 32;
 }
 
 int	main(void)
 {
 	char	src[100] = "Hello World";
-	char	**result;
-	char	*itoa_result;
-	char	*itoa_result_neg;
 	char	*str;
-	char	*strmapi_result;
+	char	**result;
 
+	// Pruebas para ft_striteri
+	ft_striteri(src, my_function2);
+	printf("ft_striteri: %s\n", src);
+	printf("Expected: %s\n", "Hfnos!Xpsme");
+	ft_result("Hfnos!Xpsme", src);
 	// Pruebas para ft_split
-	printf("\n=== Pruebas para ft_split ===\n");
-	result = ft_split(src, ' ');
-	for (int i = 0; result[i] != NULL; i++)
+	printf("\n\033[0;33mTesting ft_split:\033[0m\n");
+	result = ft_split("Hello World", ' ');
+	printf("ft_split: %s\n", result[0]);
+	printf("Expected: %s\n", "Hello");
+	ft_result("Hello", result[0]);
+	// Pruebas para ft_strdup
+	printf("\n\033[0;33mTesting ft_strdup:\033[0m\n");
+	str = ft_strdup("Hello World");
+	printf("ft_strdup: %s\n", str);
+	printf("Expected: %s\n", "Hello World");
+	ft_result("Hello World", str);
+	// Pruebas para ft_substr
+	printf("\n\033[0;33mTesting ft_substr:\033[0m\n");
+	str = ft_substr("Hello World", 0, 5);
+	printf("ft_substr: %s\n", str);
+	printf("Expected: %s\n", "Hello");
+	ft_result("Hello", str);
+	// Pruebas para ft_strtrim
+	printf("\n\033[0;33mTesting ft_strtrim:\033[0m\n");
+	str = ft_strtrim("   Hello World   ", " ");
+	printf("ft_strtrim: %s\n", str);
+	printf("Expected: %s\n", "Hello World");
+	ft_result("Hello World", str);
+	// Pruebas para ft_strlcpy
+	printf("\n\033[0;33mTesting ft_strlcpy:\033[0m\n");
+	str = malloc(20);
+	if (str == NULL)
 	{
-		printf("ft_split: %s\n", result[i]);
-		free(result[i]);
+		printf("Memory allocation failed\n");
+		return (1);
 	}
-	free(result);
-	// Pruebas para ft_itoa
-	printf("\n=== Pruebas para ft_itoa ===\n");
-	itoa_result = ft_itoa(42);
-	itoa_result_neg = ft_itoa(-42);
-	printf("ft_itoa(42): %s\n", itoa_result);
-	printf("ft_itoa(-42): %s\n", itoa_result_neg);
-	free(itoa_result);
-	free(itoa_result_neg);
-	// Pruebas para ft_strmapi
-	printf("\n=== Pruebas para ft_strmapi ===\n");
-	str = "Hello";
-	strmapi_result = ft_strmapi(str, my_function);
-	printf("ft_strmapi: %s\n", strmapi_result);
-	free(strmapi_result);
+	ft_strlcpy(str, "Hello World", 20);
+	printf("ft_strlcpy: %s\n", str);
+	printf("Expected: %s\n", "Hello World");
+	ft_result("Hello World", str);
 	return (0);
 }
