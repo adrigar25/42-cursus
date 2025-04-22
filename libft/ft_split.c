@@ -6,12 +6,11 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 20:25:36 by agarcia           #+#    #+#             */
-/*   Updated: 2025/04/18 17:30:53 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/04/22 20:56:12 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdlib.h>
 
 static int	ft_wordcount(const char *s, char c)
 {
@@ -34,7 +33,20 @@ static int	ft_wordcount(const char *s, char c)
 	return (count);
 }
 
-static void	fill_result(char **result, const char *s, char c)
+static void	free_result(char **result, size_t j)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < j)
+	{
+		free(result[i]);
+		i++;
+	}
+	free(result);
+}
+
+static int	fill_result(char **result, const char *s, char c)
 {
 	size_t	i;
 	size_t	j;
@@ -49,12 +61,18 @@ static void	fill_result(char **result, const char *s, char c)
 			k = i;
 			while (s[i] && s[i] != c)
 				i++;
-			result[j++] = ft_substr(s, k, i - k);
+			result[j] = ft_substr(s, k, i - k);
+			if (!result[j++])
+			{
+				free_result(result, j - 1);
+				return (0);
+			}
 		}
 		else
 			i++;
 	}
 	result[j] = NULL;
+	return (1);
 }
 
 char	**ft_split(char const *s, char c)
@@ -66,6 +84,7 @@ char	**ft_split(char const *s, char c)
 	result = (char **)malloc(sizeof(char *) * (ft_wordcount(s, c) + 1));
 	if (!result)
 		return (NULL);
-	fill_result(result, s, c);
+	if (!fill_result(result, s, c))
+		return (NULL);
 	return (result);
 }

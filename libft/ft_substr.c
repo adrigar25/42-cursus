@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 15:16:16 by agarcia           #+#    #+#             */
-/*   Updated: 2025/04/18 17:31:31 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/04/22 20:23:11 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 
 	if (!s)
 		return (NULL);
-	s_len = strlen(s);
+	s_len = ft_strlen(s);
 	if (start >= s_len)
 		return (ft_strdup(""));
 	if (len > s_len - start)

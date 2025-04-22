@@ -6,11 +6,9 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 14:44:45 by agarcia           #+#    #+#             */
-/*   Updated: 2025/04/14 14:54:13 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/04/22 20:19:50 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include "libft.h"
 
 int	ft_atoi(const char *nptr)
 {
