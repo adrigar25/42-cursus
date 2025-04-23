@@ -6,11 +6,26 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 15:26:48 by agarcia           #+#    #+#             */
-/*   Updated: 2025/04/16 19:28:13 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/04/23 17:55:18 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+
+/*
+** FUNCION: ft_strjoin
+** -----------------
+** Une dos cadenas s1 y s2 en una nueva cadena.
+**
+** PARAMETROS:
+** - char const *s1: La primera cadena.
+** - char const *s2: La segunda cadena.
+**
+** RETORNO:
+** - Un puntero a la nueva cadena resultante.
+** - NULL si la reserva de memoria falla.
+**
+*/
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {

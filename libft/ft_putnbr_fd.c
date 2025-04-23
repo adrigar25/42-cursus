@@ -6,11 +6,25 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:13:34 by agarcia           #+#    #+#             */
-/*   Updated: 2025/04/18 16:37:28 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/04/23 17:52:42 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
+
+/*
+** FUNCION: ft_putnbr_fd
+** -----------------
+** Escribe el número n en el descriptor de archivo fd.
+**
+** PARAMETROS:
+** - int n: El número a escribir.
+** - int fd: El descriptor de archivo donde se escribirá el número.
+**
+** RETORNO:
+** - Ninguno.
+**
+*/
 
 void	ft_putnbr_fd(int n, int fd)
 {

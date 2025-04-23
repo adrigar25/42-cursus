@@ -6,24 +6,36 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 15:53:44 by agarcia           #+#    #+#             */
-/*   Updated: 2025/04/23 16:19:36 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/04/23 17:37:03 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdio.h>
+
+/*
+** FUNCIÓN: ft_calloc
+** -----------------
+** Reserva memoria para un array de nmemb elementos de size bytes cada uno
+** y la inicializa a cero.
+**
+** PARÁMETROS:
+** - size_t nmemb: Número de elementos a reservar.
+** - size_t size: Tamaño de cada elemento en bytes.
+**
+** RETORNO:
+** - Un puntero a la memoria reservada, o NULL si la reserva falla.
+**
+*/
 
 void	*ft_calloc(size_t nmemb, size_t size)
 {
 	void	*ptr;
-	size_t	total_size;
 
-	if (size != 0 && nmemb > SIZE_MAX / size)
+	if (nmemb != 0 && size > SIZE_MAX / nmemb)
 		return (NULL);
-	total_size = nmemb * size;
-	ptr = malloc(total_size);
+	ptr = malloc(nmemb * size);
 	if (!ptr)
 		return (NULL);
-	ft_bzero(ptr, total_size);
+	ft_bzero(ptr, nmemb * size);
 	return (ptr);
 }

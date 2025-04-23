@@ -6,11 +6,25 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 14:10:52 by agarcia           #+#    #+#             */
-/*   Updated: 2025/04/22 21:43:21 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/04/23 17:41:48 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+
+/*
+** FUNCION: ft_itoa
+** -----------------
+** Convierte un número entero en una cadena de caracteres.
+**
+** PARAMETROS:
+** - int n: El número entero a convertir.
+**
+** RETORNO:
+** - Un puntero a la cadena de caracteres resultante.
+** - NULL si la reserva de memoria falla.
+**
+*/
 
 static int	get_length(int n)
 {

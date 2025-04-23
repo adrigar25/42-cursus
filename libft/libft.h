@@ -6,16 +6,17 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 11:51:51 by agarcia           #+#    #+#             */
-/*   Updated: 2025/04/22 21:43:15 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/04/23 17:23:13 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 
+# include <limits.h>
+# include <stdint.h>
+# include <stdio.h>
 # include <stdlib.h>
-# include <strings.h>
-# include <string.h>
 # include <unistd.h>
 
 typedef struct s_list

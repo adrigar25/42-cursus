@@ -6,12 +6,26 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 20:25:36 by agarcia           #+#    #+#             */
-/*   Updated: 2025/04/22 20:56:12 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/04/23 17:53:41 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+/*
+** FUNCION: ft_split
+** -----------------
+** Divide una cadena en subcadenas utilizando un delimitador dado.
+**
+** PARAMETROS:
+** - char const *s: La cadena a dividir.
+** - char c: El delimitador utilizado para dividir la cadena.
+**
+** RETORNO:
+** - Un puntero a un array de cadenas (subcadenas).
+** - NULL si la reserva de memoria falla o si la cadena de entrada es NULL.
+**
+*/
 static int	ft_wordcount(const char *s, char c)
 {
 	int	count;
