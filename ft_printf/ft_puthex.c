@@ -1,38 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_puthex.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/09 13:08:33 by agarcia           #+#    #+#             */
-/*   Updated: 2025/04/23 17:56:40 by agarcia          ###   ########.fr       */
+/*   Created: 2025/04/25 18:48:00 by agarcia           #+#    #+#             */
+/*   Updated: 2025/04/26 15:44:54 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "ft_printf.h"
 
-/*
-** FUNCION: ft_strlen
-** -----------------
-** Calcula la longitud de la cadena str.
-**
-** PARAMETROS:
-** - const char *str: La cadena cuya longitud se va a calcular.
-**
-** RETORNO:
-** - La longitud de la cadena str (sin incluir el carácter nulo).
-**
-*/
-
-size_t	ft_strlen(const char *str)
+int	ft_puthex(unsigned long long n, int upper)
 {
-	size_t	len;
+	char	*base;
+	int		count;
 
-	len = 0;
-	while (str[len] != '\0')
-	{
-		len++;
-	}
-	return (len);
+	if (upper)
+		base = "0123456789ABCDEF";
+	else
+		base = "0123456789abcdef";
+	count = 0;
+	if (n >= 16)
+		count += ft_puthex(n / 16, upper);
+	return (count + ft_putchar(base[n % 16]));
 }

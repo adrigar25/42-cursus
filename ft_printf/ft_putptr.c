@@ -1,32 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_tolower.c                                       :+:      :+:    :+:   */
+/*   ft_putptr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/11 10:49:01 by agarcia           #+#    #+#             */
-/*   Updated: 2025/04/23 17:58:57 by agarcia          ###   ########.fr       */
+/*   Created: 2025/04/26 01:24:39 by agarcia           #+#    #+#             */
+/*   Updated: 2025/04/26 11:31:56 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/*
-** FUNCION: ft_tolower
-** -----------------
-** Convierte un carácter a minúscula si es una letra mayúscula.
-**
-** PARAMETROS:
-** - int c: El carácter a convertir.
-**
-** RETORNO:
-** - El carácter convertido a minúscula si es una letra mayúscula.
-** - El carácter original si no es una letra mayúscula.
-**
-*/
+#include "ft_printf.h"
 
-int	ft_tolower(int c)
+int	ft_putptr(void *ptr)
 {
-	if (c >= 'A' && c <= 'Z')
-		return (c + 32);
-	return (c);
+	if (!ptr)
+		return (ft_putstr("0x0"));
+	return (ft_putstr("0x") + ft_puthex((unsigned long long)ptr, 0));
 }

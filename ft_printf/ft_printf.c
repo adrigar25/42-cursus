@@ -6,55 +6,46 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 18:18:18 by agarcia           #+#    #+#             */
-/*   Updated: 2025/04/24 16:27:53 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/04/26 15:56:59 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./libft/libft.h"
+#include "ft_printf.h"
 
-int	ft_print_arg(va_arg args, char arg_type)
+int	handle_format(char format, va_list args)
 {
-    char *str;
-	int	writen_chars;
-
-	writen_chars = 0;
-    if(arg_type == '%')
-        writen_chars += write(1, '%', 1);
-	if (arg_typ == 'c')
-		writen_chars += write(1, va_arg(args, char), 1);
-	if (arg_typ = 's')
-    {
-        str = va_arg(args, char *);
-        while(str)
-        {
-            writen_chars += write(1, str, 1);
-            str++
-        }
-    }
-	return (writen_chars);
+	if (format == 'c')
+		return (ft_putchar(va_arg(args, int)));
+	if (format == 's')
+		return (ft_putstr(va_arg(args, char *)));
+	if (format == '%')
+		return (ft_putchar('%'));
+	if (format == 'd' || format == 'i')
+		return (ft_putnbr(va_arg(args, int)));
+	if (format == 'u')
+		return (ft_putunbr(va_arg(args, unsigned int)));
+	if (format == 'p')
+		return (ft_putptr(va_arg(args, void *)));
+	if (format == 'x' || format == 'X')
+		return (ft_puthex(va_arg(args, unsigned int), format == 'X'));
+	return (0);
 }
 
-int	ft_printf(char const *format, ...)
+int	ft_printf(const char *format, ...)
 {
 	va_list	args;
-	int		i;
-    unsigned int    writen_chars;
+	int		count;
 
-    writen_chars = 0;
-
+	count = 0;
 	va_start(args, format);
-	i = 0;
-	while (format[i])
+	while (*format)
 	{
-        if(format[i] == '%')
-            writen_chars += ft_print_arg(args, formart[i++]);
-		i++;
+		if (*format == '%' && *(++format))
+			count += handle_format(*format, args);
+		else
+			count += ft_putchar(*format);
+		format++;
 	}
-	return (writen_chars);
-}
-
-int	main(void)
-{
-	ft_printf("Hello, World!\n");
-	return (0);
+	va_end(args);
+	return (count);
 }

@@ -1,29 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isprint.c                                       :+:      :+:    :+:   */
+/*   ft_putstr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/09 13:13:48 by agarcia           #+#    #+#             */
-/*   Updated: 2025/04/23 17:40:57 by agarcia          ###   ########.fr       */
+/*   Created: 2025/04/25 18:02:56 by agarcia           #+#    #+#             */
+/*   Updated: 2025/04/26 11:28:43 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/*
-** FUNCION: ft_isprint
-** -----------------
-** Comprueba si el carácter c es un carácter imprimible (32 a 126).
-**
-** PARAMETROS:
-** - int c: El carácter a comprobar.
-**
-** RETORNO:
-** - 1 si c es un carácter imprimible, 0 en caso contrario.
-**
-*/
+#include "ft_printf.h"
 
-int	ft_isprint(int c)
+int	ft_putstr(char *str)
 {
-	return (c >= 32 && c <= 126);
+	int	i;
+
+	i = 0;
+	if (str == NULL)
+		return (ft_putstr("(null)"));
+	while (str[i])
+	{
+		ft_putchar(str[i]);
+		i++;
+	}
+	return (i);
 }

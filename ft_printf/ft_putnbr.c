@@ -1,36 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstadd_front_bonus.c                            :+:      :+:    :+:   */
+/*   ft_putnbr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/18 18:22:26 by agarcia           #+#    #+#             */
-/*   Updated: 2025/04/23 17:42:46 by agarcia          ###   ########.fr       */
+/*   Created: 2025/04/25 18:45:58 by agarcia           #+#    #+#             */
+/*   Updated: 2025/04/26 11:28:25 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "ft_printf.h"
 
-/*
-** FUNCION: ft_lstadd_front
-** -----------------
-** Añade un nuevo elemento al principio de la lista enlazada.
-**
-** PARAMETROS:
-** - t_list **lst: Doble puntero a la lista enlazada.
-** - t_list *new: Puntero al nuevo elemento a añadir.
-**
-** RETORNO:
-** - Ninguno.
-**
-*/
-
-void	ft_lstadd_front(t_list **lst, t_list *new)
+int	ft_putnbr(int n)
 {
-	if (lst && new)
+	int	count;
+
+	count = 0;
+	if (n == -2147483648)
+		return (ft_putstr("-2147483648"));
+	if (n < 0)
 	{
-		new->next = *lst;
-		*lst = new;
+		count += ft_putchar('-');
+		n = -n;
 	}
+	if (n >= 10)
+		count += ft_putnbr(n / 10);
+	return (count + ft_putchar((n % 10) + '0'));
 }

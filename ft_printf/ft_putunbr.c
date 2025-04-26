@@ -1,31 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isalpha.c                                       :+:      :+:    :+:   */
+/*   ft_putunbr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/09 13:11:24 by agarcia           #+#    #+#             */
-/*   Updated: 2025/04/23 17:38:42 by agarcia          ###   ########.fr       */
+/*   Created: 2025/04/25 20:15:36 by agarcia           #+#    #+#             */
+/*   Updated: 2025/04/26 11:30:44 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/*
-** FUNCION: ft_isalpha
-** -----------------
-** Comprueba si el carácter c es una letra (mayúscula o minúscula).
-**
-**
-** PARAMETROS:
-** - int c: El carácter a comprobar.
-**
-**
-** RETORNO:
-** - 1 si c es una letra, 0 en caso contrario.
-**
-*/
+#include "ft_printf.h"
 
-int	ft_isalpha(int c)
+int	ft_putunbr(unsigned int n)
 {
-	return ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'));
+	int		count;
+
+	count = 0;
+	if (n >= 10)
+		count += ft_putunbr(n / 10);
+	return (count + ft_putchar((n % 10) + '0'));
 }
