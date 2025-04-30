@@ -1,20 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putptr.c                                        :+:      :+:    :+:   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/26 01:24:39 by agarcia           #+#    #+#             */
-/*   Updated: 2025/04/30 16:49:57 by agarcia          ###   ########.fr       */
+/*   Created: 2025/04/26 16:09:47 by agarcia           #+#    #+#             */
+/*   Updated: 2025/04/29 17:52:20 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "get_next_line.h"
 
-int	ft_putptr(void *ptr)
+char	*get_next_line(int fd)
 {
-	if (!ptr)
-		return (ft_putstr("0x0"));
-	return (ft_putstr("0x") + ft_puthex((unsigned long long)ptr, 0));
+	static char *remainder;
+	char *line;
+	char *buffer[BUFFER_SIZE + 1];
+	int bytes_read;
+
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
+
+	while((bytes_read = read(fd, buffer, BUFFER_SIZE)) > 0)
+	{
+		buffer[bytes_read] = '\0';
+		remainder = ft_strjoin_free(remainder, buffer);
+		if(ft_strchr(remainder, '\n'))
+			break;
+	}
+	
+
+	return (line);
 }

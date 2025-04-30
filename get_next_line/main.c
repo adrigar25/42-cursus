@@ -1,20 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putptr.c                                        :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/26 01:24:39 by agarcia           #+#    #+#             */
-/*   Updated: 2025/04/30 16:49:57 by agarcia          ###   ########.fr       */
+/*   Created: 2025/04/28 18:57:57 by agarcia           #+#    #+#             */
+/*   Updated: 2025/04/29 16:10:06 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "get_next_line.h"
+#include <fcntl.h>
 
-int	ft_putptr(void *ptr)
+int	main(void)
 {
-	if (!ptr)
-		return (ft_putstr("0x0"));
-	return (ft_putstr("0x") + ft_puthex((unsigned long long)ptr, 0));
+	int	fd;
+
+	fd = open("./hola.txt", 0);
+	printf("%s", get_next_line(fd));
+	printf("%s", get_next_line(fd));
+	return (0);
 }

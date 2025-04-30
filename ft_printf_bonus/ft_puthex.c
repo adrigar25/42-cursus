@@ -1,20 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putptr.c                                        :+:      :+:    :+:   */
+/*   ft_puthex.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/26 01:24:39 by agarcia           #+#    #+#             */
-/*   Updated: 2025/04/30 16:49:57 by agarcia          ###   ########.fr       */
+/*   Created: 2025/04/25 18:48:00 by agarcia           #+#    #+#             */
+/*   Updated: 2025/04/30 16:37:14 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	ft_putptr(void *ptr)
+int	ft_puthex(unsigned long long n, int upper, t_flags flags)
 {
-	if (!ptr)
-		return (ft_putstr("0x0"));
-	return (ft_putstr("0x") + ft_puthex((unsigned long long)ptr, 0));
+	int	count;
+
+	count = 0;
+	if (flags.hash && n != 0)
+	{
+		if (upper)
+			count += ft_putstr("0X");
+		else
+			count += ft_putstr("0x");
+
+		flags.hash = 0;
+	}
+	if (n >= 16)
+		count += ft_puthex(n / 16, upper, flags);
+	return (count
+		+ ft_putchar((upper ? "0123456789ABCDEF" : "0123456789abcdef")[n
+			% 16]));
 }

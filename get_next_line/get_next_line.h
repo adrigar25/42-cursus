@@ -1,20 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putptr.c                                        :+:      :+:    :+:   */
+/*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/26 01:24:39 by agarcia           #+#    #+#             */
-/*   Updated: 2025/04/30 16:49:57 by agarcia          ###   ########.fr       */
+/*   Created: 2025/04/26 16:09:49 by agarcia           #+#    #+#             */
+/*   Updated: 2025/04/29 17:52:05 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
 
-int	ft_putptr(void *ptr)
-{
-	if (!ptr)
-		return (ft_putstr("0x0"));
-	return (ft_putstr("0x") + ft_puthex((unsigned long long)ptr, 0));
-}
+# include <stdlib.h>
+# include <unistd.h>
+
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 42
+# endif
+
+char	*get_next_line(int fd);
+char	*ft_strjoin_free(char const *s1, char const *s2);
+char    *ft_strchr(const char *str, int c);
+
+#endif
