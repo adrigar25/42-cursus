@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 18:18:18 by agarcia           #+#    #+#             */
-/*   Updated: 2025/05/09 22:03:30 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/05/10 01:16:22 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,21 @@ int	handle_format(char format, va_list *args, t_flags flags)
 	return (0);
 }
 
+t_flags	handle_flags(const char **format, t_flags flags)
+{
+	while (**format == ' ' || **format == '+' || **format == '#')
+	{
+		if (**format == ' ')
+			flags.space = 1;
+		if (**format == '+')
+			flags.plus = 1;
+		if (**format == '#')
+			flags.hash = 1;
+		(*format)++;
+	}
+	return (flags);
+}
+
 int	ft_printf(const char *format, ...)
 {
 	t_flags	flags;
@@ -44,20 +59,9 @@ int	ft_printf(const char *format, ...)
 	{
 		if (*format == '%' && *(++format))
 		{
-			while (*format == ' ' || *format == '+' || *format == '#')
-			{
-				if (*format == ' ')
-					flags.space = 1;
-				if (*format == '+')
-					flags.plus = 1;
-				if (*format == '#')
-					flags.hash = 1;
-				format++;
-			}
+			flags = handle_flags(&format, flags);
 			count += handle_format(*format, &args, flags);
-			flags.space = 0;
-			flags.plus = 0;
-			flags.hash = 0;
+			flags = (t_flags){0, 0, 0};
 		}
 		else
 			count += ft_putchar(*format);

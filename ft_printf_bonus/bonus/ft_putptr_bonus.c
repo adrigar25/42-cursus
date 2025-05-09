@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 01:24:39 by agarcia           #+#    #+#             */
-/*   Updated: 2025/05/09 20:27:27 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/05/10 01:11:44 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 int	ft_putptr(void *ptr)
 {
 	t_flags	flags;
+
 	flags.hash = 1;
 	if (!ptr)
 		return (ft_putstr("0x0"));

@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 18:48:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/05/09 20:27:47 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/05/10 01:11:21 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	ft_puthex(unsigned long long n, int upper, t_flags flags)
 
 	count = 0;
 	if (flags.plus)
-		flags.plus = 0; // Ignorar '+' en hexadecimales
+		flags.plus = 0;
 	if (flags.hash && n != 0)
 	{
 		if (upper)
