@@ -1,20 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putptr.c                                        :+:      :+:    :+:   */
+/*   ft_putstr_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/26 01:24:39 by agarcia           #+#    #+#             */
-/*   Updated: 2025/04/30 16:49:57 by agarcia          ###   ########.fr       */
+/*   Created: 2025/04/25 18:02:56 by agarcia           #+#    #+#             */
+/*   Updated: 2025/05/09 21:59:50 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "ft_printf_bonus.h"
 
-int	ft_putptr(void *ptr)
+int	ft_putstr(char *str)
 {
-	if (!ptr)
-		return (ft_putstr("0x0"));
-	return (ft_putstr("0x") + ft_puthex((unsigned long long)ptr, 0));
+	int i;
+
+	i = 0;
+	if (str == NULL)
+		return (ft_putstr("(null)"));
+	while (str[i])
+	{
+		ft_putchar(str[i]);
+		i++;
+	}
+	return (i);
 }
