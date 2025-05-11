@@ -6,23 +6,27 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 16:09:47 by agarcia           #+#    #+#             */
-/*   Updated: 2025/05/11 15:42:57 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/05/11 17:29:29 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 
-void	ft_gnldelone(t_gnl *gnl)
+void	ft_gnldelone(t_gnl **gnl_list, t_gnl *current, t_gnl *prev)
 {
-	if (!gnl)
+	if (!current)
 		return ;
-	if (gnl->reminder)
+	if (prev)
+		prev->next = current->next;
+	else
+		*gnl_list = current->next;
+	if (current->reminder)
 	{
-		free(gnl->reminder);
-		gnl->reminder = NULL;
+		free(current->reminder);
+		current->reminder = NULL;
 	}
-	free(gnl);
-	gnl = NULL;
+	free(current);
+	current = NULL;
 }
 
 t_gnl	*ft_gnladd_back_gnlnew(t_gnl **gnl, int fd)
@@ -66,21 +70,16 @@ static char	*ft_extract_line(t_gnl *gnl)
 	line = malloc(len + 1);
 	if (!line)
 		return (free(gnl->reminder), gnl->reminder = NULL, NULL);
-	i = 0;
-	while (i < len)
-	{
+	i = -1;
+	while (++i < len)
 		line[i] = gnl->reminder[i];
-		i++;
-	}
 	line[i] = '\0';
 	if (gnl->reminder[len] == '\0')
 		return (free(gnl->reminder), gnl->reminder = NULL, line);
 	new_reminder = ft_strdup(gnl->reminder + len);
 	if (!new_reminder)
 		return (free(line), free(gnl->reminder), gnl->reminder = NULL, NULL);
-	free(gnl->reminder);
-	gnl->reminder = new_reminder;
-	return (line);
+	return (free(gnl->reminder), gnl->reminder = new_reminder, line);
 }
 
 static char	*ft_read_until_nl(int fd, t_gnl *gnl)
@@ -109,41 +108,28 @@ static char	*ft_read_until_nl(int fd, t_gnl *gnl)
 char	*get_next_line(int fd)
 {
 	static t_gnl	*gnl_list;
-	t_gnl			*current;
-	t_gnl			*prev;
+	t_gnl			*gnl_aux[2];
 	char			*line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	current = gnl_list;
-	prev = NULL;
-	while (current && current->fd != fd)
+	gnl_aux[0] = gnl_list;
+	gnl_aux[1] = NULL;
+	while (gnl_aux[0] && gnl_aux[0]->fd != fd)
 	{
-		prev = current;
-		current = current->next;
+		gnl_aux[1] = gnl_aux[0];
+		gnl_aux[0] = gnl_aux[0]->next;
 	}
-	if (!current)
+	if (!gnl_aux[0])
 	{
-		current = ft_gnladd_back_gnlnew(&gnl_list, fd);
-		if (!current)
+		gnl_aux[0] = ft_gnladd_back_gnlnew(&gnl_list, fd);
+		if (!gnl_aux[0])
 			return (NULL);
 	}
-	if (!ft_read_until_nl(fd, current))
-	{
-		if (prev)
-			prev->next = current->next;
-		else
-			gnl_list = current->next;
-		return (ft_gnldelone(current), NULL);
-	}
-	line = ft_extract_line(current);
+	if (!ft_read_until_nl(fd, gnl_aux[0]))
+		return (ft_gnldelone(&gnl_list, gnl_aux[0], gnl_aux[1]), NULL);
+	line = ft_extract_line(gnl_aux[0]);
 	if (!line)
-	{
-		if (prev)
-			prev->next = current->next;
-		else
-			gnl_list = current->next;
-		return (ft_gnldelone(current), NULL);
-	}
+		return (ft_gnldelone(&gnl_list, gnl_aux[0], gnl_aux[1]), NULL);
 	return (line);
 }
