@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 16:09:47 by agarcia           #+#    #+#             */
-/*   Updated: 2025/05/08 23:00:55 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/05/12 01:06:38 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,21 +17,27 @@ static char	*ft_extract_line(char **reminder)
 	char	*line;
 	char	*new_reminder;
 	size_t	i;
+	size_t	len;
 
 	if (!reminder || !*reminder || !**reminder)
 		return (NULL);
 	i = 0;
 	while ((*reminder)[i] && (*reminder)[i] != '\n')
 		i++;
-	line = ft_substr(*reminder, 0, i + ((*reminder)[i] == '\n'));
+	len = i + ((*reminder)[i] == '\n');
+	line = malloc(len + 1);
 	if (!line)
 		return (free(*reminder), *reminder = NULL, NULL);
-	new_reminder = ft_strdup(*reminder + i + ((*reminder)[i] == '\n'));
+	i = -1;
+	while (++i < len)
+		line[i] = (*reminder)[i];
+	line[i] = '\0';
+	if ((*reminder)[len] == '\0')
+		return (free(*reminder), *reminder = NULL, line);
+	new_reminder = ft_strdup(*reminder + len);
 	if (!new_reminder)
 		return (free(line), free(*reminder), *reminder = NULL, NULL);
-	free(*reminder);
-	*reminder = new_reminder;
-	return (line);
+	return (free(*reminder), *reminder = new_reminder, line);
 }
 
 static char	*ft_read_until_nl(int fd, char **reminder)
@@ -67,9 +73,7 @@ char	*get_next_line(int fd)
 		return (NULL);
 	if (!reminder)
 		reminder = ft_strdup("");
-	if (!reminder)
-		return (NULL);
-	if (!ft_read_until_nl(fd, &reminder))
+	if (!reminder || !ft_read_until_nl(fd, &reminder))
 		return (NULL);
 	line = ft_extract_line(&reminder);
 	if (!line)

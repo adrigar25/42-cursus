@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 16:09:44 by agarcia           #+#    #+#             */
-/*   Updated: 2025/05/08 22:29:06 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/05/12 01:07:04 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,26 +40,6 @@ char	*ft_strdup(const char *s)
 	}
 	dup[i] = '\0';
 	return (dup);
-}
-
-char	*ft_substr(char *s, unsigned int start, size_t len)
-{
-	char	*sub;
-	size_t	i;
-
-	if (!s || start >= ft_strlen(s))
-		return (ft_strdup(""));
-	sub = malloc(len + 1);
-	if (!sub)
-		return (NULL);
-	i = 0;
-	while (i < len && s[start + i])
-	{
-		sub[i] = s[start + i];
-		i++;
-	}
-	sub[i] = '\0';
-	return (sub);
 }
 
 char	*ft_strjoin(char *s1, char *s2)

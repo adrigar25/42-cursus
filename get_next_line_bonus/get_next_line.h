@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 16:09:49 by agarcia           #+#    #+#             */
-/*   Updated: 2025/05/10 14:26:45 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/05/12 01:03:40 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@
 # endif
 
 char	*get_next_line(int fd);
-char	*ft_memcpy(char *dest, const char *src, int n);
 char	*ft_strchr(const char *s, int c);
 size_t	ft_strlen(const char *s);
 char	*ft_strjoin(char *s1, char *s2);

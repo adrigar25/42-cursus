@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 16:09:44 by agarcia           #+#    #+#             */
-/*   Updated: 2025/05/11 15:38:12 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/05/11 22:44:39 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ char	*ft_strjoin(char *s1, char *s2)
 		new_str[i++] = s2[j++];
 	new_str[i] = '\0';
 	free(s1);
-	s1 = NULL;
 	return (new_str);
 }
 
