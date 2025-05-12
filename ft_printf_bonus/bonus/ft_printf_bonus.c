@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 18:18:18 by agarcia           #+#    #+#             */
-/*   Updated: 2025/05/10 01:16:22 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/05/12 19:57:52 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,11 @@ int	ft_printf(const char *format, ...)
 		if (*format == '%' && *(++format))
 		{
 			flags = handle_flags(&format, flags);
+			if (*format >= '0' && *format <= '9')
+			{
+				count += ft_putchar(' ');
+				format++;
+			}
 			count += handle_format(*format, &args, flags);
 			flags = (t_flags){0, 0, 0};
 		}

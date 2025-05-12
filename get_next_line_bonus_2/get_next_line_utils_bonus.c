@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 16:09:44 by agarcia           #+#    #+#             */
-/*   Updated: 2025/05/12 18:08:34 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/05/12 18:34:11 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,28 +44,26 @@ char	*ft_strdup(const char *s)
 
 char	*ft_strjoin(char *s1, char *s2)
 {
-	char	*new_str;
+	char	*joined;
+	size_t	len1;
+	size_t	len2;
 	size_t	i;
-	size_t	j;
 
-	if (!s1)
-		s1 = ft_strdup("");
-	if (!s2)
+	if (!s1 || !s2)
 		return (NULL);
-	new_str = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
-	if (!new_str)
+	len1 = ft_strlen(s1);
+	len2 = ft_strlen(s2);
+	joined = malloc(len1 + len2 + 1);
+	if (!joined)
 		return (NULL);
-	i = 0;
-	while (s1[i])
-	{
-		new_str[i] = s1[i];
-		i++;
-	}
-	j = 0;
-	while (s2[j])
-		new_str[i++] = s2[j++];
-	new_str[i] = '\0';
-	return (new_str);
+	i = -1;
+	while (++i < len1)
+		joined[i] = s1[i];
+	i = -1;
+	while (++i < len2)
+		joined[len1 + i] = s2[i];
+	joined[len1 + len2] = '\0';
+	return (joined);
 }
 
 char	*ft_strchr(const char *s, int c)
@@ -76,5 +74,7 @@ char	*ft_strchr(const char *s, int c)
 			return ((char *)s);
 		s++;
 	}
+	if (c == '\0')
+		return ((char *)s);
 	return (NULL);
 }
