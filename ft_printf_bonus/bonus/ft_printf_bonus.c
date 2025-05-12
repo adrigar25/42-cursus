@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 18:18:18 by agarcia           #+#    #+#             */
-/*   Updated: 2025/05/12 19:57:52 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/05/12 21:24:40 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,5 @@ int	ft_printf(const char *format, ...)
 			count += ft_putchar(*format);
 		format++;
 	}
-	va_end(args);
-	return (count);
+	return (va_end(args), count);
 }
