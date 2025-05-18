@@ -1,24 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   ft_tolower.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/13 22:01:39 by agarcia           #+#    #+#             */
-/*   Updated: 2025/05/18 12:23:52 by agarcia          ###   ########.fr       */
+/*   Created: 2025/04/11 10:49:01 by agarcia           #+#    #+#             */
+/*   Updated: 2025/04/23 17:58:57 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+/*
+** FUNCION: ft_tolower
+** -----------------
+** Convierte un carácter a minúscula si es una letra mayúscula.
+**
+** PARAMETROS:
+** - int c: El carácter a convertir.
+**
+** RETORNO:
+** - El carácter convertido a minúscula si es una letra mayúscula.
+** - El carácter original si no es una letra mayúscula.
+**
+*/
 
-void	ft_redir_in_out(int fd, int in_or_out)
+int	ft_tolower(int c)
 {
-	int status;
-	if (in_or_out)
-		status = dup2(fd, STDOUT_FILENO);
-	else
-		status = dup2(fd, STDIN_FILENO);
-	if (status == -1)
-		exit(EXIT_FAILURE);
+	if (c >= 'A' && c <= 'Z')
+		return (c + 32);
+	return (c);
 }

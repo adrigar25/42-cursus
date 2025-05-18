@@ -1,24 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/13 22:01:39 by agarcia           #+#    #+#             */
-/*   Updated: 2025/05/18 12:23:52 by agarcia          ###   ########.fr       */
+/*   Created: 2025/04/14 13:14:28 by agarcia           #+#    #+#             */
+/*   Updated: 2025/04/23 17:44:54 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "libft.h"
 
-void	ft_redir_in_out(int fd, int in_or_out)
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
-	int status;
-	if (in_or_out)
-		status = dup2(fd, STDOUT_FILENO);
-	else
-		status = dup2(fd, STDIN_FILENO);
-	if (status == -1)
-		exit(EXIT_FAILURE);
+	while (n > 0)
+	{
+		if (*s1 != *s2)
+			return ((unsigned char)*s1 - (unsigned char)*s2);
+		if (*s1 == '\0' || *s2 == '\0')
+			break ;
+		s1++;
+		s2++;
+		n--;
+	}
+	return (0);
 }

@@ -1,24 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   ft_putchar_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/13 22:01:39 by agarcia           #+#    #+#             */
-/*   Updated: 2025/05/18 12:23:52 by agarcia          ###   ########.fr       */
+/*   Created: 2025/04/18 16:05:02 by agarcia           #+#    #+#             */
+/*   Updated: 2025/04/23 17:51:34 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "libft.h"
 
-void	ft_redir_in_out(int fd, int in_or_out)
+/*
+** FUNCION: ft_putchar_fd
+** -----------------
+** Escribe el carácter c en el descriptor de archivo fd.
+**
+** PARAMETROS:
+** - char c: El carácter a escribir.
+** - int fd: El descriptor de archivo donde se escribirá el carácter.
+**
+** RETORNO:
+** - Ninguno.
+**
+*/
+
+void	ft_putchar_fd(char c, int fd)
 {
-	int status;
-	if (in_or_out)
-		status = dup2(fd, STDOUT_FILENO);
-	else
-		status = dup2(fd, STDIN_FILENO);
-	if (status == -1)
-		exit(EXIT_FAILURE);
+	write(fd, &c, 1);
 }

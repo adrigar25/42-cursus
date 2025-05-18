@@ -1,24 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   ft_lstsize_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/13 22:01:39 by agarcia           #+#    #+#             */
-/*   Updated: 2025/05/18 12:23:52 by agarcia          ###   ########.fr       */
+/*   Created: 2025/04/18 18:25:12 by agarcia           #+#    #+#             */
+/*   Updated: 2025/04/23 17:48:24 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "libft.h"
 
-void	ft_redir_in_out(int fd, int in_or_out)
+/*
+** FUNCION: ft_lstsize
+** -----------------
+** Devuelve el número de elementos en la lista enlazada.
+**
+** PARAMETROS:
+** - t_list *lst: Puntero a la lista enlazada.
+**
+** RETORNO:
+** - El número de elementos en la lista enlazada.
+**
+*/
+
+int	ft_lstsize(t_list *lst)
 {
-	int status;
-	if (in_or_out)
-		status = dup2(fd, STDOUT_FILENO);
-	else
-		status = dup2(fd, STDIN_FILENO);
-	if (status == -1)
-		exit(EXIT_FAILURE);
+	int	count;
+
+	count = 0;
+	while (lst)
+	{
+		count++;
+		lst = lst->next;
+	}
+	return (count);
 }

@@ -1,24 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   ft_isalpha.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/13 22:01:39 by agarcia           #+#    #+#             */
-/*   Updated: 2025/05/18 12:23:52 by agarcia          ###   ########.fr       */
+/*   Created: 2025/04/09 13:11:24 by agarcia           #+#    #+#             */
+/*   Updated: 2025/04/23 17:38:42 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+/*
+** FUNCION: ft_isalpha
+** -----------------
+** Comprueba si el carácter c es una letra (mayúscula o minúscula).
+**
+**
+** PARAMETROS:
+** - int c: El carácter a comprobar.
+**
+**
+** RETORNO:
+** - 1 si c es una letra, 0 en caso contrario.
+**
+*/
 
-void	ft_redir_in_out(int fd, int in_or_out)
+int	ft_isalpha(int c)
 {
-	int status;
-	if (in_or_out)
-		status = dup2(fd, STDOUT_FILENO);
-	else
-		status = dup2(fd, STDIN_FILENO);
-	if (status == -1)
-		exit(EXIT_FAILURE);
+	return ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'));
 }

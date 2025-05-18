@@ -1,24 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   ft_isprint.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/13 22:01:39 by agarcia           #+#    #+#             */
-/*   Updated: 2025/05/18 12:23:52 by agarcia          ###   ########.fr       */
+/*   Created: 2025/04/09 13:13:48 by agarcia           #+#    #+#             */
+/*   Updated: 2025/04/23 17:40:57 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+/*
+** FUNCION: ft_isprint
+** -----------------
+** Comprueba si el carácter c es un carácter imprimible (32 a 126).
+**
+** PARAMETROS:
+** - int c: El carácter a comprobar.
+**
+** RETORNO:
+** - 1 si c es un carácter imprimible, 0 en caso contrario.
+**
+*/
 
-void	ft_redir_in_out(int fd, int in_or_out)
+int	ft_isprint(int c)
 {
-	int status;
-	if (in_or_out)
-		status = dup2(fd, STDOUT_FILENO);
-	else
-		status = dup2(fd, STDIN_FILENO);
-	if (status == -1)
-		exit(EXIT_FAILURE);
+	return (c >= 32 && c <= 126);
 }

@@ -1,24 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   ft_isdigit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/13 22:01:39 by agarcia           #+#    #+#             */
-/*   Updated: 2025/05/18 12:23:52 by agarcia          ###   ########.fr       */
+/*   Created: 2025/04/09 13:12:07 by agarcia           #+#    #+#             */
+/*   Updated: 2025/04/23 17:41:04 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+/*
+** FUNCION: ft_isdigit
+** -----------------
+** Comprueba si el carácter c es un dígito (0 a 9).
+**
+** PARAMETROS:
+** - int c: El carácter a comprobar.
+**
+** RETORNO:
+** - 1 si c es un dígito, 0 en caso contrario.
+**
+*/
 
-void	ft_redir_in_out(int fd, int in_or_out)
+int	ft_isdigit(int c)
 {
-	int status;
-	if (in_or_out)
-		status = dup2(fd, STDOUT_FILENO);
-	else
-		status = dup2(fd, STDIN_FILENO);
-	if (status == -1)
-		exit(EXIT_FAILURE);
+	return (c >= '0' && c <= '9');
 }

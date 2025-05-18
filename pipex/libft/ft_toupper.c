@@ -1,24 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   ft_toupper.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/13 22:01:39 by agarcia           #+#    #+#             */
-/*   Updated: 2025/05/18 12:23:52 by agarcia          ###   ########.fr       */
+/*   Created: 2025/04/11 10:49:01 by agarcia           #+#    #+#             */
+/*   Updated: 2025/04/23 17:59:18 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+/*
+** FUNCION: ft_toupper
+** -----------------
+** Convierte un carácter a mayúscula si es una letra minúscula.
+**
+** PARAMETROS:
+** - int c: El carácter a convertir.
+**
+** RETORNO:
+** - El carácter convertido a mayúscula si es una letra minúscula.
+** - El carácter original si no es una letra minúscula.
+**
+*/
 
-void	ft_redir_in_out(int fd, int in_or_out)
+int	ft_toupper(int c)
 {
-	int status;
-	if (in_or_out)
-		status = dup2(fd, STDOUT_FILENO);
-	else
-		status = dup2(fd, STDIN_FILENO);
-	if (status == -1)
-		exit(EXIT_FAILURE);
+	if (c >= 'a' && c <= 'z')
+		return (c - 32);
+	return (c);
 }
