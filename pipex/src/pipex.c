@@ -6,15 +6,12 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 22:32:05 by agarcia           #+#    #+#             */
-/*   Updated: 2025/05/18 13:44:13 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/05/19 17:28:55 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./libft/libft.h"
+#include "../libft/libft.h"
 #include "pipex.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 int	ft_open_file(const char *filename, int in_or_out)
 {
@@ -35,33 +32,21 @@ int	ft_open_file(const char *filename, int in_or_out)
 	return (fd);
 }
 
-void	child(char **argv, int pipefds[2], char **envp)
+void	run_cmd(char *cmd, int fd_in, int fd_out, char **envp)
 {
-	char	*sh1_argv[] = {"sh", "-c", argv[2], NULL};
+	char	*sh_argv[4];
 
-	ft_redir_in_out(ft_open_file(argv[1], 0), 0);
-	ft_redir_in_out(pipefds[1], 1);
-	close(pipefds[0]);
-	if (execve("/bin/sh", sh1_argv, envp) == -1)
+	sh_argv[0] = "sh";
+	sh_argv[1] = "-c";
+	sh_argv[2] = (char *)cmd;
+	sh_argv[3] = NULL;
+	ft_redir_in_out(fd_in, 0);
+	ft_redir_in_out(fd_out, 1);
+	if (execve("/bin/sh", sh_argv, envp) == -1)
 	{
 		ft_putstr_fd("pipex: command not found: ", 2);
-		ft_putendl_fd(sh1_argv[2], 2);
-		exit(0);
-	}
-}
-
-void	parent(char **argv, int pipefds[2], char **envp)
-{
-	char	*sh2_argv[] = {"sh", "-c", argv[3], NULL};
-
-	ft_redir_in_out(pipefds[0], 0);
-	ft_redir_in_out(ft_open_file(argv[4], 1), 1);
-	close(pipefds[1]);
-	if (execve("/bin/sh", sh2_argv, envp) == -1)
-	{
-		ft_putstr_fd("pipex: command not found: ", 2);
-		ft_putendl_fd(sh2_argv[2], 2);
-		exit(0);
+		ft_putendl_fd(cmd, 2);
+		exit(127);
 	}
 }
 
@@ -78,8 +63,12 @@ int	main(int argn, char **argv, char **envp)
 	pid = fork();
 	if (pid == -1)
 		return (close(pipefds[0]), close(pipefds[1]), 1);
-	if (!pid)
-		child(argv, pipefds, envp);
-	parent(argv, pipefds, envp);
+	if (pid == 0)
+	{
+		close(pipefds[0]);
+		run_cmd(argv[2], ft_open_file(argv[1], 0), pipefds[1], envp);
+	}
+	close(pipefds[1]);
+	run_cmd(argv[3], pipefds[0], ft_open_file(argv[4], 1), envp);
 	return (1);
 }
