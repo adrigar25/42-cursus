@@ -1,5 +1,0 @@
-<<<<<<< HEAD
-       0
-=======
-      10
->>>>>>> refs/remotes/origin/main
