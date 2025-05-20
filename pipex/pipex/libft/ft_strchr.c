@@ -1,36 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/18 16:12:07 by agarcia           #+#    #+#             */
-/*   Updated: 2025/05/18 19:20:59 by agarcia          ###   ########.fr       */
+/*   Created: 2025/04/11 11:03:35 by agarcia           #+#    #+#             */
+/*   Updated: 2025/04/23 17:54:11 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
 /*
-** FUNCION: ft_putendl_fd
+** FUNCION: ft_strchr
 ** -----------------
-** Escribe la cadena s en el descriptor de archivo fd, seguida de un salto
-** de línea.
+** Busca la primera aparición del carácter c en la cadena s.
 **
 ** PARAMETROS:
-** - char *s: La cadena a escribir.
-** - int fd: El descriptor de archivo donde se escribirá la cadena.
+** - const char *s: La cadena en la que se busca el carácter.
+** - int c: El carácter a buscar.
 **
 ** RETORNO:
-** - Ninguno.
+** - Un puntero a la primera aparición del carácter c en la cadena s.
+** - NULL si el carácter no se encuentra.
 **
 */
 
-void	ft_putendl_fd(char *s, int fd)
+char	*ft_strchr(const char *s, int c)
 {
-	if (s == NULL)
-		return ;
-	ft_putstr_fd(s, fd);
-	ft_putchar_fd('\n', fd);
+	while (*s != '\0')
+	{
+		if (*s == (char)c)
+			return ((char *)s);
+		s++;
+	}
+	if ((char)c == '\0')
+		return ((char *)s);
+	return (0);
 }

@@ -1,36 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
+/*   ft_isalnum.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/18 16:12:07 by agarcia           #+#    #+#             */
-/*   Updated: 2025/05/18 19:20:59 by agarcia          ###   ########.fr       */
+/*   Created: 2025/04/09 13:12:52 by agarcia           #+#    #+#             */
+/*   Updated: 2025/04/23 17:37:24 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
 /*
-** FUNCION: ft_putendl_fd
+** FUNCION: ft_isalnum
 ** -----------------
-** Escribe la cadena s en el descriptor de archivo fd, seguida de un salto
-** de línea.
+** Comprueba si el carácter c es alfanumérico (letra o dígito).
 **
 ** PARAMETROS:
-** - char *s: La cadena a escribir.
-** - int fd: El descriptor de archivo donde se escribirá la cadena.
+** - int c: El carácter a comprobar.
 **
 ** RETORNO:
-** - Ninguno.
+** - 1 si c es alfanumérico, 0 en caso contrario.
 **
 */
 
-void	ft_putendl_fd(char *s, int fd)
+int	ft_isalnum(int c)
 {
-	if (s == NULL)
-		return ;
-	ft_putstr_fd(s, fd);
-	ft_putchar_fd('\n', fd);
+	return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0'
+			&& c <= '9'));
 }

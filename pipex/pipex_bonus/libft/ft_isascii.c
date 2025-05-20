@@ -1,36 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
+/*   ft_isascii.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/18 16:12:07 by agarcia           #+#    #+#             */
-/*   Updated: 2025/05/18 19:20:59 by agarcia          ###   ########.fr       */
+/*   Created: 2025/04/09 11:20:31 by agarcia           #+#    #+#             */
+/*   Updated: 2025/04/23 17:39:06 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
 /*
-** FUNCION: ft_putendl_fd
+** FUNCION: ft_isascii
 ** -----------------
-** Escribe la cadena s en el descriptor de archivo fd, seguida de un salto
-** de línea.
+** Comprueba si el carácter c es un carácter ASCII (0 a 127).
+**
 **
 ** PARAMETROS:
-** - char *s: La cadena a escribir.
-** - int fd: El descriptor de archivo donde se escribirá la cadena.
+** - int c: El carácter a comprobar.
+**
 **
 ** RETORNO:
-** - Ninguno.
+** - 1 si c es un carácter ASCII, 0 en caso contrario.
 **
 */
 
-void	ft_putendl_fd(char *s, int fd)
+int	ft_isascii(int c)
 {
-	if (s == NULL)
-		return ;
-	ft_putstr_fd(s, fd);
-	ft_putchar_fd('\n', fd);
+	return (c >= 0 && c <= 127);
 }

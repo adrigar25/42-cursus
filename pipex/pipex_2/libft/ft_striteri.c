@@ -1,36 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
+/*   ft_striteri.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/18 16:12:07 by agarcia           #+#    #+#             */
-/*   Updated: 2025/05/18 19:20:59 by agarcia          ###   ########.fr       */
+/*   Created: 2025/04/18 15:48:10 by agarcia           #+#    #+#             */
+/*   Updated: 2025/04/23 17:55:02 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
 /*
-** FUNCION: ft_putendl_fd
+** FUNCION: ft_striteri
 ** -----------------
-** Escribe la cadena s en el descriptor de archivo fd, seguida de un salto
-** de línea.
+** Aplica la función f a cada carácter de la cadena s, pasando su índice
+** como primer argumento.
 **
 ** PARAMETROS:
-** - char *s: La cadena a escribir.
-** - int fd: El descriptor de archivo donde se escribirá la cadena.
+** - char *s: La cadena a modificar.
+** - void (*f)(unsigned int, char *): La función a aplicar a cada carácter.
 **
 ** RETORNO:
 ** - Ninguno.
 **
 */
 
-void	ft_putendl_fd(char *s, int fd)
+void	ft_striteri(char *s, void (*f)(unsigned int, char *))
 {
-	if (s == NULL)
+	unsigned int	i;
+
+	if (!s || !f)
 		return ;
-	ft_putstr_fd(s, fd);
-	ft_putchar_fd('\n', fd);
+	i = 0;
+	while (s[i])
+	{
+		f(i, &s[i]);
+		i++;
+	}
 }

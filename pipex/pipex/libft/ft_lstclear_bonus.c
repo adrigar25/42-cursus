@@ -1,36 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
+/*   ft_lstclear_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/18 16:12:07 by agarcia           #+#    #+#             */
-/*   Updated: 2025/05/18 19:20:59 by agarcia          ###   ########.fr       */
+/*   Created: 2025/04/18 18:37:41 by agarcia           #+#    #+#             */
+/*   Updated: 2025/04/23 17:43:23 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
 /*
-** FUNCION: ft_putendl_fd
+** FUNCION: ft_lstclear
 ** -----------------
-** Escribe la cadena s en el descriptor de archivo fd, seguida de un salto
-** de línea.
+** Libera la memoria de todos los elementos de la lista enlazada y
+** establece el puntero a la lista en NULL.
 **
 ** PARAMETROS:
-** - char *s: La cadena a escribir.
-** - int fd: El descriptor de archivo donde se escribirá la cadena.
+** - t_list **lst: Doble puntero a la lista enlazada.
+** - void (*del)(void *): Función para liberar el contenido de cada elemento.
 **
 ** RETORNO:
 ** - Ninguno.
 **
 */
 
-void	ft_putendl_fd(char *s, int fd)
+void	ft_lstclear(t_list **lst, void (*del)(void *))
 {
-	if (s == NULL)
+	t_list	*temp;
+
+	if (!lst || !del)
 		return ;
-	ft_putstr_fd(s, fd);
-	ft_putchar_fd('\n', fd);
+	while (*lst)
+	{
+		temp = (*lst)->next;
+		del((*lst)->content);
+		free(*lst);
+		*lst = temp;
+	}
+	*lst = NULL;
 }

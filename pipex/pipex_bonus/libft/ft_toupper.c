@@ -1,36 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
+/*   ft_toupper.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/18 16:12:07 by agarcia           #+#    #+#             */
-/*   Updated: 2025/05/18 19:20:59 by agarcia          ###   ########.fr       */
+/*   Created: 2025/04/11 10:49:01 by agarcia           #+#    #+#             */
+/*   Updated: 2025/04/23 17:59:18 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
 /*
-** FUNCION: ft_putendl_fd
+** FUNCION: ft_toupper
 ** -----------------
-** Escribe la cadena s en el descriptor de archivo fd, seguida de un salto
-** de línea.
+** Convierte un carácter a mayúscula si es una letra minúscula.
 **
 ** PARAMETROS:
-** - char *s: La cadena a escribir.
-** - int fd: El descriptor de archivo donde se escribirá la cadena.
+** - int c: El carácter a convertir.
 **
 ** RETORNO:
-** - Ninguno.
+** - El carácter convertido a mayúscula si es una letra minúscula.
+** - El carácter original si no es una letra minúscula.
 **
 */
 
-void	ft_putendl_fd(char *s, int fd)
+int	ft_toupper(int c)
 {
-	if (s == NULL)
-		return ;
-	ft_putstr_fd(s, fd);
-	ft_putchar_fd('\n', fd);
+	if (c >= 'a' && c <= 'z')
+		return (c - 32);
+	return (c);
 }

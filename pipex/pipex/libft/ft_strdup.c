@@ -1,36 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/18 16:12:07 by agarcia           #+#    #+#             */
-/*   Updated: 2025/05/18 19:20:59 by agarcia          ###   ########.fr       */
+/*   Created: 2025/04/14 16:51:43 by agarcia           #+#    #+#             */
+/*   Updated: 2025/04/23 17:54:36 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
 /*
-** FUNCION: ft_putendl_fd
+** FUNCION: ft_strdup
 ** -----------------
-** Escribe la cadena s en el descriptor de archivo fd, seguida de un salto
-** de línea.
+** Duplica la cadena s y devuelve un puntero a la nueva cadena.
 **
 ** PARAMETROS:
-** - char *s: La cadena a escribir.
-** - int fd: El descriptor de archivo donde se escribirá la cadena.
+** - const char *s: La cadena a duplicar.
 **
 ** RETORNO:
-** - Ninguno.
+** - Un puntero a la nueva cadena duplicada.
+** - NULL si la reserva de memoria falla.
 **
 */
-
-void	ft_putendl_fd(char *s, int fd)
+char	*ft_strdup(const char *s)
 {
-	if (s == NULL)
-		return ;
-	ft_putstr_fd(s, fd);
-	ft_putchar_fd('\n', fd);
+	size_t	len;
+	char	*dup;
+
+	len = ft_strlen(s);
+	dup = malloc(sizeof(char) * (len + 1));
+	if (!dup)
+		return (0);
+	ft_strlcpy(dup, s, len + 1);
+	return (dup);
 }

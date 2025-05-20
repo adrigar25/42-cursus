@@ -1,36 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
+/*   ft_bzero.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/18 16:12:07 by agarcia           #+#    #+#             */
-/*   Updated: 2025/05/18 19:20:59 by agarcia          ###   ########.fr       */
+/*   Created: 2025/04/09 12:02:26 by agarcia           #+#    #+#             */
+/*   Updated: 2025/04/23 17:36:32 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
 /*
-** FUNCION: ft_putendl_fd
+** FUNCIÓN: ft_bzero
 ** -----------------
-** Escribe la cadena s en el descriptor de archivo fd, seguida de un salto
-** de línea.
+** Establece los primeros n bytes de la memoria apuntada por s a cero.
 **
-** PARAMETROS:
-** - char *s: La cadena a escribir.
-** - int fd: El descriptor de archivo donde se escribirá la cadena.
+** PARÁMETROS:
+** - void *s: Puntero a la memoria que se va a establecer en cero.
+** - size_t n: Número de bytes a establecer en cero.
 **
 ** RETORNO:
-** - Ninguno.
+** - Devuelve un puntero a la memoria original apuntada por s.
 **
 */
 
-void	ft_putendl_fd(char *s, int fd)
+#include "libft.h"
+
+void	*ft_bzero(void *s, size_t n)
 {
-	if (s == NULL)
-		return ;
-	ft_putstr_fd(s, fd);
-	ft_putchar_fd('\n', fd);
+	unsigned char	*ptr;
+
+	ptr = (unsigned char *)s;
+	while (n--)
+	{
+		*ptr = '\0';
+		ptr++;
+	}
+	return (s);
 }
