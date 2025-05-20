@@ -1,48 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/20 00:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/05/20 19:02:52 by agarcia          ###   ########.fr       */
+/*   Created: 2025/04/18 16:09:15 by agarcia           #+#    #+#             */
+/*   Updated: 2025/04/23 17:53:12 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "libft.h"
 
-size_t	ft_strlen(const char *str)
+/*
+** FUNCION: ft_putstr_fd
+** -----------------
+** Escribe la cadena s en el descriptor de archivo fd.
+**
+** PARAMETROS:
+** - char *s: La cadena a escribir.
+** - int fd: El descriptor de archivo donde se escribirá la cadena.
+**
+** RETORNO:
+** - Ninguno.
+**
+*/
+
+void	ft_putstr_fd(char *s, int fd)
 {
-	size_t	len;
-
-	len = 0;
-	while (str[len])
-		len++;
-	return (len);
-}
-char	*gnl_strjoin(char *s1, char c)
-{
-	size_t	len;
-	char	*res;
-	size_t	i;
-
-	len = 0;
-	i = 0;
-	while (s1 && s1[len])
-		len++;
-	res = malloc(len + 2);
-	if (!res)
-		return (NULL);
-	while (i < len)
+	if (s == NULL)
+		return ;
+	while (*s)
 	{
-		res[i] = s1[i];
-		i++;
+		ft_putchar_fd(*s, fd);
+		s++;
 	}
-	res[i++] = c;
-	res[i] = '\0';
-	if (s1)
-		free(s1);
-	return (res);
 }
-

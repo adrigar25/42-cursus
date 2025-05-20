@@ -1,48 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   ft_lstadd_front_bonus.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/20 00:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/05/20 19:02:52 by agarcia          ###   ########.fr       */
+/*   Created: 2025/04/18 18:22:26 by agarcia           #+#    #+#             */
+/*   Updated: 2025/04/23 17:42:46 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "libft.h"
 
-size_t	ft_strlen(const char *str)
+/*
+** FUNCION: ft_lstadd_front
+** -----------------
+** Añade un nuevo elemento al principio de la lista enlazada.
+**
+** PARAMETROS:
+** - t_list **lst: Doble puntero a la lista enlazada.
+** - t_list *new: Puntero al nuevo elemento a añadir.
+**
+** RETORNO:
+** - Ninguno.
+**
+*/
+
+void	ft_lstadd_front(t_list **lst, t_list *new)
 {
-	size_t	len;
-
-	len = 0;
-	while (str[len])
-		len++;
-	return (len);
-}
-char	*gnl_strjoin(char *s1, char c)
-{
-	size_t	len;
-	char	*res;
-	size_t	i;
-
-	len = 0;
-	i = 0;
-	while (s1 && s1[len])
-		len++;
-	res = malloc(len + 2);
-	if (!res)
-		return (NULL);
-	while (i < len)
+	if (lst && new)
 	{
-		res[i] = s1[i];
-		i++;
+		new->next = *lst;
+		*lst = new;
 	}
-	res[i++] = c;
-	res[i] = '\0';
-	if (s1)
-		free(s1);
-	return (res);
 }
-

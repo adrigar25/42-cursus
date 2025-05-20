@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/20 00:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/05/20 19:02:52 by agarcia          ###   ########.fr       */
+/*   Created: 2025/04/26 16:09:44 by agarcia           #+#    #+#             */
+/*   Updated: 2025/05/12 18:08:34 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,28 +21,60 @@ size_t	ft_strlen(const char *str)
 		len++;
 	return (len);
 }
-char	*gnl_strjoin(char *s1, char c)
+
+char	*ft_strdup(const char *s)
 {
-	size_t	len;
-	char	*res;
+	char	*dup;
 	size_t	i;
 
-	len = 0;
-	i = 0;
-	while (s1 && s1[len])
-		len++;
-	res = malloc(len + 2);
-	if (!res)
+	if (!s)
 		return (NULL);
-	while (i < len)
+	dup = malloc(ft_strlen(s) + 1);
+	if (!dup)
+		return (NULL);
+	i = 0;
+	while (s[i])
 	{
-		res[i] = s1[i];
+		dup[i] = s[i];
 		i++;
 	}
-	res[i++] = c;
-	res[i] = '\0';
-	if (s1)
-		free(s1);
-	return (res);
+	dup[i] = '\0';
+	return (dup);
 }
 
+char	*ft_strjoin(char *s1, char *s2)
+{
+	char	*new_str;
+	size_t	i;
+	size_t	j;
+
+	if (!s1)
+		s1 = ft_strdup("");
+	if (!s2)
+		return (NULL);
+	new_str = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
+	if (!new_str)
+		return (NULL);
+	i = 0;
+	while (s1[i])
+	{
+		new_str[i] = s1[i];
+		i++;
+	}
+	j = 0;
+	while (s2[j])
+		new_str[i++] = s2[j++];
+	new_str[i] = '\0';
+	return (new_str);
+}
+
+char	*ft_strchr(const char *s, int c)
+{
+	while (*s)
+	{
+		if (*s == (char)c)
+			return ((char *)s);
+		s++;
+	}
+	return (NULL);
+}
