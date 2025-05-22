@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 00:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/05/20 19:02:52 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/05/22 17:09:34 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,3 @@ char	*gnl_strjoin(char *s1, char c)
 		free(s1);
 	return (res);
 }
-

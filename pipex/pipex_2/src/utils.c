@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 22:01:39 by agarcia           #+#    #+#             */
-/*   Updated: 2025/05/20 00:02:43 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/05/21 18:37:12 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,51 @@ char	*get_cmd_path(char *cmd, char **env)
 	return (path);
 }
 
+char	*strip_quotes(const char *str)
+{
+	size_t	len;
+
+	len = ft_strlen(str);
+	if (len >= 2 && ((str[0] == '\'' && str[len - 1] == '\'') || (str[0] == '"'
+				&& str[len - 1] == '"')))
+		return (ft_substr(str, 1, len - 2));
+	return (ft_strdup(str));
+}
+
+// Función auxiliar para reemplazar \" por " y \' por '
+char	*unescape_quotes(const char *str)
+{
+    size_t	len = ft_strlen(str);
+    char	*res = malloc(len + 1);
+    size_t	i = 0, j = 0;
+
+    if (!res)
+        return (NULL);
+    while (str[i])
+    {
+        if (str[i] == '\\' && (str[i + 1] == '"' || str[i + 1] == '\''))
+            res[j++] = str[++i];
+        else
+            res[j++] = str[i];
+        i++;
+    }
+    res[j] = '\0';
+    return (res);
+}
+
 char	**cmd_parse(char *str)
 {
-    int		i = 0, j = 0, argc = 0, k;
+    int		i = 0;
+    int		j = 0;
+    int		k = 0;
+    int		opt_count = 0;
+    int		arg_count = 0;
+    int		opt_i = 0;
+    int		argc = 0;
+    int		start = 0;
+    int		end = 0;
     char	*cmd = NULL;
     char	**result = NULL;
-
     // Saltar espacios iniciales
     while (str[i] == ' ')
         i++;
@@ -74,7 +113,7 @@ char	**cmd_parse(char *str)
     while (str[i] == ' ')
         i++;
     // Guardar opciones (todas seguidas que empiecen por '-')
-    int opt_count = 0, opt_i = i;
+    opt_count = 0, opt_i = i;
     while (str[i] == '-' && str[i + 1] && str[i] != '\0')
     {
         j = 0;
@@ -86,13 +125,13 @@ char	**cmd_parse(char *str)
             i++;
     }
     // Contar argumentos
-    int arg_count = 0;
+    arg_count = 0;
     while (str[i])
     {
         while (str[i] == ' ')
             i++;
         if (!str[i])
-            break;
+            break ;
         arg_count++;
         while (str[i] && str[i] != ' ')
             i++;
@@ -105,7 +144,8 @@ char	**cmd_parse(char *str)
     result[argc++] = cmd;
     // Guardar opciones
     i = opt_i;
-    for (k = 0; k < opt_count; k++)
+    k = 0;
+    while (k < opt_count)
     {
         while (str[i] == ' ')
             i++;
@@ -119,18 +159,36 @@ char	**cmd_parse(char *str)
         result[argc][j] = '\0';
         argc++;
         i += j;
+        k++;
     }
-    // Guardar argumentos (todo el resto como un solo argumento)
     while (str[i] == ' ')
         i++;
     if (str[i])
     {
-        result[argc] = ft_strdup(str + i);
+        start = i;
+        end = ft_strlen(str) - 1;
+        // Quitar comillas externas si existen y NO están escapadas
+        if ((str[start] == '\'' && str[end] == '\'') ||
+            (str[start] == '"' && str[end] == '"' && (end == 0 || str[end-1] != '\\')))
+        {
+            start++;
+            end--;
+        }
+        result[argc] = ft_substr(str, start, end - start + 1);
         if (!result[argc])
             return (NULL);
         argc++;
     }
     result[argc] = NULL;
+
+    // Reemplazar \" por " y \' por ' en cada argumento
+    for (int x = 0; result[x]; x++)
+    {
+        char *tmp = unescape_quotes(result[x]);
+        free(result[x]);
+        result[x] = tmp;
+    }
+
     return (result);
 }
 
@@ -144,10 +202,8 @@ int	ft_open_file(const char *filename, int in_or_out)
 		fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1)
 	{
-		if (in_or_out == 0)
-			perror("pipex: input");
-		else
-			perror("pipex: output");
+		write(2, "pipex: ", 7);
+		perror(filename);
 		exit(EXIT_FAILURE);
 	}
 	return (fd);

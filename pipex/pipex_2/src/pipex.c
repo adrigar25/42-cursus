@@ -6,21 +6,25 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 22:32:05 by agarcia           #+#    #+#             */
-/*   Updated: 2025/05/19 22:36:50 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/05/21 18:39:53 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft/libft.h"
 #include "pipex.h"
+#include <sys/wait.h>
 
 void	run_cmd(char *cmd, int fd_in, int fd_out, char **envp)
 {
-	char	**args;
-	char	*path;
+    char	**args;
+    char	*path;
 
-	args = cmd_parse(cmd);
-	for (int i = 0; args[i]; i++)
-		printf("args[%d]: %s\n", i, args[i]);
+    printf("cmd recibido: %s\n", cmd); // DEBUG
+    args = cmd_parse(cmd);
+    for (int i = 0; args[i] != NULL; i++)
+    {
+        printf("args[%d]: %s\n", i, args[i]);
+    }
 	if (!args || !args[0])
 		exit(127);
 	if (ft_strchr(args[0], '/'))
@@ -31,7 +35,7 @@ void	run_cmd(char *cmd, int fd_in, int fd_out, char **envp)
 	ft_redir_in_out(fd_out, 1);
 	if (!path || execve(path, args, envp) == -1)
 	{
-		ft_putstr_fd("pipex: command not found: ", 2);
+		ft_putstr_fd("pipex: command not found\n", 2);
 		ft_putendl_fd(args[0], 2);
 		exit(127);
 	}
@@ -41,6 +45,7 @@ int	main(int argn, char **argv, char **envp)
 {
 	int		pipefds[2];
 	pid_t	pid;
+	int		status;
 
 	if (argn < 5)
 		return (write(2, "Usage: ./pipex infile cmd1 cmd2 outfile\n", 40), 1);
@@ -57,5 +62,10 @@ int	main(int argn, char **argv, char **envp)
 	}
 	close(pipefds[1]);
 	run_cmd(argv[3], pipefds[0], ft_open_file(argv[4], 1), envp);
+	waitpid(pid, &status, 0);
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
+	else if (WIFSIGNALED(status))
+		return (128 + WTERMSIG(status));
 	return (1);
 }
