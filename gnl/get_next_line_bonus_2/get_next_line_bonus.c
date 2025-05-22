@@ -6,11 +6,11 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 16:09:47 by agarcia           #+#    #+#             */
-/*   Updated: 2025/05/12 18:26:40 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/05/22 17:59:42 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 static char	*ft_extract_line(char **reminder)
 {
