@@ -6,16 +6,14 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 18:48:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/05/20 19:01:12 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/05/22 16:24:55 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf_bonus.h"
 
-int	ft_puthex(unsigned long long n, int upper)
+int	ft_puthex(unsigned long long n, int upper, t_flags flags)
 {
-	char	*base;
-	int		count;
 	char	*base;
 	int		count;
 

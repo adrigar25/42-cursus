@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 11:51:51 by agarcia           #+#    #+#             */
-/*   Updated: 2025/05/10 01:17:47 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/05/22 16:25:48 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int		ft_printf(char const *format, ...);
 int		ft_putchar(char c);
 int		ft_putstr(char *str);
 int		ft_putnbr(int n, t_flags flags);
-int		ft_putunbr(unsigned int n);
+int		ft_putunbr(unsigned int n, t_flags flags);
 int		ft_puthex(unsigned long long n, int upper, t_flags flags);
 int		ft_putptr(void *ptr);
 
