@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 18:18:18 by agarcia           #+#    #+#             */
-/*   Updated: 2025/05/22 17:05:04 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/05/29 18:12:10 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,20 +57,16 @@ int	ft_printf(const char *format, ...)
 
 	count = 0;
 	va_start(args, format);
-	while (*format)
+	while ((*format))
 	{
 		if (*format == '%' && *(format + 1))
 		{
 			format++;
-			flags = (t_flags){0, 0, 0};
-			flags = handle_flags(&format, flags);
-			// printf("format: %c\n", *format);
+			flags = handle_flags(&format, (t_flags){0, 0, 0});
 			if (*format >= '0' && *format <= '9')
-			{
-				while (*format >= '0' && *format <= '9')
-					format++;
 				count += write(1, " ", 1);
-			}
+			while (*format >= '0' && *format <= '9')
+				format++;
 			count += handle_format(*format, &args, flags);
 		}
 		else
