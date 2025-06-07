@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 18:48:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/06/05 11:55:19 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/06/07 16:27:33 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,9 @@
 int	ft_puthex(unsigned long long n, int upper)
 {
 	char	*base;
-	int		count = 0;
+	int		count;
 
+	count = 0;
 	if (upper)
 		base = "0123456789ABCDEF";
 	else

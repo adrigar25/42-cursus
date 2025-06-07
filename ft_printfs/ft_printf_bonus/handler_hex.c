@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 18:48:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/06/05 12:00:25 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/06/07 16:27:28 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,19 @@
 
 int	handler_hex(unsigned long long n, int upper, t_flags flags)
 {
-    int	count;
+	int	count;
 
-    count = 0;
-    if (flags.plus)
-        flags.plus = 0;
-    if (flags.hash && n != 0)
-    {
-        if (upper)
-            count += ft_putstr("0X");
-        else
-            count += ft_putstr("0x");
-        flags.hash = 0;
-    }
-    count += ft_puthex(n, upper);
-    return (count);
+	count = 0;
+	if (flags.plus)
+		flags.plus = 0;
+	if (flags.hash && n != 0)
+	{
+		if (upper)
+			count += ft_putstr("0X");
+		else
+			count += ft_putstr("0x");
+		flags.hash = 0;
+	}
+	count += ft_puthex(n, upper);
+	return (count);
 }

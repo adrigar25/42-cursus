@@ -6,13 +6,14 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 18:18:18 by agarcia           #+#    #+#             */
-/*   Updated: 2025/04/30 16:50:23 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/06/07 16:15:45 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+#include <stdio.h>
 
-int	handle_format(char format, va_list *args)
+int	handle_format(char format, va_list *args, t_flags flags)
 {
 	if (format == 'c')
 		return (ft_putchar(va_arg(*args, int)));
@@ -21,27 +22,51 @@ int	handle_format(char format, va_list *args)
 	if (format == '%')
 		return (ft_putchar('%'));
 	if (format == 'd' || format == 'i')
-		return (ft_putnbr(va_arg(*args, int)));
+		return (handler_nbr(va_arg(*args, int), flags));
 	if (format == 'u')
 		return (ft_putunbr(va_arg(*args, unsigned int)));
 	if (format == 'p')
 		return (ft_putptr(va_arg(*args, void *)));
 	if (format == 'x' || format == 'X')
-		return (ft_puthex(va_arg(*args, unsigned int), format == 'X'));
+		return (handler_hex(va_arg(*args, unsigned int), format == 'X', flags));
 	return (0);
+}
+
+t_flags	handle_flags(const char **format, t_flags flags)
+{
+	while (**format == ' ' || **format == '+' || **format == '#')
+	{
+		if (**format == ' ')
+			flags.space = 1;
+		if (**format == '+')
+			flags.plus = 1;
+		if (**format == '#')
+			flags.hash = 1;
+		(*format)++;
+	}
+	return (flags);
 }
 
 int	ft_printf(const char *format, ...)
 {
+	t_flags	flags;
 	va_list	args;
 	int		count;
 
 	count = 0;
 	va_start(args, format);
-	while (*format)
+	while ((*format))
 	{
-		if (*format == '%' && *(++format))
-			count += handle_format(*format, &args);
+		if (*format == '%' && *(format + 1))
+		{
+			format++;
+			flags = handle_flags(&format, (t_flags){0, 0, 0});
+			if (*format >= '0' && *format <= '9')
+				count += write(1, " ", 1);
+			while (*format >= '0' && *format <= '9')
+				format++;
+			count += handle_format(*format, &args, flags);
+		}
 		else
 			count += ft_putchar(*format);
 		format++;
