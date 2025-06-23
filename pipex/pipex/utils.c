@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 22:01:39 by agarcia           #+#    #+#             */
-/*   Updated: 2025/06/07 19:01:30 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/06/20 16:21:02 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,6 @@ char	*get_cmd_path(char *cmd, char **env)
 	char	*path;
 	char	**paths;
 
-	// printf("get_cmd_path: cmd = %s\n", cmd);
-	// printf("get_cmd_path: env[0] = %s\n", env[0]);
-	// printf("get_cmd_path: PATH = %s\n", my_getenv(env, "PATH"));
 	if (!env || !my_getenv(env, "PATH"))
 		return (NULL);
 	paths = ft_split(my_getenv(env, "PATH"), ':');
@@ -93,124 +90,6 @@ char	*unescape_quotes(const char *str)
 	return (res);
 }
 
-char	**cmd_parse(char *str)
-{
-	int		i;
-	int		j;
-	int		k;
-	int		opt_count;
-	int		arg_count;
-	int		opt_i;
-	int		argc;
-	int		start;
-	int		end;
-	char	*cmd;
-	char	**result;
-	char	*tmp;
-
-	i = 0;
-	j = 0;
-	k = 0;
-	opt_count = 0;
-	arg_count = 0;
-	opt_i = 0;
-	argc = 0;
-	start = 0;
-	end = 0;
-	cmd = NULL;
-	result = NULL;
-	while (str[i] == ' ')
-		i++;
-	j = 0;
-	while (str[i + j] && str[i + j] != ' ')
-		j++;
-	cmd = malloc(j + 1);
-	if (!cmd)
-		return (NULL);
-	ft_memcpy(cmd, str + i, j);
-	cmd[j] = '\0';
-	i += j;
-	// Saltar espacios después del comando
-	while (str[i] == ' ')
-		i++;
-	// Guardar opciones (todas seguidas que empiecen por '-')
-	opt_count = 0, opt_i = i;
-	while (str[i] == '-' && str[i + 1] && str[i] != '\0')
-	{
-		j = 0;
-		while (str[i + j] && str[i + j] != ' ')
-			j++;
-		opt_count++;
-		i += j;
-		while (str[i] == ' ')
-			i++;
-	}
-	// Contar argumentos
-	arg_count = 0;
-	while (str[i])
-	{
-		while (str[i] == ' ')
-			i++;
-		if (!str[i])
-			break ;
-		arg_count++;
-		while (str[i] && str[i] != ' ')
-			i++;
-	}
-	// Reservar espacio para el array final
-	result = malloc((1 + opt_count + arg_count + 1) * sizeof(char *));
-	if (!result)
-		return (NULL);
-	argc = 0;
-	result[argc++] = cmd;
-	// Guardar opciones
-	i = opt_i;
-	k = 0;
-	while (k < opt_count)
-	{
-		while (str[i] == ' ')
-			i++;
-		j = 0;
-		while (str[i + j] && str[i + j] != ' ')
-			j++;
-		result[argc] = malloc(j + 1);
-		if (!result[argc])
-			return (NULL);
-		ft_memcpy(result[argc], str + i, j);
-		result[argc][j] = '\0';
-		argc++;
-		i += j;
-		k++;
-	}
-	while (str[i] == ' ')
-		i++;
-	if (str[i])
-	{
-		start = i;
-		end = ft_strlen(str) - 1;
-		// Quitar comillas externas si existen y NO están escapadas
-		if ((str[start] == '\'' && str[end] == '\'') || (str[start] == '"'
-				&& str[end] == '"' && (end == 0 || str[end - 1] != '\\')))
-		{
-			start++;
-			end--;
-		}
-		result[argc] = ft_substr(str, start, end - start + 1);
-		if (!result[argc])
-			return (NULL);
-		argc++;
-	}
-	result[argc] = NULL;
-	// Reemplazar \" por " y \' por ' en cada argumento
-	for (int x = 0; result[x]; x++)
-	{
-		tmp = unescape_quotes(result[x]);
-		free(result[x]);
-		result[x] = tmp;
-	}
-	return (result);
-}
-
 int	ft_open_file(const char *filename, int in_or_out)
 {
 	int	fd;
@@ -238,4 +117,92 @@ void	ft_redir_in_out(int fd, int in_or_out)
 		status = dup2(fd, STDIN_FILENO);
 	if (status == -1)
 		exit(EXIT_FAILURE);
+}
+
+int	skip_to_quote(const char *str, int i, char quote)
+{
+    while (str[i] && str[i] != quote)
+    {
+        if (quote == '"' && str[i] == '\\' && str[i + 1])
+            i += 2;
+        else
+            i++;
+    }
+    return (i);
+}
+
+int	count_args(char *str)
+{
+	int		i;
+	int		count;
+	char	quote;
+
+	i = 0;
+	count = 0;
+	while (str[i])
+	{
+		while (str[i] == ' ')
+			i++;
+		if (str[i] == '\'' || str[i] == '"')
+		{
+			quote = str[i++];
+			i = skip_to_quote(str, i, quote);
+			if (str[i])
+				i++;
+		}
+		else
+			while (str[i] && str[i] != ' ')
+				i++;
+		count++;
+	}
+	return (count);
+}
+
+char	**cmd_parse(char *str)
+{
+	int		count;
+	int		i;
+	int		j;
+	int		argc;
+	char	**result;
+	char	*tmp;
+	char	quote;
+	char	*unesc;
+
+	count = count_args(str);
+	result = malloc((count + 1) * sizeof(char *));
+	if (!result)
+		return (NULL);
+	i = 0;
+	argc = 0;
+	while (argc < count)
+	{
+		while (str[i] == ' ')
+			i++;
+		j = i;
+		if (str[i] == '\'' || str[i] == '"')
+		{
+			quote = str[i++];
+			j = i;
+			i = skip_to_quote(str, i, quote);
+			tmp = ft_substr(str, j, i - j);
+			if (quote == '"')
+			{
+				unesc = unescape_quotes(tmp);
+				free(tmp);
+				tmp = unesc;
+			}
+			result[argc++] = tmp;
+			if (str[i])
+				i++;
+		}
+		else
+		{
+			while (str[i] && str[i] != ' ')
+				i++;
+			result[argc++] = ft_substr(str, j, i - j);
+		}
+	}
+	result[argc] = NULL;
+	return (result);
 }

@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:09:15 by agarcia           #+#    #+#             */
-/*   Updated: 2025/04/23 17:53:12 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/06/23 16:32:46 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 **
 */
 
-void	ft_putstr_fd(char *s, int fd)
+void	ft_putstr_fd(const char *s, int fd)
 {
 	if (s == NULL)
 		return ;
