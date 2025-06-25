@@ -1,25 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   error_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/25 18:24:46 by agarcia           #+#    #+#             */
-/*   Updated: 2025/06/25 19:18:07 by agarcia          ###   ########.fr       */
+/*   Created: 2025/06/25 18:24:31 by agarcia           #+#    #+#             */
+/*   Updated: 2025/06/25 20:05:34 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./libs/ft_printf/ft_printf.h"
-#include "./so_long.h"
+#include "../../libs/ft_printf/ft_printf.h"
 
-int	main(int argc, char **argv)
+int	handle_error(int error_code)
 {
-	if (argc != 2)
-	{
-		ft_printf("Usage: ./so_long   map.ber\n");
-		return (1);
-	}
-	start_game(argv[1]);
+	const char	*msg;
+
+	if (error_code == 1)
+		msg = "Archivo de mapa no encontrado";
+	else if (error_code == 2)
+		msg = "Mapa inválido";
+	else if (error_code == 3)
+		msg = "Error de memoria";
+	else if (error_code == 4)
+		msg = "Error al inicializar gráficos";
+	else
+		msg = "Error desconocido";
+	ft_printf("Error: %s\n", msg);
 	return (0);
 }

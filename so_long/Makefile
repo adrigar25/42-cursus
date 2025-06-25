@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2025/06/25 18:24:52 by agarcia           #+#    #+#              #
+#    Updated: 2025/06/25 18:24:53 by agarcia          ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 # Ejecutable
 NAME = so_long
 
@@ -14,7 +26,14 @@ MLX_LIB = $(MLX_DIR)/libmlx.a
 LIBFT_LIB = $(LIBFT_DIR)/libft.a
 
 # Fuentes propias
-SRCS = main.c utils.c game.c map_utils.c error_utils.c
+SRCS = 	main.c \
+		./utils/game/game_utils.c \
+		./utils/player/player_utils.c \
+		./utils/map/map_utils.c \
+		./utils/error/error_utils.c \
+		./utils/mlx/mlx_utils.c \
+		./utils/input/input_utils.c \
+
 OBJS = $(SRCS:.c=.o)
 
 # Compilador
@@ -54,8 +73,9 @@ clean:
 	rm -f $(OBJS)
 
 fclean: clean
-	make fclean -C $(GNL_DIR)
-	make fclean -C $(PRINTF_DIR)
+	make clean -C $(MLX_DIR)
+	make clean -C $(GNL_DIR)
+	make clean -C $(PRINTF_DIR)
 	rm -f $(NAME)
 
 re: fclean all
