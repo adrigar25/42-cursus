@@ -2,10 +2,10 @@
 NAME = so_long
 
 # Directorios de librerías
-GNL_DIR = gnl
-PRINTF_DIR = ft_printf
-MLX_DIR = mlx
-LIBFT_DIR = libft
+GNL_DIR = ./libs/gnl
+PRINTF_DIR = ./libs/ft_printf
+MLX_DIR = ./libs/mlx
+LIBFT_DIR = ./libs/libft
 
 # Libs
 GNL_LIB = $(GNL_DIR)/libgnl.a
@@ -14,7 +14,7 @@ MLX_LIB = $(MLX_DIR)/libmlx.a
 LIBFT_LIB = $(LIBFT_DIR)/libft.a
 
 # Fuentes propias
-SRCS = main.c utils.c game.c map_utils.c
+SRCS = main.c utils.c game.c map_utils.c error_utils.c
 OBJS = $(SRCS:.c=.o)
 
 # Compilador

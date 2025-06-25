@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 16:09:49 by agarcia           #+#    #+#             */
-/*   Updated: 2025/06/23 19:02:01 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/06/24 21:23:55 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 #  define BUFFER_SIZE 42
 # endif
 
-#include "../libft/libft.h"
+# include "../libft/libft.h"
 
 char	*get_next_line(int fd);
 
