@@ -6,46 +6,68 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 02:18:17 by agarcia           #+#    #+#             */
-/*   Updated: 2025/06/26 03:28:01 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/06/27 00:08:43 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../so_long.h"
 
-int	check_map_file(char *map_file)
+char	**ft_strdup_matrix(char **matrix)
 {
-	if (!ft_strnstr(&map_file[ft_strlen(map_file) - 4], ".ber", 4))
-	{
-		ft_printf("Error: the file must have a .ber extension\n");
-		return (0);
-	}
-	return (1);
-}
-
-int	check_if_playable(t_env *env)
-{
-	char	**visited;
+	char	**dup;
 	int		i;
+	int		j;
 
-	visited = malloc(sizeof(int *) * get_map_height(env->map));
-	if (!visited)
-		return (handle_error(3));
+	if (!matrix)
+		return (NULL);
+	i = 0;
+	while (matrix[i])
+		i++;
+	dup = malloc(sizeof(char *) * (i + 1));
+	if (!dup)
+		return (NULL);
 	i = -1;
-	while (env->map[++i])
+	while (matrix[++i])
 	{
-		visited[i] = ft_calloc(ft_strlen(env->map[0]), sizeof(char));
-		if (!visited[i])
+		dup[i] = ft_strdup(matrix[i]);
+		if (!dup[i])
 		{
-			free_map(visited);
-			return (handle_error(3));
+			j = -1;
+			while (++j < i)
+				free(dup[j]);
+			return (free(dup), NULL);
 		}
 	}
-	if (!find_exit(env->map, env->player_x, env->player_y, visited))
+	return (dup[i] = NULL, dup);
+}
+
+int	check_if_playable(char **map, int x, int y)
+{
+	char	**aux;
+	int		r;
+
+	aux = ft_strdup_matrix(map);
+	if (!aux)
+		return (0);
+	r = 0;
+	if (aux[y][x] == '1' || aux[y][x] == 'V')
+		r = 0;
+	else if (aux[y][x] == 'E')
+		r = 1;
+	else
 	{
-		free_map(visited);
-		return (handle_error(2));
+		aux[y][x] = 'V';
+		if (aux[y][x + 1])
+			r = check_if_playable(aux, x + 1, y);
+		if (!r && x > 0)
+			r = check_if_playable(aux, x - 1, y);
+		if (!r && aux[y + 1])
+			r = check_if_playable(aux, x, y + 1);
+		if (!r && y > 0)
+			r = check_if_playable(aux, x, y - 1);
 	}
-	return (1);
+	free_map(aux);
+	return (r);
 }
 
 int	check_rectangular(char **map)
@@ -97,5 +119,5 @@ int	check_map(t_env *env)
 {
 	return (get_player_position(env) && count_collectibles(env)
 		&& check_rectangular(env->map) && check_wall(env->map)
-		&& check_if_playable(env));
+		&& check_if_playable(env->map, env->player_x, env->player_y));
 }

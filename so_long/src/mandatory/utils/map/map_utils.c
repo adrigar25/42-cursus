@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 20:36:48 by agarcia           #+#    #+#             */
-/*   Updated: 2025/06/26 02:45:13 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/06/27 00:14:17 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,15 +55,21 @@ int	get_map_height(char **map)
 
 int	count_map_lines(char *map_file)
 {
-	int	fd;
-	int	count;
+	int		fd;
+	int		count;
+	char	*line;
 
 	count = 0;
 	fd = open(map_file, O_RDONLY);
 	if (fd < 0)
 		return (-1);
-	while (get_next_line(fd))
+	line = get_next_line(fd);
+	while (line)
+	{
 		count++;
+		free(line);
+		line = get_next_line(fd);
+	}
 	close(fd);
 	return (count);
 }

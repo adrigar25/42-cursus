@@ -5,8 +5,20 @@
 #                                                     +:+ +:+         +:+      #
 #    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2025/06/26 22:04:21 by agarcia           #+#    #+#              #
+#    Updated: 2025/06/26 22:04:21 by agarcia          ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        #
+#                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/25 18:24:52 by agarcia           #+#    #+#              #
-#    Updated: 2025/06/26 11:06:28 by agarcia          ###   ########.fr        #
+#    Updated: 2025/06/26 21:55:42 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,10 +48,13 @@ SRCS = 	$(MANDATORY_DIR)/main.c \
 		$(MANDATORY_DIR)/utils/error/error_utils.c \
 		$(MANDATORY_DIR)/utils/mlx/mlx_utils.c \
 		$(MANDATORY_DIR)/utils/input/input_utils.c \
-		
+
 # Fuentes bonus
 BONUS_SRCS = 	$(BONUS_DIR)/main_bonus.c \
 				$(BONUS_DIR)/utils/game/game_utils_bonus.c \
+				$(BONUS_DIR)/utils/game/game_loop_bonus.c \
+				$(BONUS_DIR)/utils/game/game_close_bonus.c \
+				$(BONUS_DIR)/utils/game/game_start_bonus.c \
 				$(BONUS_DIR)/utils/player/player_utils_bonus.c \
 				$(BONUS_DIR)/utils/map/map_utils_bonus.c \
 				$(BONUS_DIR)/utils/map/map_checks_bonus.c \
@@ -47,6 +62,7 @@ BONUS_SRCS = 	$(BONUS_DIR)/main_bonus.c \
 				$(BONUS_DIR)/utils/mlx/mlx_utils_bonus.c \
 				$(BONUS_DIR)/utils/input/input_utils_bonus.c \
 				$(BONUS_DIR)/utils/enemy/enemy_utils_bonus.c \
+				$(BONUS_DIR)/utils/enemy/enemy_move_bonus.c \
 
 OBJS = $(SRCS:.c=.o)
 BONUS_OBJS = $(BONUS_SRCS:.c=.o)
@@ -67,7 +83,6 @@ $(NAME): $(OBJS)
 bonus: $(MLX_LIB) $(GNL_LIB) $(PRINTF_LIB) $(LIBFT_LIB) so_long_bonus
 
 so_long_bonus: $(BONUS_OBJS)
-	
 	$(CC) $(CFLAGS) $(BONUS_OBJS) $(GNL_LIB) $(PRINTF_LIB) $(LIBFT_LIB) $(MLX_FLAGS) -o $(NAME)
 
 # Compilar libs

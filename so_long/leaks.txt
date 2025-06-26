@@ -1,0 +1,25 @@
+Process:         so_long [27161]
+Path:            /Users/USER/Desktop/*/so_long
+Load Address:    0x1024b4000
+Identifier:      so_long
+Version:         0
+Code Type:       ARM64
+Platform:        macOS
+Parent Process:  leaks [27160]
+Target Type:     live task
+
+Date/Time:       2025-06-27 12:15:16.749 +0200
+Launch Time:     2025-06-27 12:15:12.219 +0200
+OS Version:      macOS 26.0 (25A5279m)
+Report Version:  7
+Analysis Tool:   /usr/bin/leaks
+
+Physical footprint:         188.5M
+Physical footprint (peak):  189.8M
+Idle exit:                  untracked
+----
+
+leaks Report Version: 4.0, multi-line stacks
+Process 27161: 45287 nodes malloced for 9744 KB
+Process 27161: 0 leaks for 0 total leaked bytes.
+

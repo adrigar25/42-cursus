@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 18:24:27 by agarcia           #+#    #+#             */
-/*   Updated: 2025/06/26 02:45:48 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/06/27 00:15:01 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	count_collectibles(t_env *env)
 	return (count);
 }
 
-void	finish_game(t_env *env)
+void	clear_images(t_env *env)
 {
 	if (env->img_floor)
 		mlx_destroy_image(env->mlx, env->img_floor);
@@ -55,13 +55,30 @@ void	finish_game(t_env *env)
 		mlx_destroy_image(env->mlx, env->img_player_down);
 	if (env->img_player_up)
 		mlx_destroy_image(env->mlx, env->img_player_up);
-	if (env->win)
+	if (env->img_player_jump)
+		mlx_destroy_image(env->mlx, env->img_player_jump);
+}
+
+void	finish_game(t_env *env)
+{
+	if (!env)
+		exit(1);
+	clear_images(env);
+	if (env->win && env->mlx)
+	{
+		mlx_clear_window(env->mlx, env->win);
 		mlx_destroy_window(env->mlx, env->win);
+	}
 	if (env->map)
 		free_map(env->map);
-	if (env->win)
-		mlx_destroy_window(env->mlx, env->win);
+	free(env);
 	exit(0);
+}
+
+int	close_program(t_env *env)
+{
+	finish_game(env);
+	return (0);
 }
 
 int	start_game(char *map_file)
@@ -72,7 +89,8 @@ int	start_game(char *map_file)
 	if (!env)
 		return (0);
 	env->map = open_map(map_file);
-	if (!env->map || !check_map(env))
+	if (!env->map || !check_map(env)
+		|| !ft_strnstr(&map_file[ft_strlen(map_file) - 4], ".ber", 4))
 	{
 		handle_error(2);
 		finish_game(env);
@@ -86,6 +104,7 @@ int	start_game(char *map_file)
 	init_images(env);
 	print_map(env);
 	mlx_hook(env->win, 2, 1L, key_handler, env);
+	mlx_hook(env->win, 17, 1L, close_program, env);
 	mlx_loop_hook(env->mlx, print_map, env);
 	mlx_loop(env->mlx);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 18:24:49 by agarcia           #+#    #+#             */
-/*   Updated: 2025/06/26 03:28:26 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/06/27 00:08:13 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,8 @@ char		**open_map(char *map_file);
 int			get_map_height(char **map);
 void		free_map(char **map);
 int			find_exit(char **map, int x, int y, char **visited);
-int			check_map_file(char *map_file);
 int			check_map(t_env *env);
-int			check_if_playable(t_env *env);
+int			check_if_playable(char **map, int x, int y);
 int			check_rectangular(char **map);
 int			check_min_size(char **map);
 int			check_wall(char **map);

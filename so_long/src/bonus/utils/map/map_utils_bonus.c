@@ -6,27 +6,11 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 20:36:48 by agarcia           #+#    #+#             */
-/*   Updated: 2025/06/26 10:41:05 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/06/26 22:19:35 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../so_long_bonus.h"
-
-int	find_exit(char **map, int x, int y, char **visited)
-{
-	if (x < 0 || y < 0 || !map[y][x])
-		return (0);
-	if (visited[y][x] || map[y][x] == '1')
-		return (0);
-	if (map[y][x] == 'E')
-		return (1);
-	visited[y][x] = '1';
-	if (find_exit(map, x + 1, y, visited) || find_exit(map, x - 1, y, visited)
-		|| find_exit(map, x, y + 1, visited) || find_exit(map, x, y - 1,
-			visited))
-		return (1);
-	return (0);
-}
 
 void	free_map(char **map)
 {
@@ -55,15 +39,21 @@ int	get_map_height(char **map)
 
 int	count_map_lines(char *map_file)
 {
-	int	fd;
-	int	count;
+	int		fd;
+	int		count;
+	char	*line;
 
 	count = 0;
 	fd = open(map_file, O_RDONLY);
 	if (fd < 0)
 		return (-1);
-	while (get_next_line(fd))
+	line = get_next_line(fd);
+	while (line)
+	{
 		count++;
+		free(line);
+		line = get_next_line(fd);
+	}
 	close(fd);
 	return (count);
 }
@@ -78,7 +68,7 @@ char	**open_map(char *map_file)
 
 	i = 0;
 	map = malloc(sizeof(char *) * (count_map_lines(map_file) + 1));
-	if (!map)
+	if (!map || !ft_strnstr(&map_file[ft_strlen(map_file) - 4], ".ber", 4))
 		return (NULL);
 	fd = open(map_file, O_RDONLY);
 	line = get_next_line(fd);
