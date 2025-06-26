@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 16:09:44 by agarcia           #+#    #+#             */
-/*   Updated: 2025/06/25 16:26:20 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/06/26 02:51:55 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,9 @@ char	*ft_strdup(const char *s)
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
-	char *new_str;
-	size_t i;
-	size_t j;
+	char	*new_str;
+	size_t	i;
+	size_t	j;
 
 	if (!s1)
 		s1 = ft_strdup("");
