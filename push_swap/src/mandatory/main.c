@@ -6,22 +6,11 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:48:10 by agarcia           #+#    #+#             */
-/*   Updated: 2025/07/17 00:30:01 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/07/17 23:22:06 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./push_swap.h"
-
-int	is_sorted(t_stack *stack)
-{
-	while (stack && stack->next)
-	{
-		if (stack->number > stack->next->number)
-			return (0);
-		stack = stack->next;
-	}
-	return (1);
-}
 
 int	is_number(const char *str)
 {
@@ -137,10 +126,10 @@ int	main(int argc, char **argv)
 	int_arr = parse_numbers(numbers, &size);
 	stack = fill_stack(int_arr, size);
 	// printf("antes: ");
-	// print_stack(stack);
+	print_stack(stack);
 	k_sort(&stack, size);
 	// printf("\ndespues: ");
-	// print_stack(stack);
+	print_stack(stack);
 	free_stack(stack);
 	free(int_arr);
 	return (0);
