@@ -6,21 +6,23 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 17:17:35 by agarcia           #+#    #+#             */
-/*   Updated: 2025/07/07 19:44:01 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/07/28 16:46:13 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../push_swap.h"
 
-t_stack	*fill_stack(int *numbers, int count)
+t_stack	*fill_stack(char **str_num, int size)
 {
 	t_stack	*stack;
 	t_stack	*new;
 	int		i;
+	int		*numbers;
 
+	numbers = parse_numbers(str_num, size);
 	stack = NULL;
 	i = 0;
-	while (i < count)
+	while (i < size)
 	{
 		new = malloc(sizeof(t_stack));
 		if (!new)
@@ -44,4 +46,39 @@ void	free_stack(t_stack *stack)
 		free(stack);
 		stack = tmp;
 	}
+}
+
+void	assign_index(t_stack *stack)
+{
+	t_stack	*tmp1;
+	t_stack	*tmp2;
+	int		index;
+
+	tmp1 = stack;
+	while (tmp1)
+	{
+		index = 0;
+		tmp2 = stack;
+		while (tmp2)
+		{
+			if (tmp1->number > tmp2->number)
+				index++;
+			tmp2 = tmp2->next;
+		}
+		tmp1->index = index;
+		tmp1 = tmp1->next;
+	}
+}
+
+int	stack_size(t_stack *stack)
+{
+	int	size;
+
+	size = 0;
+	while (stack)
+	{
+		size++;
+		stack = stack->next;
+	}
+	return (size);
 }

@@ -6,131 +6,75 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:48:10 by agarcia           #+#    #+#             */
-/*   Updated: 2025/07/17 23:22:06 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/07/28 16:59:32 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./push_swap.h"
 
-int	is_number(const char *str)
+void	sort(t_stack **a, int size)
 {
-	int		i;
-	long	num;
-	int		sign;
+	t_stack	*b;
+	int		chunk_size;
 
-	i = 0;
-	sign = 1;
-	num = 0;
-	if (!str || !*str)
-		return (0);
-	if (str[i] == '-' || str[i] == '+')
+	assign_index(*a);
+	b = NULL;
+	if (size == 2)
+		sort_2(a);
+	else if (size == 3)
+		sort_3(a);
+	else if (size == 4)
+		sort_4(a, &b);
+	else if (size == 5)
+		sort_5(a, &b);
+	else if (size > 5)
 	{
-		if (str[i] == '-')
-			sign = -1;
-		i++;
+		chunk_size = 15 + (size > 100) * 15;
+		push_chunk(a, &b, chunk_size);
+		push_back_to_a(a, &b);
 	}
-	if (!str[i])
-		return (0);
-	while (str[i])
-	{
-		if (str[i] < '0' || str[i] > '9')
-			return (0);
-		num = num * 10 + (str[i] - '0');
-		if ((sign == 1 && num > 2147483647) || (sign == -1 && num > 2147483648))
-			return (0);
-		i++;
-	}
-	return (1);
 }
 
-void	print_stack(t_stack *stack)
+char	**store_numbers(char **argv, int is_string)
 {
-	printf("\nstack:");
-	while (stack)
-	{
-		write(1, &((char[12]){0}), 0);
-		printf("%d%s", stack->number, (!stack->next
-				|| !stack->next->number) ? "" : ", ");
-		stack = stack->next;
-	}
-}
-int	valid_numbers(char **numbers)
-{
-	int	j;
-
-	j = 0;
-	if (!numbers || !*numbers)
-		return (0);
-	while (numbers[j])
-	{
-		if (!is_number(numbers[j]))
-			return (0);
-		j++;
-	}
-	return (1);
+	if (is_string)
+		return (ft_split(argv[1], ' '));
+	else
+		return (&argv[1]);
 }
 
-int	*parse_numbers(char **numbers, int *size)
+void	free_all(t_stack *stack, int *int_arr, char **str_num)
 {
-	int	*arr;
-	int	i;
-
-	i = 0;
-	while (numbers[i])
-		i++;
-	*size = i;
-	arr = malloc(sizeof(int) * i);
-	if (!arr)
-		return (NULL);
-	i = 0;
-	while (numbers[i])
-	{
-		arr[i] = ft_atoi(numbers[i]);
-		i++;
-	}
-	return (arr);
+	free_stack(stack);
+	free(int_arr);
+	free_split(str_num);
 }
 
 int	main(int argc, char **argv)
 {
 	t_stack	*stack;
-	char	**numbers;
+	char	**str_num;
 	int		*int_arr;
+	int		is_string;
 	int		size;
 
 	stack = NULL;
-	numbers = NULL;
+	str_num = NULL;
 	int_arr = NULL;
+	is_string = (argc == 2);
 	size = 0;
 	if (argc < 2)
+		return (write(2, "Error0\n", 7));
+	str_num = store_numbers(argv, is_string);
+	if (valid_numbers(str_num))
 	{
-		write(2, "Error0\n", 6);
-		return (1);
-	}
-	if (argc == 2)
-	{
-		numbers = ft_split(argv[1], ' ');
-		if (!numbers || !*numbers)
-		{
-			write(2, "Error1\n", 6);
-			return (1);
-		}
+		while (str_num[size])
+			size++;
+		stack = fill_stack(str_num, size);
+		sort(&stack, size);
 	}
 	else
-		numbers = &argv[1];
-	if (!valid_numbers(numbers))
-	{
-		write(2, "Error2\n", 6);
-		return (1);
-	}
-	int_arr = parse_numbers(numbers, &size);
-	stack = fill_stack(int_arr, size);
-	// printf("antes: ");
-	print_stack(stack);
-	k_sort(&stack, size);
-	// printf("\ndespues: ");
-	print_stack(stack);
-	free_stack(stack);
-	free(int_arr);
+		write(2, "Error1\n", 6);
+	free_all(stack, int_arr, str_num);
 	return (0);
 }

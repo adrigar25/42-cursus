@@ -1,26 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   swap.c                                             :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/28 16:46:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/07/01 10:59:14 by agarcia          ###   ########.fr       */
+/*   Created: 2025/07/26 17:57:06 by agarcia           #+#    #+#             */
+/*   Updated: 2025/07/28 16:44:27 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../push_swap.h"
-void	swap(t_stack **stack)
-{
-	t_stack	*first;
-	t_stack	*second;
+#include "../push_swap.h"
 
-	if (!stack || !*stack || !(*stack)->next)
-		return ;
-	first = *stack;
-	second = (*stack)->next;
-	first->next = second->next;
-	second->next = first;
-	*stack = second;
+void	free_split(char **split)
+{
+	int	i;
+
+	i = 0;
+	while (split[i])
+		free(split[i++]);
+	free(split);
+}
+
+int	*parse_numbers(char **numbers, int size)
+{
+	int	*arr;
+	int	i;
+
+	arr = malloc(sizeof(int) * size);
+	if (!arr)
+		return (NULL);
+	i = 0;
+	while (numbers[i])
+	{
+		arr[i] = ft_atoi(numbers[i]);
+		i++;
+	}
+	return (arr);
 }

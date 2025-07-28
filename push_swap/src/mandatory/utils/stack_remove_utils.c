@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 10:07:05 by agarcia           #+#    #+#             */
-/*   Updated: 2025/07/07 16:38:19 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/07/27 00:06:35 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ void	stack_remove_front(t_stack **stack)
 
 void	stack_remove_back(t_stack **stack)
 {
-	t_stack *tmp;
-	t_stack *prev;
+	t_stack	*tmp;
+	t_stack	*prev;
 
 	if (!stack || !*stack)
 		return ;
