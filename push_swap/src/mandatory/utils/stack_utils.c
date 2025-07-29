@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 17:17:35 by agarcia           #+#    #+#             */
-/*   Updated: 2025/07/29 17:30:02 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/07/29 17:50:20 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ int	stack_size(t_stack *stack)
 	}
 	return (size);
 }
+
 int	is_sorted(t_stack *stack)
 {
 	if (!stack)
