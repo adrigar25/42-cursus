@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 18:14:25 by agarcia           #+#    #+#             */
-/*   Updated: 2025/07/28 10:44:15 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/07/29 17:24:28 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,10 @@ int	valid_numbers(char **numbers)
 		while (j < i)
 		{
 			if (ft_atoi(numbers[i]) == ft_atoi(numbers[j]))
+			{
+				printf("Duplicado: %s\n", numbers[i]);
 				return (0);
+			}
 			j++;
 		}
 		i++;

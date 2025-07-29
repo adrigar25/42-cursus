@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:48:09 by agarcia           #+#    #+#             */
-/*   Updated: 2025/07/28 16:46:31 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/07/29 17:30:22 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void				assign_index(t_stack *stack);
 void				free_stack(t_stack *stack);
 void				print_stack(t_stack *stack);
 int					stack_size(t_stack *stack);
+int					is_sorted(t_stack *stack);
 
 // Algoritmos
 

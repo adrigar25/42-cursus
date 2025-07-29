@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:48:10 by agarcia           #+#    #+#             */
-/*   Updated: 2025/07/29 16:02:22 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/07/29 17:33:21 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ void	sort(t_stack **a, int size)
 	t_stack	*b;
 	int		chunk_size;
 
+	if (is_sorted(*a))
+		return ;
 	assign_index(*a);
 	b = NULL;
 	if (size == 2)
