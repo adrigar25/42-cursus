@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:48:10 by agarcia           #+#    #+#             */
-/*   Updated: 2025/07/28 16:59:32 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/07/29 16:02:22 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,29 +43,20 @@ char	**store_numbers(char **argv, int is_string)
 		return (&argv[1]);
 }
 
-void	free_all(t_stack *stack, int *int_arr, char **str_num)
-{
-	free_stack(stack);
-	free(int_arr);
-	free_split(str_num);
-}
-
 int	main(int argc, char **argv)
 {
 	t_stack	*stack;
 	char	**str_num;
-	int		*int_arr;
-	int		is_string;
 	int		size;
+	int		is_split;
 
 	stack = NULL;
 	str_num = NULL;
-	int_arr = NULL;
-	is_string = (argc == 2);
 	size = 0;
+	is_split = argc == 2;
 	if (argc < 2)
 		return (write(2, "Error0\n", 7));
-	str_num = store_numbers(argv, is_string);
+	str_num = store_numbers(argv, is_split);
 	if (valid_numbers(str_num))
 	{
 		while (str_num[size])
@@ -75,6 +66,8 @@ int	main(int argc, char **argv)
 	}
 	else
 		write(2, "Error1\n", 6);
-	free_all(stack, int_arr, str_num);
+	free_stack(stack);
+	if (str_num && is_split)
+		free_split(str_num);
 	return (0);
 }

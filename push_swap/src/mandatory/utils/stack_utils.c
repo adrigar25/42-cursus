@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 17:17:35 by agarcia           #+#    #+#             */
-/*   Updated: 2025/07/28 16:46:13 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/07/29 15:52:31 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ t_stack	*fill_stack(char **str_num, int size)
 		stack_add_back(&stack, new);
 		i++;
 	}
+	free(numbers);
 	return (stack);
 }
 
