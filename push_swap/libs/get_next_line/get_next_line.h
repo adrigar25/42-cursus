@@ -1,37 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push.c                                             :+:      :+:    :+:   */
+/*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/28 23:16:05 by agarcia           #+#    #+#             */
-/*   Updated: 2025/07/29 19:11:02 by agarcia          ###   ########.fr       */
+/*   Created: 2025/04/26 16:09:49 by agarcia           #+#    #+#             */
+/*   Updated: 2025/07/30 14:49:30 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../push_swap.h"
+#ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
 
-void	push(t_stack **dest, t_stack **src)
-{
-	t_stack	*tmp;
+# include "../libft/libft.h"
+# include <stdio.h>
+# include <stdlib.h>
+# include <unistd.h>
 
-	if (!src || !*src)
-		return ;
-	tmp = *src;
-	*src = (*src)->next;
-	tmp->next = NULL;
-	stack_add_front(dest, tmp);
-}
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 42
+# endif
 
-void	pa(t_stack **b, t_stack **a)
-{
-	push(a, b);
-	write(1, "pa\n", 3);
-}
+char	*get_next_line(int fd);
 
-void	pb(t_stack **a, t_stack **b)
-{
-	push(b, a);
-	write(1, "pb\n", 3);
-}
+#endif

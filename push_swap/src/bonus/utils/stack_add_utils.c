@@ -1,37 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push.c                                             :+:      :+:    :+:   */
+/*   stack_add_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/28 23:16:05 by agarcia           #+#    #+#             */
-/*   Updated: 2025/07/29 19:11:02 by agarcia          ###   ########.fr       */
+/*   Created: 2025/07/01 10:07:20 by agarcia           #+#    #+#             */
+/*   Updated: 2025/07/29 18:37:47 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../push_swap.h"
+#include "../push_swap_bonus.h"
 
-void	push(t_stack **dest, t_stack **src)
+void	stack_add_front(t_stack **stack, t_stack *new)
+{
+	if (!new)
+		return ;
+	new->next = *stack;
+	*stack = new;
+}
+
+void	stack_add_back(t_stack **stack, t_stack *new)
 {
 	t_stack	*tmp;
 
-	if (!src || !*src)
+	if (!*stack)
+	{
+		*stack = new;
 		return ;
-	tmp = *src;
-	*src = (*src)->next;
-	tmp->next = NULL;
-	stack_add_front(dest, tmp);
-}
-
-void	pa(t_stack **b, t_stack **a)
-{
-	push(a, b);
-	write(1, "pa\n", 3);
-}
-
-void	pb(t_stack **a, t_stack **b)
-{
-	push(b, a);
-	write(1, "pb\n", 3);
+	}
+	tmp = *stack;
+	while (tmp->next)
+		tmp = tmp->next;
+	tmp->next = new;
 }

@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/27 00:04:33 by agarcia           #+#    #+#             */
-/*   Updated: 2025/07/27 00:04:33 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/07/30 14:26:50 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,8 +96,12 @@ void	sort_5(t_stack **a, t_stack **b)
 		ra(a);
 	pb(a, b);
 	min_index = find_min_index(*a);
-	while (min_index-- > 0)
-		ra(a);
+	if (min_index <= 4 / 2)
+		while (min_index-- > 0)
+			ra(a);
+	else
+		while (min_index++ < 4)
+			rra(a);
 	pb(a, b);
 	sort_3(a);
 	pa(b, a);

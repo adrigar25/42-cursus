@@ -6,20 +6,22 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 17:57:06 by agarcia           #+#    #+#             */
-/*   Updated: 2025/07/29 15:59:20 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/07/30 16:56:51 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../push_swap.h"
 
-void	free_split(char **split)
+void	free_split(char **str)
 {
 	int	i;
 
+	if (!str)
+		return ;
 	i = 0;
-	while (split[i])
-		free(split[i++]);
-	free(split);
+	while (str[i])
+		free(str[i++]);
+	free(str);
 }
 
 int	*parse_numbers(char **numbers, int size)

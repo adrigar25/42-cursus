@@ -1,41 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   checker.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/28 15:48:10 by agarcia           #+#    #+#             */
-/*   Updated: 2025/07/30 16:57:02 by agarcia          ###   ########.fr       */
+/*   Created: 2025/06/28 15:48:09 by agarcia           #+#    #+#             */
+/*   Updated: 2025/07/30 18:36:55 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./push_swap.h"
-
-void	sort(t_stack **a, int size)
-{
-	t_stack	*b;
-	int		chunk_size;
-
-	if (is_sorted(*a))
-		return ;
-	assign_index(*a);
-	b = NULL;
-	if (size == 2)
-		sort_2(a);
-	else if (size == 3)
-		sort_3(a);
-	else if (size == 4)
-		sort_4(a, &b);
-	else if (size == 5)
-		sort_5(a, &b);
-	else if (size > 5)
-	{
-		chunk_size = 15 + (size > 100) * 15;
-		push_chunk(a, &b, chunk_size);
-		push_back_to_a(a, &b);
-	}
-}
+#include "./push_swap_bonus.h"
 
 char	**store_numbers(char **argv, int is_string)
 {
@@ -43,6 +18,14 @@ char	**store_numbers(char **argv, int is_string)
 		return (ft_split(argv[1], ' '));
 	else
 		return (&argv[1]);
+}
+
+void	print_result(int is_ok)
+{
+	if (is_ok)
+		write(1, "OK\n", 3);
+	else
+		write(1, "KO\n", 3);
 }
 
 int	main(int argc, char **argv)
@@ -53,21 +36,18 @@ int	main(int argc, char **argv)
 	int		is_split;
 
 	stack = NULL;
-	str_num = NULL;
 	size = 0;
 	is_split = argc == 2;
 	if (argc < 2)
-		return (write(2, "Error0\n", 7));
+		return (write(2, "Error\n", 7));
 	str_num = store_numbers(argv, is_split);
-	if (valid_numbers(str_num))
-	{
-		while (str_num[size])
-			size++;
-		stack = fill_stack(str_num, size);
-		sort(&stack, size);
-	}
-	else
-		write(2, "Error1\n", 6);
+	if (!valid_numbers(str_num))
+		return (write(2, "Error\n", 6));
+	while (str_num[size])
+		size++;
+	stack = fill_stack(str_num, size);
+	execute_ops(&stack);
+	print_result(is_sorted(stack) && stack_size(stack) == size);
 	free_stack(stack);
 	if (is_split)
 		free_split(str_num);

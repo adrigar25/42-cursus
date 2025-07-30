@@ -1,37 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push.c                                             :+:      :+:    :+:   */
+/*   swap.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/28 23:16:05 by agarcia           #+#    #+#             */
-/*   Updated: 2025/07/29 19:11:02 by agarcia          ###   ########.fr       */
+/*   Created: 2025/06/28 16:46:00 by agarcia           #+#    #+#             */
+/*   Updated: 2025/07/30 16:41:26 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../push_swap.h"
+#include "../push_swap_bonus.h"
 
-void	push(t_stack **dest, t_stack **src)
+void	swap(t_stack **stack)
 {
-	t_stack	*tmp;
+	t_stack	*first;
+	t_stack	*second;
 
-	if (!src || !*src)
+	if (!stack || !*stack || !(*stack)->next)
 		return ;
-	tmp = *src;
-	*src = (*src)->next;
-	tmp->next = NULL;
-	stack_add_front(dest, tmp);
+	first = *stack;
+	second = (*stack)->next;
+	first->next = second->next;
+	second->next = first;
+	*stack = second;
 }
 
-void	pa(t_stack **b, t_stack **a)
+void	sa(t_stack **a)
 {
-	push(a, b);
-	write(1, "pa\n", 3);
+	swap(a);
 }
 
-void	pb(t_stack **a, t_stack **b)
+void	sb(t_stack **b)
 {
-	push(b, a);
-	write(1, "pb\n", 3);
+	swap(b);
+}
+
+void	ss(t_stack **a, t_stack **b)
+{
+	swap(a);
+	swap(b);
 }

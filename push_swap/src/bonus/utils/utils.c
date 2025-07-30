@@ -1,37 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push.c                                             :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/28 23:16:05 by agarcia           #+#    #+#             */
-/*   Updated: 2025/07/29 19:11:02 by agarcia          ###   ########.fr       */
+/*   Created: 2025/07/26 17:57:06 by agarcia           #+#    #+#             */
+/*   Updated: 2025/07/30 16:56:30 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../push_swap.h"
+#include "../push_swap_bonus.h"
 
-void	push(t_stack **dest, t_stack **src)
+void	free_split(char **str)
 {
-	t_stack	*tmp;
+	int	i;
 
-	if (!src || !*src)
+	if (!str)
 		return ;
-	tmp = *src;
-	*src = (*src)->next;
-	tmp->next = NULL;
-	stack_add_front(dest, tmp);
+	i = 0;
+	while (str[i])
+		free(str[i++]);
+	free(str);
 }
 
-void	pa(t_stack **b, t_stack **a)
+int	*parse_numbers(char **numbers, int size)
 {
-	push(a, b);
-	write(1, "pa\n", 3);
-}
+	int	*arr;
+	int	i;
 
-void	pb(t_stack **a, t_stack **b)
-{
-	push(b, a);
-	write(1, "pb\n", 3);
+	arr = malloc(sizeof(int) * size);
+	if (!arr)
+		return (NULL);
+	i = 0;
+	while (numbers[i])
+	{
+		arr[i] = ft_atoi(numbers[i]);
+		i++;
+	}
+	return (arr);
 }

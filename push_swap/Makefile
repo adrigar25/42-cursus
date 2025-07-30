@@ -1,11 +1,15 @@
 NAME = push_swap
+BONUS = checker
 
 LIBFT_DIR = ./libs/libft
 LIBFT_LIB = $(LIBFT_DIR)/libft.a
 
-INCLUDES = -Iincludes -I$(LIBFT_DIR)
+GNL_DIR = ./libs/get_next_line
+
+INCLUDES = -Iincludes -I$(LIBFT_DIR) -I$(GNL_DIR)
 
 MANDATORY_DIR = ./src/mandatory
+BONUS_DIR = ./src/bonus
 
 SRCS = \
 	$(MANDATORY_DIR)/main.c \
@@ -24,9 +28,29 @@ SRCS = \
 	$(MANDATORY_DIR)/ops/rotate/reverse/rra.c \
 	$(MANDATORY_DIR)/ops/rotate/reverse/rrb.c \
 	$(MANDATORY_DIR)/ops/rotate/reverse/rrr.c \
-	$(MANDATORY_DIR)/ops/rotate/rotate.c \
+	$(MANDATORY_DIR)/ops/rotate/rotate.c
+
+BONUS_SRCS = \
+	$(BONUS_DIR)/checker.c \
+	$(BONUS_DIR)/checker_utils.c \
+	$(BONUS_DIR)/ops/push.c \
+	$(BONUS_DIR)/ops/swap.c \
+	$(BONUS_DIR)/ops/rotate/rotate.c \
+	$(BONUS_DIR)/ops/rotate/forward/ra.c \
+	$(BONUS_DIR)/ops/rotate/forward/rb.c \
+	$(BONUS_DIR)/ops/rotate/forward/rr.c \
+	$(BONUS_DIR)/ops/rotate/reverse/rra.c \
+	$(BONUS_DIR)/ops/rotate/reverse/rrb.c \
+	$(BONUS_DIR)/ops/rotate/reverse/rrr.c \
+	$(BONUS_DIR)/utils/stack_add_utils.c \
+	$(BONUS_DIR)/utils/stack_remove_utils.c \
+	$(BONUS_DIR)/utils/stack_utils.c \
+	$(BONUS_DIR)/utils/validation_utils.c \
+	$(BONUS_DIR)/utils/utils.c \
+	$(GNL_DIR)/get_next_line.c \
 
 OBJS = $(SRCS:.c=.o)
+BONUS_OBJS = $(BONUS_SRCS:.c=.o)
 
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror $(INCLUDES)
@@ -36,6 +60,11 @@ all: $(LIBFT_LIB) $(NAME)
 $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -L$(LIBFT_DIR) -lft -o $(NAME)
 
+bonus: $(LIBFT_LIB) $(BONUS)
+
+$(BONUS): $(BONUS_OBJS)
+	$(CC) $(CFLAGS) $(BONUS_OBJS) -L$(LIBFT_DIR) -lft -o $(BONUS)
+
 $(LIBFT_LIB):
 	make bonus -C $(LIBFT_DIR)
 
@@ -44,12 +73,14 @@ $(LIBFT_LIB):
 
 clean:
 	make clean -C $(LIBFT_DIR)
-	rm -f $(OBJS)
+	make clean -C $(GNL_DIR)
+	rm -f $(OBJS) $(BONUS_OBJS)
 
 fclean: clean
 	rm -f $(LIBFT_LIB)
 	rm -f $(NAME)
+	rm -f $(BONUS)
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re bonus
