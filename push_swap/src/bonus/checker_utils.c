@@ -6,13 +6,13 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:48:09 by agarcia           #+#    #+#             */
-/*   Updated: 2025/07/31 12:30:13 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/07/31 15:01:53 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./push_swap_bonus.h"
 
-void	execute_op(t_stack **a, t_stack **b, const char *op)
+int	execute_op(t_stack **a, t_stack **b, const char *op)
 {
 	if (ft_strncmp(op, "sa\n", 3) == 0)
 		sa(a);
@@ -36,9 +36,12 @@ void	execute_op(t_stack **a, t_stack **b, const char *op)
 		rrb(b);
 	else if (ft_strncmp(op, "rrr\n", 4) == 0)
 		rrr(a, b);
+	else
+		return (0);
+	return (1);
 }
 
-void	execute_ops(t_stack **a)
+int	execute_ops(t_stack **a)
 {
 	t_stack	*b;
 	char	*op;
@@ -47,8 +50,14 @@ void	execute_ops(t_stack **a)
 	op = get_next_line(0);
 	while (op)
 	{
-		execute_op(a, &b, op);
+		if (!execute_op(a, &b, op))
+		{
+			free(op);
+			write(2, "Error\n", 6);
+			return (0);
+		}
 		free(op);
 		op = get_next_line(0);
 	}
+	return (1);
 }

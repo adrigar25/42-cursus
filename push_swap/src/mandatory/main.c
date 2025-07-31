@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:48:10 by agarcia           #+#    #+#             */
-/*   Updated: 2025/07/31 10:56:32 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/07/31 15:02:47 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	main(int argc, char **argv)
 	size = 0;
 	is_split = argc == 2;
 	if (argc < 2)
-		return (write(2, "Error\n", 7));
+		return (0);
 	str_num = store_numbers(argv, is_split);
 	if (valid_numbers(str_num))
 	{

@@ -6,7 +6,7 @@
 #    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/31 12:19:11 by agarcia           #+#    #+#              #
-#    Updated: 2025/07/31 12:19:12 by agarcia          ###   ########.fr        #
+#    Updated: 2025/07/31 15:09:45 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -80,7 +80,7 @@ $(BONUS): $(BONUS_OBJS)
 	$(CC) $(CFLAGS) $(BONUS_OBJS) -L$(LIBFT_DIR) -lft -L$(GNL_DIR) -lget_next_line -o $(BONUS)
 
 $(LIBFT_LIB):
-	make bonus -C $(LIBFT_DIR)
+	make -C $(LIBFT_DIR)
 $(GNL_LIB):
 	make -C $(GNL_DIR)
 

@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 16:48:37 by agarcia           #+#    #+#             */
-/*   Updated: 2025/07/30 18:21:07 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/07/31 15:01:58 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int					is_sorted(t_stack *stack);
 
 // Checker utils
 
-void				execute_op(t_stack **a, t_stack **b, const char *op);
-void				execute_ops(t_stack **a);
+int					execute_op(t_stack **a, t_stack **b, const char *op);
+int					execute_ops(t_stack **a);
 char				**store_numbers(char **argv, int is_string);
 #endif

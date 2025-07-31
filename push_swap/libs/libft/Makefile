@@ -6,7 +6,7 @@
 #    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/31 12:19:20 by agarcia           #+#    #+#              #
-#    Updated: 2025/07/31 12:19:21 by agarcia          ###   ########.fr        #
+#    Updated: 2025/07/31 15:09:32 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,20 +46,9 @@ SRCS = ft_isalpha.c \
 	ft_putstr_fd.c \
 	ft_putendl_fd.c \
 	ft_putnbr_fd.c \
-	# main.c \
 
 OBJS = $(SRCS:.c=.o)
-BONUS_FILES = ft_lstnew_bonus.c \
-	ft_lstadd_front_bonus.c \
-	ft_lstsize_bonus.c \
-	ft_lstlast_bonus.c \
-	ft_lstadd_back_bonus.c \
-	ft_lstdelone_bonus.c \
-	ft_lstclear_bonus.c \
-	ft_lstiter_bonus.c \
-	ft_lstmap_bonus.c \
 
-BONUS_OBJS = $(BONUS_FILES:.c=.o)
 
 HEADERS = libft.h
 
@@ -74,14 +63,8 @@ all: $(NAME)
 $(NAME): $(OBJS)
 	$(AR) $(NAME) $(OBJS)
 
-# $(NAME): $(OBJS)
-# 	$(CC) $(CFLAGS) -o $(NAME) $(OBJS)
-
 %.o: %.c $(HEADERS)
 	$(CC) $(CFLAGS) -c $< -o $@
-
-bonus: $(NAME) $(BONUS_OBJS)
-	$(AR) $(NAME) $(BONUS_OBJS)
 
 clean:
 	rm -f $(OBJS)
@@ -94,4 +77,4 @@ re: fclean all
 run: $(NAME)
 	./$(NAME)
 
-.PHONY: all clean fclean re run bonus
+.PHONY: all clean fclean re run
