@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2025/07/31 12:19:11 by agarcia           #+#    #+#              #
+#    Updated: 2025/07/31 12:19:12 by agarcia          ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 NAME = push_swap
 BONUS = checker
 
@@ -5,6 +17,8 @@ LIBFT_DIR = ./libs/libft
 LIBFT_LIB = $(LIBFT_DIR)/libft.a
 
 GNL_DIR = ./libs/get_next_line
+GNL_LIB = $(GNL_DIR)/get_next_line.a
+
 
 INCLUDES = -Iincludes -I$(LIBFT_DIR) -I$(GNL_DIR)
 
@@ -60,13 +74,15 @@ all: $(LIBFT_LIB) $(NAME)
 $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -L$(LIBFT_DIR) -lft -o $(NAME)
 
-bonus: $(LIBFT_LIB) $(BONUS)
+bonus: $(LIBFT_LIB) $(GNL_LIB) $(BONUS)
 
 $(BONUS): $(BONUS_OBJS)
-	$(CC) $(CFLAGS) $(BONUS_OBJS) -L$(LIBFT_DIR) -lft -o $(BONUS)
+	$(CC) $(CFLAGS) $(BONUS_OBJS) -L$(LIBFT_DIR) -lft -L$(GNL_DIR) -lget_next_line -o $(BONUS)
 
 $(LIBFT_LIB):
 	make bonus -C $(LIBFT_DIR)
+$(GNL_LIB):
+	make -C $(GNL_DIR)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -80,6 +96,7 @@ fclean: clean
 	rm -f $(LIBFT_LIB)
 	rm -f $(NAME)
 	rm -f $(BONUS)
+	rm -f $(GNL_DIR)/libget_next_line.a
 
 re: fclean all
 

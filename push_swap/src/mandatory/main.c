@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:48:10 by agarcia           #+#    #+#             */
-/*   Updated: 2025/07/30 16:57:02 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/07/31 10:56:32 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	main(int argc, char **argv)
 	size = 0;
 	is_split = argc == 2;
 	if (argc < 2)
-		return (write(2, "Error0\n", 7));
+		return (write(2, "Error\n", 7));
 	str_num = store_numbers(argv, is_split);
 	if (valid_numbers(str_num))
 	{
@@ -67,7 +67,7 @@ int	main(int argc, char **argv)
 		sort(&stack, size);
 	}
 	else
-		write(2, "Error1\n", 6);
+		write(2, "Error\n", 6);
 	free_stack(stack);
 	if (is_split)
 		free_split(str_num);
