@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:48:09 by agarcia           #+#    #+#             */
-/*   Updated: 2025/07/30 18:26:36 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/07/31 12:30:13 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	execute_ops(t_stack **a)
 	while (op)
 	{
 		execute_op(a, &b, op);
+		free(op);
 		op = get_next_line(0);
 	}
 }
