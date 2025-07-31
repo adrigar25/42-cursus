@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 18:24:41 by agarcia           #+#    #+#             */
-/*   Updated: 2025/06/26 10:48:51 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/07/31 16:13:54 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,20 +48,6 @@ void	print_image(t_env *env, void *img, int x, int y)
 			* TILE_SIZE);
 }
 
-void	print_player(t_env *env, char c, int x, int y)
-{
-	if (c == 'S' || c == 'P')
-		print_image(env, env->img_player_down, x, y);
-	else if (c == 'D')
-		print_image(env, env->img_player_right, x, y);
-	else if (c == 'A')
-		print_image(env, env->img_player_left, x, y);
-	else if (c == 'W')
-		print_image(env, env->img_player_up, x, y);
-	else if (c == 'J')
-		print_image(env, env->img_player_jump, x, y);
-}
-
 int	print_map(t_env *env)
 {
 	int	x;
@@ -81,8 +67,8 @@ int	print_map(t_env *env)
 				print_image(env, env->img_collectible, x, y);
 			else if (env->map[y][x] == 'E')
 				print_image(env, env->img_exit, x, y);
-			else
-				print_player(env, env->map[y][x], x, y);
+			else if (env->map[y][x] == 'P')
+				print_image(env, env->img_player_down, x, y);
 		}
 	}
 	return (0);

@@ -5,25 +5,14 @@
 #                                                     +:+ +:+         +:+      #
 #    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/06/26 22:04:21 by agarcia           #+#    #+#              #
-#    Updated: 2025/06/26 22:04:21 by agarcia          ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/06/25 18:24:52 by agarcia           #+#    #+#              #
-#    Updated: 2025/06/26 21:55:42 by agarcia          ###   ########.fr        #
+#    Created: 2025/07/31 15:33:21 by agarcia           #+#    #+#              #
+#    Updated: 2025/07/31 16:43:50 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Ejecutable
 NAME = so_long
+BONUS_NAME = so_long_bonus
 
 # Directorios de librerías
 GNL_DIR = ./libs/gnl
@@ -80,11 +69,10 @@ all: $(MLX_LIB) $(GNL_LIB) $(PRINTF_LIB) $(LIBFT_LIB) $(NAME)
 $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) $(GNL_LIB) $(PRINTF_LIB) $(LIBFT_LIB) $(MLX_FLAGS) -o $(NAME)
 
-bonus: $(MLX_LIB) $(GNL_LIB) $(PRINTF_LIB) $(LIBFT_LIB) so_long_bonus
+bonus: $(MLX_LIB) $(GNL_LIB) $(PRINTF_LIB) $(LIBFT_LIB) $(BONUS_NAME)
 
-so_long_bonus: $(BONUS_OBJS)
-	$(CC) $(CFLAGS) $(BONUS_OBJS) $(GNL_LIB) $(PRINTF_LIB) $(LIBFT_LIB) $(MLX_FLAGS) -o $(NAME)
-
+$(BONUS_NAME): $(BONUS_OBJS)
+	$(CC) $(CFLAGS) $(BONUS_OBJS) $(GNL_LIB) $(PRINTF_LIB) $(LIBFT_LIB) $(MLX_FLAGS) -o $(BONUS_NAME)
 # Compilar libs
 $(MLX_LIB):
 	make -C $(MLX_DIR)
@@ -115,6 +103,7 @@ fclean: clean
 	rm -f $(PRINTF_LIB)
 	rm -f $(MLX_LIB)
 	rm -f $(NAME)
+	rm -f $(BONUS_NAME)
 
 re: fclean all
 

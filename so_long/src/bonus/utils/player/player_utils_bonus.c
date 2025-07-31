@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 18:24:44 by agarcia           #+#    #+#             */
-/*   Updated: 2025/06/26 15:18:40 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/07/31 16:48:39 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,5 @@ void	move_player_to(t_env *env, int new_x, int new_y, char key)
 	env->player_y = new_y;
 	env->moves++;
 	env->map[env->player_y][env->player_x] = key;
+	ft_printf("Movimientos: %d\n", env->moves);
 }

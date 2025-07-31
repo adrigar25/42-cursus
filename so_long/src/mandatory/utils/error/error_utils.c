@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 18:24:31 by agarcia           #+#    #+#             */
-/*   Updated: 2025/06/26 03:29:07 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/07/31 15:55:11 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,6 @@ int	handle_error(int error_code)
 		msg = "Error al inicializar gráficos";
 	else
 		msg = "Error desconocido";
-	ft_printf("Error: %s\n", msg);
+	ft_printf("Error: \n%s\n", msg);
 	return (0);
 }

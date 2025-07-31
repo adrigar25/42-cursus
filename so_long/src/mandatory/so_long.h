@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 18:24:49 by agarcia           #+#    #+#             */
-/*   Updated: 2025/06/27 00:08:13 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/07/31 16:16:50 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int			count_collectibles(t_env *env);
 
 /* player */
 int			get_player_position(t_env *env);
-void		move_player_to(t_env *env, int new_x, int new_y, char key);
+void		move_player_to(t_env *env, int new_x, int new_y);
 
 /* input */
 
