@@ -6,7 +6,7 @@
 #    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/31 12:19:11 by agarcia           #+#    #+#              #
-#    Updated: 2025/07/31 15:09:45 by agarcia          ###   ########.fr        #
+#    Updated: 2025/08/02 00:18:47 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ LIBFT_DIR = ./libs/libft
 LIBFT_LIB = $(LIBFT_DIR)/libft.a
 
 GNL_DIR = ./libs/get_next_line
-GNL_LIB = $(GNL_DIR)/get_next_line.a
+GNL_LIB = $(GNL_DIR)/libgnl.a
 
 
 INCLUDES = -Iincludes -I$(LIBFT_DIR) -I$(GNL_DIR)
@@ -45,22 +45,22 @@ SRCS = \
 	$(MANDATORY_DIR)/ops/rotate/rotate.c
 
 BONUS_SRCS = \
-	$(BONUS_DIR)/checker.c \
-	$(BONUS_DIR)/checker_utils.c \
-	$(BONUS_DIR)/ops/push.c \
-	$(BONUS_DIR)/ops/swap.c \
-	$(BONUS_DIR)/ops/rotate/rotate.c \
-	$(BONUS_DIR)/ops/rotate/forward/ra.c \
-	$(BONUS_DIR)/ops/rotate/forward/rb.c \
-	$(BONUS_DIR)/ops/rotate/forward/rr.c \
-	$(BONUS_DIR)/ops/rotate/reverse/rra.c \
-	$(BONUS_DIR)/ops/rotate/reverse/rrb.c \
-	$(BONUS_DIR)/ops/rotate/reverse/rrr.c \
-	$(BONUS_DIR)/utils/stack_add_utils.c \
-	$(BONUS_DIR)/utils/stack_remove_utils.c \
-	$(BONUS_DIR)/utils/stack_utils.c \
-	$(BONUS_DIR)/utils/validation_utils.c \
-	$(BONUS_DIR)/utils/utils.c \
+	$(BONUS_DIR)/checker_bonus.c \
+	$(BONUS_DIR)/checker_utils_bonus.c \
+	$(BONUS_DIR)/ops/push_bonus.c \
+	$(BONUS_DIR)/ops/swap_bonus.c \
+	$(BONUS_DIR)/ops/rotate/rotate_bonus.c \
+	$(BONUS_DIR)/ops/rotate/forward/ra_bonus.c \
+	$(BONUS_DIR)/ops/rotate/forward/rb_bonus.c \
+	$(BONUS_DIR)/ops/rotate/forward/rr_bonus.c \
+	$(BONUS_DIR)/ops/rotate/reverse/rra_bonus.c \
+	$(BONUS_DIR)/ops/rotate/reverse/rrb_bonus.c \
+	$(BONUS_DIR)/ops/rotate/reverse/rrr_bonus.c \
+	$(BONUS_DIR)/utils/stack_add_utils_bonus.c \
+	$(BONUS_DIR)/utils/stack_remove_utils_bonus.c \
+	$(BONUS_DIR)/utils/stack_utils_bonus.c \
+	$(BONUS_DIR)/utils/validation_utils_bonus.c \
+	$(BONUS_DIR)/utils/utils_bonus.c \
 	$(GNL_DIR)/get_next_line.c \
 
 OBJS = $(SRCS:.c=.o)
@@ -77,7 +77,7 @@ $(NAME): $(OBJS)
 bonus: $(LIBFT_LIB) $(GNL_LIB) $(BONUS)
 
 $(BONUS): $(BONUS_OBJS)
-	$(CC) $(CFLAGS) $(BONUS_OBJS) -L$(LIBFT_DIR) -lft -L$(GNL_DIR) -lget_next_line -o $(BONUS)
+	$(CC) $(CFLAGS) $(BONUS_OBJS) -L$(LIBFT_DIR) -lft -L$(GNL_DIR) -lgnl -o $(BONUS)
 
 $(LIBFT_LIB):
 	make -C $(LIBFT_DIR)
@@ -96,7 +96,7 @@ fclean: clean
 	rm -f $(LIBFT_LIB)
 	rm -f $(NAME)
 	rm -f $(BONUS)
-	rm -f $(GNL_DIR)/libget_next_line.a
+	rm -f $(GNL_DIR)/lingnl.a
 
 re: fclean all
 

@@ -6,11 +6,11 @@
 #    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/26 02:55:48 by agarcia           #+#    #+#              #
-#    Updated: 2025/07/31 11:44:23 by agarcia          ###   ########.fr        #
+#    Updated: 2025/08/02 00:15:46 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = libget_next_line.a
+NAME = libgnl.a
 
 SRCS = get_next_line.c
 

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   checker.c                                          :+:      :+:    :+:   */
+/*   checker_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:48:09 by agarcia           #+#    #+#             */
-/*   Updated: 2025/07/31 15:02:40 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/08/03 14:08:32 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,12 @@ int	main(int argc, char **argv)
 	t_stack	*stack;
 	char	**str_num;
 	int		size;
-	int		is_split;
 
 	stack = NULL;
 	size = 0;
-	is_split = argc == 2;
 	if (argc < 2)
 		return (0);
-	str_num = store_numbers(argv, is_split);
+	str_num = store_numbers(argv, argc == 2);
 	if (valid_numbers(str_num))
 	{
 		while (str_num[size])
@@ -53,7 +51,7 @@ int	main(int argc, char **argv)
 	}
 	else
 		write(2, "Error\n", 6);
-	if (is_split)
+	if (argc == 2)
 		free_split(str_num);
 	return (0);
 }
