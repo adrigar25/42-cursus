@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 14:34:02 by agarcia           #+#    #+#             */
-/*   Updated: 2025/06/26 14:58:50 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/08/03 20:27:13 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	handle_enemy_horizontal(t_env *env, int x, int y, int dir)
 
 	new_x = x + dir;
 	if (env->map[y][new_x] && ft_strchr("PWASDJ", env->map[y][new_x]))
-		return (finish_game(env), 1);
+		return (finish_game(env, 0), 1);
 	if (env->map[y][new_x] && env->map[y][new_x] == '0')
 	{
 		if (dir == -1)
@@ -43,7 +43,7 @@ int	handle_enemy_vertical(t_env *env, int x, int y, int dir)
 
 	new_y = y + dir;
 	if (env->map[new_y] && ft_strchr("PWASDJ", env->map[new_y][x]))
-		return (finish_game(env), 1);
+		return (finish_game(env, 0), 1);
 	if (env->map[new_y] && env->map[new_y][x] == '0')
 	{
 		if (dir == -1)

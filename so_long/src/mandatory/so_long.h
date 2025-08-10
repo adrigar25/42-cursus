@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 18:24:49 by agarcia           #+#    #+#             */
-/*   Updated: 2025/07/31 16:16:50 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/08/04 17:42:30 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,6 @@ typedef struct s_env
 	void	*img_wall;
 	void	*img_floor;
 	void	*img_player_down;
-	void	*img_player_up;
-	void	*img_player_left;
-	void	*img_player_right;
-	void	*img_player_jump;
 	void	*img_collectible;
 	void	*img_exit;
 	int		player_x;
@@ -47,8 +43,8 @@ typedef struct s_env
 }			t_env;
 
 /* game */
-int			start_game(char *map_file);
-void		finish_game(t_env *env);
+void		start_game(char *map_file);
+void		finish_game(t_env *env, int error);
 int			count_collectibles(t_env *env);
 
 /* player */
@@ -63,7 +59,6 @@ int			key_handler(int keycode, t_env *env);
 char		**open_map(char *map_file);
 int			get_map_height(char **map);
 void		free_map(char **map);
-int			find_exit(char **map, int x, int y, char **visited);
 int			check_map(t_env *env);
 int			check_if_playable(char **map, int x, int y);
 int			check_rectangular(char **map);
@@ -71,12 +66,13 @@ int			check_min_size(char **map);
 int			check_wall(char **map);
 
 /* error utils */
-int			handle_error(int error_code);
+void		handle_error(int error_code);
 
 /* mlx utils */
 int			close_window(t_env *env);
 void		init_images(t_env *env);
 int			print_map(t_env *env);
-void		print_image(t_env *env, void *image, int x, int y);
+void		print_image(t_env *env, char image, int x, int y);
+void		clear_images(t_env *env);
 
 #endif

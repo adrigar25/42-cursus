@@ -6,18 +6,11 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 16:30:51 by agarcia           #+#    #+#             */
-/*   Updated: 2025/08/02 00:03:53 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/08/05 16:07:00 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../pipex.h"
-
-int	skip_to_quote(const char *str, int i, char quote)
-{
-	while (str[i] && str[i] != quote)
-		i += (str[i] == '\\' && str[i + 1]) + 1;
-	return (i);
-}
 
 int	count_args(char *str)
 {

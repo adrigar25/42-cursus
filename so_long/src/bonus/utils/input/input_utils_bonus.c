@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 18:24:35 by agarcia           #+#    #+#             */
-/*   Updated: 2025/06/26 10:40:59 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/08/03 20:26:46 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	key_handler(int keycode, t_env *env)
 {
 	if (keycode == 53)
-		finish_game(env);
+		finish_game(env, 0);
 	else if (keycode == 13)
 		move_player_to(env, env->player_x, env->player_y - 1, 'W');
 	else if (keycode == 1)

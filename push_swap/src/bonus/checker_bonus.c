@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:48:09 by agarcia           #+#    #+#             */
-/*   Updated: 2025/08/03 14:08:32 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/08/08 22:01:35 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,8 @@ int	main(int argc, char **argv)
 		while (str_num[size])
 			size++;
 		stack = fill_stack(str_num, size);
-		if (!execute_ops(&stack))
-			return (0);
-		print_result(is_sorted(stack) && stack_size(stack) == size);
+		if (execute_ops(&stack))
+			print_result(is_sorted(stack) && stack_size(stack) == size);
 		free_stack(stack);
 	}
 	else

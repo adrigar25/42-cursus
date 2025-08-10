@@ -6,27 +6,11 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 20:36:48 by agarcia           #+#    #+#             */
-/*   Updated: 2025/06/27 00:14:17 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/08/03 17:49:49 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../so_long.h"
-
-int	find_exit(char **map, int x, int y, char **visited)
-{
-	if (x < 0 || y < 0 || !map[y][x])
-		return (0);
-	if (visited[y][x] || map[y][x] == '1')
-		return (0);
-	if (map[y][x] == 'E')
-		return (1);
-	visited[y][x] = '1';
-	if (find_exit(map, x + 1, y, visited) || find_exit(map, x - 1, y, visited)
-		|| find_exit(map, x, y + 1, visited) || find_exit(map, x, y - 1,
-			visited))
-		return (1);
-	return (0);
-}
 
 void	free_map(char **map)
 {

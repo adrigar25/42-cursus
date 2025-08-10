@@ -57,6 +57,7 @@ CFLAGS = -Wall -Wextra -Werror
 
 AR = ar rcs
 
+
 all: $(NAME)
 
 $(NAME): $(OBJS)

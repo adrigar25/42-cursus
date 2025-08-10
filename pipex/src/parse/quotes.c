@@ -6,22 +6,11 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 16:56:30 by agarcia           #+#    #+#             */
-/*   Updated: 2025/08/01 17:49:09 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/08/05 16:07:07 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../pipex.h"
-
-char	*strip_quotes(const char *str)
-{
-	size_t	len;
-
-	len = ft_strlen(str);
-	if (len >= 2 && ((str[0] == '\'' && str[len - 1] == '\'') || (str[0] == '"'
-				&& str[len - 1] == '"')))
-		return (ft_substr(str, 1, len - 2));
-	return (ft_strdup(str));
-}
 
 char	*unescape_quotes(const char *str)
 {
@@ -42,4 +31,11 @@ char	*unescape_quotes(const char *str)
 	}
 	res[j] = '\0';
 	return (res);
+}
+
+int	skip_to_quote(const char *str, int i, char quote)
+{
+	while (str[i] && str[i] != quote)
+		i += (str[i] == '\\' && str[i + 1]) + 1;
+	return (i);
 }

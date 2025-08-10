@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 15:14:09 by agarcia           #+#    #+#             */
-/*   Updated: 2025/06/26 23:51:48 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/08/04 18:00:10 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ typedef struct s_env
 
 /* game */
 void		start_game(char *map_file);
-void		finish_game(t_env *env);
+void		finish_game(t_env *env, int error);
 int			count_collectibles(t_env *env);
 int			game_loop(t_env *env);
 int			game_start(t_env *env);
@@ -72,7 +72,6 @@ int			key_handler(int keycode, t_env *env);
 char		**open_map(char *map_file);
 int			get_map_height(char **map);
 void		free_map(char **map);
-int			find_exit(char **map, int x, int y, char **visited);
 int			check_map(t_env *env);
 int			check_if_playable(char **map, int x, int y);
 int			check_rectangular(char **map);
@@ -80,13 +79,16 @@ int			check_min_size(char **map);
 int			check_wall(char **map);
 
 /* error utils */
-int			handle_error(int error_code);
+void		handle_error(int error_code);
 
 /* mlx utils */
 int			close_window(t_env *env);
 void		init_images(t_env *env);
 int			print_map(t_env *env);
 void		print_image(t_env *env, void *image, int x, int y);
+void		clear_images(t_env *env);
+void		*load_texture(void *mlx, char *name, int *width, int *height);
+void		print_player(t_env *env, char c, int x, int y);
 
 /* enemy utils */
 int			pseudo_random(int max);

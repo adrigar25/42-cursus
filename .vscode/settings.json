@@ -1,0 +1,12 @@
+{
+    "files.associations": {
+        "deque": "c",
+        "variant": "c",
+        "sstream": "c",
+        "pipex.h": "c",
+        "libft.h": "c",
+        "string": "c",
+        "fcntl.h": "c",
+        "ft_printf.h": "c"
+    }
+}

@@ -6,7 +6,7 @@
 #    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/31 15:33:21 by agarcia           #+#    #+#              #
-#    Updated: 2025/07/31 16:43:50 by agarcia          ###   ########.fr        #
+#    Updated: 2025/08/04 17:56:51 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,7 +48,8 @@ BONUS_SRCS = 	$(BONUS_DIR)/main_bonus.c \
 				$(BONUS_DIR)/utils/map/map_utils_bonus.c \
 				$(BONUS_DIR)/utils/map/map_checks_bonus.c \
 				$(BONUS_DIR)/utils/error/error_utils_bonus.c \
-				$(BONUS_DIR)/utils/mlx/mlx_utils_bonus.c \
+				$(BONUS_DIR)/utils/mlx/mlx_images_bonus.c \
+				$(BONUS_DIR)/utils/mlx/mlx_render_bonus.c \
 				$(BONUS_DIR)/utils/input/input_utils_bonus.c \
 				$(BONUS_DIR)/utils/enemy/enemy_utils_bonus.c \
 				$(BONUS_DIR)/utils/enemy/enemy_move_bonus.c \

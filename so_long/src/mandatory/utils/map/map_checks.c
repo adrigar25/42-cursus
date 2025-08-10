@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 02:18:17 by agarcia           #+#    #+#             */
-/*   Updated: 2025/06/27 00:08:43 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/08/03 18:21:33 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,28 +88,30 @@ int	check_rectangular(char **map)
 	return (1);
 }
 
-int	check_wall(char **map)
+int	check_format(char **map)
 {
+	int	width;
 	int	i;
 	int	j;
 
 	if (!map || !map[0])
 		return (0);
+	width = ft_strlen(map[0]);
 	i = -1;
 	while (map[++i])
 	{
 		j = -1;
-		if ((i == 0 || !map[i + 1]))
+		if (i == 0 || !map[i + 1])
 		{
-			while (map[i][++j])
+			while (++j < width)
 				if (map[i][j] != '1')
 					return (0);
-			j = -1;
 		}
-		else if (map[i][0] != '1' || map[i][ft_strlen(map[i]) - 1] != '1')
+		else if (map[i][0] != '1' || map[i][width - 1] != '1')
 			return (0);
-		while (map[i][++j])
-			if (!ft_strchr("01CEP", map[i][j]))
+		j = -1;
+		while (++j < width)
+			if (!ft_strchr("10CPE", map[i][j]))
 				return (0);
 	}
 	return (1);
@@ -118,6 +120,6 @@ int	check_wall(char **map)
 int	check_map(t_env *env)
 {
 	return (get_player_position(env) && count_collectibles(env)
-		&& check_rectangular(env->map) && check_wall(env->map)
+		&& check_rectangular(env->map) && check_format(env->map)
 		&& check_if_playable(env->map, env->player_x, env->player_y));
 }

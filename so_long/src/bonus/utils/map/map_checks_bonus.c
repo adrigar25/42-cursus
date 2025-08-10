@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 02:18:17 by agarcia           #+#    #+#             */
-/*   Updated: 2025/06/27 00:07:20 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/08/03 16:44:24 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,14 +118,14 @@ int	check_wall(char **map)
 int	check_map(t_env *env)
 {
 	if (!get_player_position(env))
-		return (handle_error(2));
+		return (0);
 	if (!count_collectibles(env))
-		return (handle_error(2));
+		return (0);
 	if (!check_rectangular(env->map))
-		return (handle_error(2));
+		return (0);
 	if (!check_wall(env->map))
-		return (handle_error(2));
+		return (0);
 	if (!check_if_playable(env->map, env->player_x, env->player_y))
-		return (handle_error(2));
+		return (0);
 	return (1);
 }

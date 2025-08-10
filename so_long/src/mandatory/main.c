@@ -6,10 +6,11 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 18:24:46 by agarcia           #+#    #+#             */
-/*   Updated: 2025/06/26 03:24:10 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/08/03 16:18:29 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../libs/ft_printf/ft_printf.h"
 #include "./so_long.h"
 
 int	main(int argc, char **argv)
