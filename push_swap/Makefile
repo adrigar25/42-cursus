@@ -1,13 +1,13 @@
 # **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/07/31 12:19:11 by agarcia           #+#    #+#              #
-#    Updated: 2025/08/02 00:18:47 by agarcia          ###   ########.fr        #
-#                                                                              #
+#																			  #
+#														 :::	  ::::::::	#
+#	Makefile										   :+:	  :+:	:+:	#
+#													 +:+ +:+		 +:+	  #
+#	By: agarcia <agarcia@student.42.fr>			+#+  +:+	   +#+		 #
+#												 +#+#+#+#+#+   +#+			#
+#	Created: 2025/07/31 12:19:11 by agarcia		   #+#	#+#			  #
+#	Updated: 2025/08/11 22:13:02 by agarcia		  ###   ########.fr		#
+#																			  #
 # **************************************************************************** #
 
 NAME = push_swap
@@ -19,11 +19,11 @@ LIBFT_LIB = $(LIBFT_DIR)/libft.a
 GNL_DIR = ./libs/get_next_line
 GNL_LIB = $(GNL_DIR)/libgnl.a
 
-
 INCLUDES = -Iincludes -I$(LIBFT_DIR) -I$(GNL_DIR)
 
 MANDATORY_DIR = ./src/mandatory
 BONUS_DIR = ./src/bonus
+OBJDIR = objs
 
 SRCS = \
 	$(MANDATORY_DIR)/main.c \
@@ -63,8 +63,8 @@ BONUS_SRCS = \
 	$(BONUS_DIR)/utils/utils_bonus.c \
 	$(GNL_DIR)/get_next_line.c \
 
-OBJS = $(SRCS:.c=.o)
-BONUS_OBJS = $(BONUS_SRCS:.c=.o)
+OBJS = $(SRCS:%.c=$(OBJDIR)/%.o)
+BONUS_OBJS = $(BONUS_SRCS:%.c=$(OBJDIR)/%.o)
 
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror $(INCLUDES)
@@ -80,17 +80,18 @@ $(BONUS): $(BONUS_OBJS)
 	$(CC) $(CFLAGS) $(BONUS_OBJS) -L$(LIBFT_DIR) -lft -L$(GNL_DIR) -lgnl -o $(BONUS)
 
 $(LIBFT_LIB):
-	make -C $(LIBFT_DIR)
+	$(MAKE) -C $(LIBFT_DIR)
 $(GNL_LIB):
-	make -C $(GNL_DIR)
+	$(MAKE) -C $(GNL_DIR)
 
-%.o: %.c
+$(OBJDIR)/%.o: %.c
+	mkdir -p $(OBJDIR)/$(dir $*)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	make clean -C $(LIBFT_DIR)
-	make clean -C $(GNL_DIR)
-	rm -f $(OBJS) $(BONUS_OBJS)
+	$(MAKE) clean -C $(LIBFT_DIR)
+	$(MAKE) clean -C $(GNL_DIR)
+	rm -rf $(OBJDIR)
 
 fclean: clean
 	rm -f $(LIBFT_LIB)
