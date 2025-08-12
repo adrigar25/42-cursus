@@ -315,7 +315,7 @@ int get_mouse_button(NSEventType eventtype)
 
 - (void) exposeNotification:(NSNotification *)note
 {
-  //    printf("Expose..\n");
+  //    printf("Expose...\n");
     if (event_funct[12] != NULL)
       event_funct[12](event_param[12]);
     //    printf("Expose done.\n");

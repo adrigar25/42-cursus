@@ -6,13 +6,14 @@
 #    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/31 15:33:21 by agarcia           #+#    #+#              #
-#    Updated: 2025/08/04 17:56:51 by agarcia          ###   ########.fr        #
+#    Updated: 2025/08/12 15:15:10 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Ejecutable
 NAME = so_long
 BONUS_NAME = so_long_bonus
+OBJDIR = objs
 
 # Directorios de librerías
 GNL_DIR = ./libs/gnl
@@ -54,8 +55,8 @@ BONUS_SRCS = 	$(BONUS_DIR)/main_bonus.c \
 				$(BONUS_DIR)/utils/enemy/enemy_utils_bonus.c \
 				$(BONUS_DIR)/utils/enemy/enemy_move_bonus.c \
 
-OBJS = $(SRCS:.c=.o)
-BONUS_OBJS = $(BONUS_SRCS:.c=.o)
+OBJS = $(SRCS:%.c=$(OBJDIR)/%.o)
+BONUS_OBJS = $(BONUS_SRCS:%.c=$(OBJDIR)/%.o)
 
 # Compilador
 CC = gcc
@@ -88,7 +89,8 @@ $(PRINTF_LIB):
 	make -C $(PRINTF_DIR)
 
 # .c -> .o
-%.o: %.c
+$(OBJDIR)/%.o: %.c
+	mkdir -p $(OBJDIR)/$(dir $*)
 	$(CC) $(CFLAGS) -I$(MLX_DIR) -Iincludes -I$(GNL_DIR) -I$(PRINTF_DIR) -c $< -o $@
 
 clean:
@@ -97,6 +99,7 @@ clean:
 	make clean -C $(LIBFT_DIR)
 	make clean -C $(PRINTF_DIR)
 	rm -f $(OBJS) $(BONUS_OBJS)
+	rm -rf $(OBJDIR)
 
 fclean: clean
 	rm -f $(LIBFT_LIB)
@@ -105,6 +108,8 @@ fclean: clean
 	rm -f $(MLX_LIB)
 	rm -f $(NAME)
 	rm -f $(BONUS_NAME)
+
+
 
 re: fclean all
 

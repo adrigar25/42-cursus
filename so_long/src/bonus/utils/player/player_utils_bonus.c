@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 18:24:44 by agarcia           #+#    #+#             */
-/*   Updated: 2025/08/03 20:29:51 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/08/12 15:43:13 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,11 @@ int	get_player_position(t_env *env)
 
 void	move_player_to(t_env *env, int new_x, int new_y, char key)
 {
-	int	img_width;
-	int	img_height;
+	int	i_w;
+	int	i_h;
 
+	i_h = TILE_SIZE;
+	i_w = TILE_SIZE;
 	if (env->map[new_y][new_x] == '1')
 		return ;
 	if (env->map[new_y][new_x] == 'E' && env->collectibles != 0)
@@ -57,8 +59,7 @@ void	move_player_to(t_env *env, int new_x, int new_y, char key)
 	if (env->map[new_y][new_x] == 'C' && env->collectibles--)
 		env->jumping = 10;
 	if (env->collectibles == 0)
-		env->img_exit = mlx_xpm_file_to_image(env->mlx, "textures/exit_2.xpm",
-				&img_width, &img_height);
+		env->img_exit = load_texture(env->mlx, "exit_2", &i_w, &i_h);
 	env->player_x = new_x;
 	env->player_y = new_y;
 	env->moves++;
