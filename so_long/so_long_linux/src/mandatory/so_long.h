@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 18:24:49 by agarcia           #+#    #+#             */
-/*   Updated: 2025/08/04 17:42:30 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/08/17 19:10:29 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ typedef struct s_env
 	char	**map;
 	void	*img_wall;
 	void	*img_floor;
-	void	*img_player_down;
+	void	*img_p_d;
 	void	*img_collectible;
 	void	*img_exit;
 	int		player_x;

@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 17:53:08 by agarcia           #+#    #+#             */
-/*   Updated: 2025/08/04 18:04:39 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/08/17 19:12:38 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ void	clear_images(t_env *env)
 	destroy_image(env->mlx, (void **)&env->img_p_l);
 	destroy_image(env->mlx, (void **)&env->img_p_d);
 	destroy_image(env->mlx, (void **)&env->img_p_u);
-	destroy_image(env->mlx, (void **)&env->img_p_j);
 	destroy_image(env->mlx, (void **)&env->img_e_r);
 	destroy_image(env->mlx, (void **)&env->img_e_l);
 	destroy_image(env->mlx, (void **)&env->img_e_d);
@@ -65,7 +64,6 @@ void	init_images(t_env *env)
 	env->img_p_l = load_texture(env->mlx, "player_left", &i_w, &i_h);
 	env->img_p_r = load_texture(env->mlx, "player_right", &i_w, &i_h);
 	env->img_p_u = load_texture(env->mlx, "player_up", &i_w, &i_h);
-	env->img_p_j = load_texture(env->mlx, "player_jump", &i_w, &i_h);
 	env->img_e_d = load_texture(env->mlx, "enemy_down", &i_w, &i_h);
 	env->img_e_l = load_texture(env->mlx, "enemy_left", &i_w, &i_h);
 	env->img_e_r = load_texture(env->mlx, "enemy_right", &i_w, &i_h);

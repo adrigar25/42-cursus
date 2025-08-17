@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 18:24:41 by agarcia           #+#    #+#             */
-/*   Updated: 2025/08/12 15:40:48 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/08/17 19:12:21 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,6 @@ void	print_player(t_env *env, char c, int x, int y)
 		print_image(env, env->img_p_l, x, y);
 	else if (c == 'W')
 		print_image(env, env->img_p_u, x, y);
-	else if (c == 'J')
-		print_image(env, env->img_p_j, x, y);
 	else if (c == 'U')
 		print_image(env, env->img_e_u, x, y);
 	else if (c == 'I')

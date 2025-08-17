@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 15:14:09 by agarcia           #+#    #+#             */
-/*   Updated: 2025/08/04 18:00:10 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/08/17 19:12:33 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ typedef struct s_env
 	void	*img_p_u;
 	void	*img_p_l;
 	void	*img_p_r;
-	void	*img_p_j;
 	void	*img_collectible;
 	void	*img_exit;
 	int		player_x;
