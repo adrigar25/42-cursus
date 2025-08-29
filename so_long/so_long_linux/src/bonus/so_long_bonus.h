@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 15:14:09 by agarcia           #+#    #+#             */
-/*   Updated: 2025/08/17 19:12:33 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/08/28 19:08:17 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ typedef struct s_env
 	char	*title;
 	int		collectibles;
 	int		moves;
-	int		jumping;
 	int		n_enemies;
 	int		enemy_moved;
 }			t_env;

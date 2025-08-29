@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 18:24:41 by agarcia           #+#    #+#             */
-/*   Updated: 2025/08/17 15:11:36 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/08/29 15:25:55 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	print_map(t_env *env)
 			else if (env->map[y][x] == 'E')
 				print_image(env, env->img_exit, x, y);
 			else
-				print_image(env, env->img_p_d, x, y);
+				print_image(env, env->img_player_down, x, y);
 		}
 	}
 	return (0);

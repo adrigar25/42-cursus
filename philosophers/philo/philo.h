@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 23:11:36 by agarcia           #+#    #+#             */
-/*   Updated: 2025/08/10 13:54:23 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/08/29 15:11:25 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,33 +16,35 @@
 # include <pthread.h>
 # include <sys/time.h>
 
-typedef struct s_data
+typedef struct s_philo	t_philo;
+
+typedef struct s_table
 {
-	long			start_time;
-	int				philo_count;
-	int				time_to_die;
-	int				time_to_eat;
-	int				time_to_sleep;
-	int				must_eat;
-	pthread_mutex_t	*forks;
-	struct s_philo	*philos;
-	pthread_mutex_t	print_mutex;
-	int				someone_died;
-}					t_data;
+	long				start_time;
+	int					n_philos;
+	int					time_to_die;
+	int					time_to_eat;
+	int					time_to_sleep;
+	int					must_eat_count;
+	t_philo				**philos;
+	pthread_mutex_t		write_lock;
+	pthread_mutex_t		*forks;
+	pthread_t			monitor_thread;
+}						t_table;
 
 typedef struct s_philo
 {
-	int				id;
-	int				meals_eaten;
-	long			last_meal;
-	pthread_t		thread_id;
-	int				left_fork;
-	int				right_fork;
-	t_data			*data;
-}					t_philo;
+	pthread_t			thread;
+	unsigned int		id;
+	unsigned int		times_ate;
+	unsigned int		fork[2];
+	time_t				last_meal;
+	t_table				*table;
+}						t_philo;
 
-long				get_timestamp(t_data *data);
-void				*philo_routine(void *arg);
-long				get_real_time_ms(void);
+// UTILS
+
+long					get_real_time_ms(void);
+long					get_timestamp(long start_time);
 
 #endif // PHILO_H

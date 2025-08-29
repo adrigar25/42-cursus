@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 18:24:49 by agarcia           #+#    #+#             */
-/*   Updated: 2025/08/17 19:10:29 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/08/28 19:11:19 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,14 @@ typedef struct s_env
 	char	*title;
 	int		collectibles;
 	int		moves;
-	int		jumping;
 }			t_env;
 
 /* game */
 void		start_game(char *map_file);
 void		finish_game(t_env *env, int error);
 int			count_collectibles(t_env *env);
+int			game_close(t_env *env);
+int			game_loop(t_env *env);
 
 /* player */
 int			get_player_position(t_env *env);
