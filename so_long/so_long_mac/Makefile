@@ -6,7 +6,7 @@
 #    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/31 15:33:21 by agarcia           #+#    #+#              #
-#    Updated: 2025/08/17 17:45:04 by agarcia          ###   ########.fr        #
+#    Updated: 2025/08/30 12:14:23 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,11 +32,15 @@ LIBFT_LIB = $(LIBFT_DIR)/libft.a
 # Fuentes mandatory
 SRCS = 	$(MANDATORY_DIR)/main.c \
 		$(MANDATORY_DIR)/utils/game/game_utils.c \
+		$(MANDATORY_DIR)/utils/game/game_loop.c \
+		$(MANDATORY_DIR)/utils/game/game_close.c \
+		$(MANDATORY_DIR)/utils/game/game_start.c \
 		$(MANDATORY_DIR)/utils/player/player_utils.c \
 		$(MANDATORY_DIR)/utils/map/map_utils.c \
 		$(MANDATORY_DIR)/utils/map/map_checks.c \
 		$(MANDATORY_DIR)/utils/error/error_utils.c \
-		$(MANDATORY_DIR)/utils/mlx/mlx_utils.c \
+		$(MANDATORY_DIR)/utils/mlx/mlx_images.c \
+		$(MANDATORY_DIR)/utils/mlx/mlx_render.c \
 		$(MANDATORY_DIR)/utils/input/input_utils.c \
 
 # Fuentes bonus

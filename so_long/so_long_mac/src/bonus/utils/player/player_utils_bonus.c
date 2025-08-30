@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 18:24:44 by agarcia           #+#    #+#             */
-/*   Updated: 2025/08/12 15:43:13 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/08/30 12:24:40 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,8 @@ void	move_player_to(t_env *env, int new_x, int new_y, char key)
 		finish_game(env, 0);
 	env->map[env->player_y][env->player_x] = '0';
 	if (env->map[new_y][new_x] == 'C' && env->collectibles--)
-		env->jumping = 10;
-	if (env->collectibles == 0)
-		env->img_exit = load_texture(env->mlx, "exit_2", &i_w, &i_h);
+		if (env->collectibles == 0)
+			env->img_exit = load_texture(env->mlx, "exit_2", &i_w, &i_h);
 	env->player_x = new_x;
 	env->player_y = new_y;
 	env->moves++;

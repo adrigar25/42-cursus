@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 00:12:28 by agarcia           #+#    #+#             */
-/*   Updated: 2025/08/17 14:56:57 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/08/30 12:15:46 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,7 @@ void	finish_game(t_env *env, int error)
 		mlx_destroy_window(env->mlx, env->win);
 	}
 	if (env->mlx)
-	{
-		mlx_destroy_display(env->mlx);
 		free(env->mlx);
-	}
 	if (env->map)
 		free_map(env->map);
 	free(env);

@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 18:24:49 by agarcia           #+#    #+#             */
-/*   Updated: 2025/08/28 19:13:50 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/08/30 12:16:40 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void		handle_error(int error_code);
 int			close_window(t_env *env);
 void		init_images(t_env *env);
 int			print_map(t_env *env);
-void		print_image(t_env *env, char image, int x, int y);
+void		print_image(t_env *env, void *image, int x, int y);
 void		clear_images(t_env *env);
 
 #endif
