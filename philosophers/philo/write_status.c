@@ -1,26 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   write_status.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/09 23:12:25 by agarcia           #+#    #+#             */
-/*   Updated: 2025/08/29 11:32:36 by agarcia          ###   ########.fr       */
+/*   Created: 2025/08/31 12:54:47 by agarcia           #+#    #+#             */
+/*   Updated: 2025/09/01 16:48:53 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./philo.h"
 
-long	get_real_time_ms(void)
+void	write_status(t_philo *philo, const char *status)
 {
-	struct timeval	tv;
-
-	gettimeofday(&tv, NULL);
-	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
-}
-
-long	get_timestamp(long start_time)
-{
-	return (get_real_time_ms() - start_time);
+	pthread_mutex_lock(&philo->table->write_lock);
+	printf("%ld ms %d %s\n", get_timestamp(philo->table->start_time), philo->id,
+		status);
+	pthread_mutex_unlock(&philo->table->write_lock);
 }

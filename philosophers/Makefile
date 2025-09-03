@@ -8,8 +8,10 @@ DIR = ./philo
 OBJDIR = objs
 
 SRCS = $(DIR)/main.c \
-       $(DIR)/philo_actions.c \
-       $(DIR)/utils.c
+		$(DIR)/philo_actions.c \
+		$(DIR)/time_utils.c \
+		$(DIR)/write_status.c \
+		$(DIR)/init.c \
 
 OBJS = $(SRCS:%.c=$(OBJDIR)/%.o)
 
