@@ -3,7 +3,6 @@ CC = gcc
 CFLAGS = -Wall -Werror -Wextra
 
 MANDATORY_DIR = src/
-OBJDIR = objs
 
 SRCS = $(MANDATORY_DIR)/pipex.c \
        $(MANDATORY_DIR)/exec/run_cmd.c \
@@ -15,25 +14,26 @@ SRCS = $(MANDATORY_DIR)/pipex.c \
        $(MANDATORY_DIR)/utils/my_getenv.c \
        $(MANDATORY_DIR)/utils/free.c
 
-OBJS = $(SRCS:%.c=$(OBJDIR)/%.o)
+OBJS = $(SRCS:.c=.o)
+
 
 LIBFT_DIR = libs/libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
+
 all: $(LIBFT) $(NAME)
 
 $(LIBFT):
-	$(MAKE) -C $(LIBFT_DIR)
+	make -C $(LIBFT_DIR)
 
 $(NAME): $(OBJS) $(LIBFT)
 	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
 
-$(OBJDIR)/%.o: %.c $(MANDATORY_DIR)/pipex.h
-	mkdir -p $(OBJDIR)/$(dir $*)
+%.o: %.c $(MANDATORY_DIR)/pipex.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -rf $(OBJDIR)
+	rm -f $(OBJS)
 	make -C $(LIBFT_DIR) clean
 
 fclean: clean

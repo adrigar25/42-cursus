@@ -1,4 +1,6 @@
 NAME = libft.a
+CC = gcc
+CFLAGS = -Wall -Werror -Wextra
 
 SRCS = ft_isalpha.c \
 	ft_isdigit.c \
@@ -50,10 +52,6 @@ BONUS_FILES = ft_lstnew_bonus.c \
 BONUS_OBJS = $(BONUS_FILES:.c=.o)
 
 HEADERS = libft.h
-
-CC = cc
-
-CFLAGS = -Wall -Wextra -Werror
 
 AR = ar rcs
 
