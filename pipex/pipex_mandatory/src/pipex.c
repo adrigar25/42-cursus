@@ -6,31 +6,31 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 22:32:05 by agarcia           #+#    #+#             */
-/*   Updated: 2025/08/03 14:52:14 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/09/04 18:10:10 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./pipex.h"
 
-int	get_exit_status(int status)
+int get_exit_status(int status)
 {
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	return (128 + WTERMSIG(status));
 }
 
-void	ft_close_pipe(int pipefds[2])
+void ft_close_pipe(int pipefds[2])
 {
 	close(pipefds[0]);
 	close(pipefds[1]);
 }
 
-int	main(int argc, char **argv, char **envp)
+int main(int argc, char **argv, char **envp)
 {
-	int		pipefds[2];
-	int		status;
-	pid_t	pid1;
-	pid_t	pid2;
+	int pipefds[2];
+	int status;
+	pid_t pid1;
+	pid_t pid2;
 
 	if (argc != 5)
 		return (1);
