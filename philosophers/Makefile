@@ -1,34 +1,46 @@
 NAME = philo
+BONUS_NAME = philo_bonus
 
 CC = cc
 
-CFLAGS = -Werror -Wextra -Wall -pthread
+CFLAGS = -Wall -Wextra -Werror -pthread
 
-DIR = ./philo
-OBJDIR = objs
+SRC_MAND = src/mandatory/philo
+SRC_BONUS = src/bonus/philo
+OBJDIR_MAND = objs/mandatory
+OBJDIR_BONUS = objs/bonus
 
-SRCS = $(DIR)/main.c \
-		$(DIR)/philo_actions.c \
-		$(DIR)/time_utils.c \
-		$(DIR)/write_status.c \
-		$(DIR)/init.c \
+SRCS_MAND = $(wildcard $(SRC_MAND)/*.c)
+SRCS_BONUS = $(wildcard $(SRC_BONUS)/*.c)
 
-OBJS = $(SRCS:%.c=$(OBJDIR)/%.o)
+OBJS_MAND = $(SRCS_MAND:$(SRC_MAND)/%.c=$(OBJDIR_MAND)/%.o)
+OBJS_BONUS = $(SRCS_BONUS:$(SRC_BONUS)/%.c=$(OBJDIR_BONUS)/%.o)
 
 all: $(NAME)
-$(NAME): $(OBJS) 
-	$(CC) $(CFLAGS) $(OBJS)  -o $(DIR)/$(NAME)
 
-$(OBJDIR)/%.o: %.c
-	mkdir -p $(OBJDIR)/$(dir $*)
+$(NAME): $(OBJS_MAND)
+	$(CC) $(CFLAGS) $(OBJS_MAND) -o $(NAME)
+
+bonus: $(BONUS_NAME)
+
+$(BONUS_NAME): $(OBJS_BONUS)
+	$(CC) $(CFLAGS) $(OBJS_BONUS) -o $(BONUS_NAME)
+
+$(OBJDIR_MAND)/%.o: $(SRC_MAND)/%.c
+	mkdir -p $(OBJDIR_MAND)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(OBJDIR_BONUS)/%.o: $(SRC_BONUS)/%.c
+	mkdir -p $(OBJDIR_BONUS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -rf $(OBJDIR)
+	@rm -rf $(OBJDIR_MAND) $(OBJDIR_BONUS)
 
 fclean: clean
-	rm -f $(DIR)/$(NAME)
+	@rm -rf $(NAME) $(BONUS_NAME) objs
 
-re: clean all
+re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all bonus clean fclean re
+
