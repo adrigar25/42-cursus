@@ -41,14 +41,8 @@ void	sleep_philo(long duration_ms, t_table *table, int check_stop)
 
 	start = get_time_ms();
 	if (check_stop)
-	{
-		while (!table->sim_stop)
-		{
-			if (get_time_ms() - start >= duration_ms)
-				break ;
-			usleep(100);
-		}
-	}
+		while (!table->sim_stop || get_time_ms() - start < duration_ms)
+			usleep(200);
 	else
 		while (get_time_ms() - start < duration_ms)
 			usleep(500);

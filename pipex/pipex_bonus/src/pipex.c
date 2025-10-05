@@ -60,13 +60,11 @@ int	ft_child_process(t_ppx *ctx)
 	pid_t	pid;
 	int		is_here_doc;
 	int		is_first;
-	int		is_last;
 	int		outfile_fd;
 
 	is_here_doc = (strcmp(ctx->argv[1], "here_doc") == 0);
 	is_first = (ctx->i == 2 + is_here_doc);
-	is_last = (ctx->i == ctx->argc - 2);
-	if (is_last)
+	if (ctx->i == ctx->argc - 2)
 	{
 		pid = fork();
 		if (pid == -1)

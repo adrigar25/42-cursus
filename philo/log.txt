@@ -1,0 +1,671 @@
+
+
+#include "philosophers.h"
+
+int	main(int argc, char **argv, char **envp)
+{
+	const char		*name_function = "(main.c)";
+	t_data			data;
+	int				ret;
+
+	if (argc != 5 && argc != 6)
+	{
+		ft_error(name_function, (char *[2]){ERR_NUM_ARGS, NULL});
+		return (1);
+	}
+	data = ft_construct_data(argc, argv, envp);
+	if (ft_create_thread(&data) != 0)
+		return (1);
+	ret = ft_philosophers(&data);
+	ft_cleanup_data(&data);
+	return (ret);
+}
+
+#include "../philosophers.h"
+
+int	ft_init_mutexes(pthread_mutex_t *forks, int number_of_philosophers)
+{
+	const char	*name_function = "(ft_init_mutexes.c)";
+	int			i;
+
+	i = 0;
+	while (i < number_of_philosophers)
+	{
+		if (pthread_mutex_init(&forks[i], NULL) != 0)
+		{
+			ft_error(name_function, (char *[2]){ERR_INIT_MUTEX, NULL});
+			return (1);
+		}
+		i++;
+	}
+	return (0);
+}
+
+#include "../philosophers.h"
+
+static int	ft_start_monitor_thread(pthread_t *monitor_thread,
+		t_philosopher *philosophers, const char *name_function)
+{
+	if (pthread_create(monitor_thread, NULL, &ft_monitor, philosophers) != 0)
+	{
+		ft_error(name_function, (char *[2]){"Failed to spawn monitor", NULL});
+		return (1);
+	}
+	return (0);
+}
+
+static int	ft_join_philosopher_threads(t_philosopher *philosophers,
+		int number_of_philosophers)
+{
+	int	i;
+
+	i = 0;
+	while (i < number_of_philosophers)
+	{
+		pthread_join(philosophers[i].thread, NULL);
+		i++;
+	}
+	return (0);
+}
+
+int	ft_philosophers(t_data *data)
+{
+	const char		*name_function = "(ft_philosophers.c)";
+	t_philosopher	*philosophers;
+	pthread_t		monitor_thread;
+
+	philosophers = ft_create_philosophers(data);
+	if (!philosophers)
+		return (1);
+	if (ft_spawn_philosophers(philosophers) != 0)
+	{
+		ft_error(name_function, (char *[2]){"Failed to spawn threads", NULL});
+		ft_destroy_philosophers(philosophers);
+		return (1);
+	}
+	if (ft_start_monitor_thread(&monitor_thread, philosophers,
+			name_function) != 0)
+	{
+		ft_destroy_philosophers(philosophers);
+		return (1);
+	}
+	ft_join_philosopher_threads(philosophers, data->number_of_philosophers);
+	pthread_join(monitor_thread, NULL);
+	ft_destroy_philosophers(philosophers);
+	return (0);
+}
+
+#include "../../philosophers.h"
+
+int	ft_cleanup_data(t_data *data)
+{
+	int	i;
+
+	if (!data)
+		return (-1);
+	if (data->forks)
+	{
+		i = 0;
+		while (i < data->number_of_philosophers)
+		{
+			pthread_mutex_destroy(&data->forks[i]);
+			i++;
+		}
+		free(data->forks);
+		data->forks = NULL;
+	}
+	pthread_mutex_destroy(&data->print);
+	// eat_cond and eat_mtx removed from t_data; no need to destroy them
+	
+	return (0);
+}
+
+#include "../../philosophers.h"
+
+t_data	ft_construct_data(int argc, char **argv, char **envp)
+{
+	const char		*name_function = "(ft_construct_data.c)";
+	t_data			data;
+
+	data.number_of_philosophers = ft_atoi(argv[1]);
+	if (data.number_of_philosophers < 1)
+		ft_error(name_function, (char *[2]){ERR_NUM_PHILOSOPHERS, NULL});
+	data.time_to_die = ft_atoi(argv[2]);
+	if (data.time_to_die < 0)
+		ft_error(name_function, (char *[2]){ERR_TIME_TO_DIE, NULL});
+	data.time_to_eat = ft_atoi(argv[3]);
+	if (data.time_to_eat < 0)
+		ft_error(name_function, (char *[2]){ERR_TIME_TO_EAT, NULL});
+	data.time_to_sleep = ft_atoi(argv[4]);
+	if (data.time_to_sleep < 0)
+		ft_error(name_function, (char *[2]){ERR_TIME_TO_SLEEP, NULL});
+	if (argc == 6)
+		data.number_of_times_each_philosopher_must_eat = ft_atoi(argv[5]);
+	else
+		data.number_of_times_each_philosopher_must_eat = -1;
+	return (data);
+}
+
+#include "../../philosophers.h"
+
+void	ft_put_forks(t_philosopher *p)
+{
+	int		first;
+	int		second;
+
+	if (p->left_fork_idx < p->right_fork_idx)
+	{
+		first = p->left_fork_idx;
+		second = p->right_fork_idx;
+	}
+	else
+	{
+		first = p->right_fork_idx;
+		second = p->left_fork_idx;
+	}
+	pthread_mutex_unlock(&p->data->forks[first]);
+	pthread_mutex_unlock(&p->data->forks[second]);
+}
+
+#include "../../philosophers.h"
+
+void	ft_take_forks(t_philosopher *p)
+{
+	int		first;
+	int		second;
+
+	if (p->left_fork_idx < p->right_fork_idx)
+	{
+		first = p->left_fork_idx;
+		second = p->right_fork_idx;
+	}
+	else
+	{
+		first = p->right_fork_idx;
+		second = p->left_fork_idx;
+	}
+	pthread_mutex_lock(&p->data->forks[first]);
+	ft_print_status(p->data, p->id, "has taken a fork");
+	pthread_mutex_lock(&p->data->forks[second]);
+	ft_print_status(p->data, p->id, "has taken a fork");
+}
+
+#include "../../philosophers.h"
+
+int	ft_init_mutexes(pthread_mutex_t *forks, int number_of_philosophers)
+{
+	const char	*name_function = "(ft_init_mutexes.c)";
+	int			i;
+
+	i = 0;
+	while (i < number_of_philosophers)
+	{
+		if (pthread_mutex_init(&forks[i], NULL) != 0)
+		{
+			ft_error(name_function, (char *[2]){ERR_INIT_MUTEX, NULL});
+			return (1);
+		}
+		i++;
+	}
+	return (0);
+}
+
+#include "../../philosophers.h"
+
+t_philosopher	*ft_create_philosophers(t_data *data)
+{
+	const char		*name_function = "(ft_create_philosophers.c)";
+	t_philosopher	*philosophers;
+	int				i;
+
+	philosophers = malloc(sizeof(t_philosopher) * data->number_of_philosophers);
+	if (!philosophers)
+	{
+		ft_error(name_function, (char *[2]){ERR_MALLOC_PHILOSOPHER, NULL});
+		return (NULL);
+	}
+	i = 0;
+	while (i < data->number_of_philosophers)
+	{
+		philosophers[i].id = i + 1;
+		philosophers[i].meals_eaten = 0;
+		philosophers[i].last_meal_ms = 0;
+		philosophers[i].left_fork_idx = i;
+		philosophers[i].right_fork_idx = (i + 1) % data->number_of_philosophers;
+		pthread_mutex_init(&philosophers[i].meal_mtx, NULL);
+		philosophers[i].finished = 0;
+		philosophers[i].data = data;
+		i++;
+	}
+	return (philosophers);
+}
+
+#include "../../philosophers.h"
+
+int	ft_destroy_philosophers(t_philosopher *philosophers)
+{
+	const char		*name_function = "(ft_destroy_philosophers.c)";
+	int				i;
+
+	if (!philosophers)
+		return (0);
+	i = 0;
+	while (i < philosophers[0].data->number_of_philosophers)
+	{
+		pthread_mutex_destroy(&philosophers[i].meal_mtx);
+		i++;
+	}
+	free(philosophers);
+	return (0);
+}
+
+#include "../../philosophers.h"
+
+static int	ft_check_philo(t_data *data, t_philosopher *philos, int i,
+		int *all_finished)
+{
+	long	now;
+
+
+	   lock meal_mtx then print. Then, if a death is detected, lock the print
+	   mutex to serialize the output. */
+	pthread_mutex_lock(&philos[i].meal_mtx);
+	now = ft_now_ms();
+	if ((now - philos[i].last_meal_ms) > data->time_to_die)
+	{
+	
+		pthread_mutex_unlock(&philos[i].meal_mtx);
+		ft_print_status(data, philos[i].id, "died");
+		return (1);
+	}
+	if (data->number_of_times_each_philosopher_must_eat > 0)
+	{
+		if (philos[i].meals_eaten
+			< data->number_of_times_each_philosopher_must_eat)
+			*all_finished = 0;
+	}
+	pthread_mutex_unlock(&philos[i].meal_mtx);
+	return (0);
+}
+
+void	*ft_monitor(void *arg)
+{
+	t_philosopher	*philos;
+	t_data			*data;
+	int				array[2];
+
+	philos = (t_philosopher *)arg;
+	data = philos->data;
+	while (!data->stop)
+	{
+		array[0] = 0;
+		array[1] = 1;
+		while (array[0] < data->number_of_philosophers)
+		{
+			if (ft_check_philo(data, philos, array[0], &array[1]))
+				return (NULL);
+			array[0]++;
+		}
+		if (data->number_of_times_each_philosopher_must_eat > 0 && array[1])
+		{
+			data->stop = 1;
+			return (NULL);
+		}
+	usleep(100);
+	}
+	return (NULL);
+}
+
+#include "../../philosophers.h"
+
+static int	ft_check_philo_finished(t_philosopher *philo)
+{
+	int	limit;
+	int	finished;
+
+	limit = philo->data->number_of_times_each_philosopher_must_eat;
+	if (limit <= 0)
+		return (0);
+	pthread_mutex_lock(&philo->meal_mtx);
+	if (philo->meals_eaten >= limit)
+	{
+		philo->finished = 1;
+		finished = 1;
+	}
+	else
+		finished = 0;
+	pthread_mutex_unlock(&philo->meal_mtx);
+	return (finished);
+}
+
+static void	ft_sleep_and_think(t_philosopher *philo)
+{
+	ft_print_status(philo->data, philo->id, "is sleeping");
+	ft_ms_sleep_check(philo->data, philo->data->time_to_sleep);
+	ft_print_status(philo->data, philo->id, "is thinking");
+	ft_ms_sleep_check(philo->data, 1);
+}
+
+void	*ft_philo_routine(void *arg)
+{
+	t_philosopher	*philo;
+
+	philo = (t_philosopher *)arg;
+	if (!philo)
+		return (NULL);
+
+	if (philo->id % 2 == 0)
+		ft_ms_sleep(philo->data->time_to_eat / 2);
+	while (!philo->data->stop)
+	{
+		ft_take_forks_and_eat(philo);
+		if (ft_check_philo_finished(philo))
+			break ;
+		ft_sleep_and_think(philo);
+	}
+	return (NULL);
+}
+
+#include "../../philosophers.h"
+
+void	ft_print_status(t_data *data, int id, const char *msg)
+{
+	long	timestamp;
+
+	pthread_mutex_lock(&data->print);
+	timestamp = ft_now_ms() - data->start_time;
+	if (data->stop && ft_strcmp(msg, "died") != 0)
+	{
+		pthread_mutex_unlock(&data->print);
+		return ;
+	}
+
+	if (ft_strcmp(msg, "died") == 0)
+		data->stop = 1;
+	ft_putstr("", 1, 0);
+	dprintf(1, "%ld %d %s\n", timestamp, id, msg);
+	pthread_mutex_unlock(&data->print);
+}
+
+#include "../../philosophers.h"
+
+int	ft_spawn_philosophers(t_philosopher *philosophers)
+{
+	int	i;
+	int	n;
+
+	if (!philosophers)
+		return (1);
+	n = philosophers[0].data->number_of_philosophers;
+	i = 0;
+	while (i < n)
+	{
+		philosophers[i].last_meal_ms = philosophers[i].data->start_time;
+		if (pthread_create(&philosophers[i].thread, NULL,
+				&ft_philo_routine, &philosophers[i]) != 0)
+		{
+			return (1);
+		}
+		i++;
+	}
+	return (0);
+}
+
+#include "../../philosophers.h"
+
+int	ft_start_eating(t_philosopher *philo)
+{
+	pthread_mutex_lock(&philo->meal_mtx);
+	philo->last_meal_ms = ft_now_ms();
+	philo->meals_eaten++;
+	pthread_mutex_unlock(&philo->meal_mtx);
+
+	if (philo->data->stop)
+		return (0);
+	ft_print_status(philo->data, philo->id, "is eating");
+	ft_ms_sleep_check(philo->data, philo->data->time_to_eat);
+	return (0);
+}
+
+#include "../../philosophers.h"
+
+void	*ft_take_forks_and_eat(t_philosopher *philo)
+{
+	if (philo->data->number_of_philosophers == 1)
+	{
+		pthread_mutex_lock(&philo->data->forks[philo->left_fork_idx]);
+		ft_print_status(philo->data, philo->id, "has taken a fork");
+		ft_ms_sleep_check(philo->data, philo->data->time_to_die);
+		pthread_mutex_unlock(&philo->data->forks[philo->left_fork_idx]);
+		return (NULL);
+	}
+	ft_take_forks(philo);
+	ft_start_eating(philo);
+	ft_put_forks(philo);
+	return (NULL);
+}
+
+#include "../../philosophers.h"
+
+long	ft_error(const char *function, char **str)
+{
+	const char	*name_function;
+	long		print;
+	int			i;
+
+	name_function = function;
+	print = 0;
+	print += ft_putstr("Error\n", 2, 1);
+	print += ft_putstr((char *)name_function, 2, 1);
+	print += ft_putchar('\n', 2);
+	i = 0;
+	while (str[i])
+	{
+		print += ft_putstr(str[i], 2, 1);
+		i++;
+	}
+	print += ft_putchar('\n', 2);
+	return (print);
+}
+
+#include "../../philosophers.h"
+
+long	ft_putchar(char c, int fd)
+{
+	return ((long)write(fd, &c, 1));
+}
+
+#include "../../philosophers.h"
+
+long	ft_putcolor(int fd, int color)
+{
+	const char	*s;
+	long		len;
+
+	if (color == 1)
+		s = RED;
+	else if (color == 2)
+		s = GREEN;
+	else if (color == 3)
+		s = YELLOW;
+	else if (color == 4)
+		s = ORANGE;
+	else if (color == 5)
+		s = BLUE;
+	else if (color == 6)
+		s = MAGENTA;
+	else if (color == 7)
+		s = CYAN;
+	else if (color == 8)
+		s = WHITE;
+	else if (color == 9)
+		s = RESET;
+	else
+		return (0);
+	len = ft_strlen(s);
+	return (ft_putstr(s, fd, color));
+}
+
+#include "../../philosophers.h"
+
+long	ft_putstr(const char *str, int fd, int color)
+{
+	int		i;
+	long	len_print;
+
+	i = 0;
+	len_print = 0;
+	if (color != 0 && color > 0 && color < 9)
+		len_print += ft_putcolor(fd, color);
+	while (str[i] != '\0')
+	{
+		len_print += ft_putchar(str[i], fd);
+		i++;
+	}
+	if (color != 0 && color > 0 && color < 9)
+		len_print += ft_putcolor(fd, 9);
+	return (len_print);
+}
+
+#include "../../philosophers.h"
+
+int	ft_create_thread(t_data *data)
+{
+	const char	*name_function = "(ft_create_thread)";
+
+	data->forks = malloc(sizeof(pthread_mutex_t)
+			* data->number_of_philosophers);
+	if (!data->forks)
+	{
+		ft_error(name_function, (char *[2]){ERR_MALLOC_PHILOSOPHER, NULL});
+		return (1);
+	}
+	if (ft_init_mutexes(data->forks, (int)data->number_of_philosophers) != 0)
+	{
+		free(data->forks);
+		return (1);
+	}
+	if (pthread_mutex_init(&data->print, NULL) != 0)
+	{
+		ft_error(name_function, (char *[2]){ERR_INIT_MUTEX, NULL});
+		free(data->forks);
+		return (1);
+	}
+	data->stop = 0;
+	data->start_time = ft_now_ms();
+	return (0);
+}
+
+#include "../../philosophers.h"
+
+void	ft_ms_sleep(long ms)
+{
+	long	start;
+
+	start = ft_now_ms();
+	while ((ft_now_ms() - start) < ms)
+		usleep(500);
+}
+
+void	ft_ms_sleep_check(t_data *data, long ms)
+{
+	long start;
+
+	start = ft_now_ms();
+	while ((ft_now_ms() - start) < ms)
+	{
+		if (data && data->stop)
+			break ;
+		usleep(200);
+	}
+}
+
+#include "../../philosophers.h"
+
+long	ft_now_ms(void)
+{
+	struct timeval	tv;
+
+	gettimeofday(&tv, NULL);
+	return (ft_timeval_to_ms(&tv));
+}
+
+#include "../../philosophers.h"
+
+long	ft_timeval_to_ms(struct timeval *tv)
+{
+	return (tv->tv_sec * 1000L + tv->tv_usec / 1000L);
+}
+
+#include "../../philosophers.h"
+
+ * ENGLISH: Converts a string to a long integer.
+ *
+ * SPANISH: Convierte una cadena a un número entero largo.
+ *
+ * @param str   The string to convert. /
+ *              La cadena a convertir.
+ *
+ * @returns The converted long integer. /
+ *          El número entero largo convertido.
+ */
+long	ft_atoi(const char *str)
+{
+	long	result;
+	int		sign;
+	int		i;
+
+	result = 0;
+	sign = 1;
+	i = 0;
+	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
+		i++;
+	if (str[i] == '-' || str[i] == '+')
+	{
+		if (str[i] == '-')
+			sign = -1;
+		i++;
+	}
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		result = result * 10 + (str[i] - '0');
+		i++;
+	}
+	return (result * sign);
+}
+
+#include "../../philosophers.h"
+
+ * ENGLISH: Compares two strings.
+ *
+ * SPANISH: Compara dos cadenas.
+ *
+ * @param s1   The first string. /
+ *              La primera cadena.
+ * @param s2   The second string. /
+ *              La segunda cadena.
+ *
+ * @returns 0 if equal, negative if s1 < s2, positive if s1 > s2. /
+ *          0 si son iguales, negativo si s1 < s2, positivo si s1 > s2.
+ */
+int	ft_strcmp(const char *s1, const char *s2)
+{
+	while (*s1 && *s2 && (*s1 == *s2))
+	{
+		s1++;
+		s2++;
+	}
+	return ((unsigned char)*s1 - (unsigned char)*s2);
+}
+
+#include "../../philosophers.h"
+
+size_t	ft_strlen(const char *s)
+{
+	size_t	len;
+
+	len = 0;
+	while (s[len])
+		len++;
+	return (len);
+}
