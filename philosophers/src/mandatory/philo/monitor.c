@@ -35,25 +35,26 @@ static int	check_all_ate(t_table *table)
 int	check_philo_dead(t_philo *philo, t_table *table)
 {
 	long	now;
+	int		should_die;
 
-	pthread_mutex_lock(&philo->meal_time_lock);
+	pthread_mutex_lock(&philo->meal_mutex);
 	now = get_time_ms();
-	if ((now - philo->last_meal) >= table->time_to_die)
+	should_die = ((now - philo->last_meal) >= table->time_to_die + 2);
+	pthread_mutex_unlock(&philo->meal_mutex);
+	if (should_die)
 	{
-		pthread_mutex_lock(&table->write_lock);
+		/* marcar sim_stop de forma protegida (solo una vez) */
+		pthread_mutex_lock(&table->sim_stop_lock);
 		if (!table->sim_stop)
-		{
-			printf("%ld %d %s\n", get_timestamp(table->start_time), philo->id,
-				STATUS_DIED);
-			pthread_mutex_lock(&table->sim_stop_lock);
 			table->sim_stop = 1;
-			pthread_mutex_unlock(&table->sim_stop_lock);
-		}
+		pthread_mutex_unlock(&table->sim_stop_lock);
+		/* imprimir muerte de forma serializada */
+		pthread_mutex_lock(&table->write_lock);
+		printf("%ld %d %s\n", get_timestamp(table->start_time), philo->id,
+			STATUS_DIED);
 		pthread_mutex_unlock(&table->write_lock);
-		pthread_mutex_unlock(&philo->meal_time_lock);
 		return (1);
 	}
-	pthread_mutex_unlock(&philo->meal_time_lock);
 	return (0);
 }
 
@@ -81,7 +82,7 @@ void	*monitor(void *arg)
 			pthread_mutex_unlock(&table->sim_stop_lock);
 			return (NULL);
 		}
-		usleep(200);
+		usleep(100);
 	}
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 23:11:36 by agarcia           #+#    #+#             */
-/*   Updated: 2025/10/06 00:17:58 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/10/06 01:28:55 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ typedef struct s_philo
 	unsigned int		times_ate;
 	unsigned int		fork[2];
 	long				last_meal;
-	pthread_mutex_t		meal_time_lock;
+	pthread_mutex_t		meal_mutex;
 	t_table				*table;
 }						t_philo;
 

@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 23:26:31 by agarcia           #+#    #+#             */
-/*   Updated: 2025/10/05 19:16:27 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/10/06 01:28:55 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,9 @@ int	start_simulation(t_table *table)
 	i = 0;
 	while (i < table->n_philos)
 	{
-		pthread_mutex_lock(&table->philos[i]->meal_time_lock);
+		pthread_mutex_lock(&table->philos[i]->meal_mutex);
 		table->philos[i]->last_meal = table->start_time;
-		pthread_mutex_unlock(&table->philos[i]->meal_time_lock);
+		pthread_mutex_unlock(&table->philos[i]->meal_mutex);
 		i++;
 	}
 	if (!create_threads(table))
@@ -83,7 +83,7 @@ int	free_table(t_table *table)
 	while (i < table->n_philos)
 	{
 		pthread_mutex_destroy(&table->forks[i]);
-		pthread_mutex_destroy(&table->philos[i]->meal_time_lock);
+		pthread_mutex_destroy(&table->philos[i]->meal_mutex);
 		free(table->philos[i]);
 		i++;
 	}

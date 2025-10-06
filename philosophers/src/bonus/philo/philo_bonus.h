@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 23:11:36 by agarcia           #+#    #+#             */
-/*   Updated: 2025/10/03 12:50:50 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/10/06 01:28:55 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ typedef struct s_philo
 	int				times_ate;
 	pid_t			pid;
 	long			last_meal;
-	pthread_mutex_t	meal_time_lock;
+	pthread_mutex_t	meal_mutex;
 	struct s_table	*table;
 }					t_philo;
 

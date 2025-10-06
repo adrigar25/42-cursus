@@ -15,17 +15,29 @@
 #include <stdio.h>
 #include <unistd.h>
 
+static int	is_sim_stopped(t_table *table)
+{
+	int	ret;
+
+	pthread_mutex_lock(&table->sim_stop_lock);
+	ret = table->sim_stop;
+	pthread_mutex_unlock(&table->sim_stop_lock);
+	return (ret);
+}
+
 int	write_status(t_philo *philo, const char *status)
 {
 	t_table	*table;
 	long	ts;
 	int		id;
+	int		stop;
 
 	if (!philo || !status)
 		return (0);
 	table = philo->table;
+	stop = is_sim_stopped(table); // primero leemos esto
 	pthread_mutex_lock(&table->write_lock);
-	if (!table->sim_stop)
+	if (!stop)
 	{
 		ts = get_timestamp(table->start_time);
 		id = (int)philo->id;
@@ -41,11 +53,11 @@ void	sleep_philo(long duration_ms, t_table *table, int check_stop)
 
 	start = get_time_ms();
 	if (check_stop)
-		while (!table->sim_stop || get_time_ms() - start < duration_ms)
+		while (!table->sim_stop && get_time_ms() - start < duration_ms)
 			usleep(200);
 	else
 		while (get_time_ms() - start < duration_ms)
-			usleep(500);
+			usleep(200);
 }
 
 long	calc_think_time(t_philo *philo)
@@ -55,9 +67,9 @@ long	calc_think_time(t_philo *philo)
 	long	time_to_think;
 
 	table = philo->table;
-	pthread_mutex_lock(&philo->meal_time_lock);
+	pthread_mutex_lock(&philo->meal_mutex);
 	time_left = table->time_to_die - (get_time_ms() - philo->last_meal);
-	pthread_mutex_unlock(&philo->meal_time_lock);
+	pthread_mutex_unlock(&philo->meal_mutex);
 	time_to_think = (time_left - table->time_to_eat) / 2;
 	if (time_to_think < 0)
 		time_to_think = 0;
@@ -89,9 +101,9 @@ int	eat(t_philo *philo)
 	write_status(philo, STATUS_FORK);
 	pthread_mutex_lock(&table->forks[second_fork]);
 	write_status(philo, STATUS_FORK);
-	pthread_mutex_lock(&philo->meal_time_lock);
+	pthread_mutex_lock(&philo->meal_mutex);
 	philo->last_meal = get_time_ms();
-	pthread_mutex_unlock(&philo->meal_time_lock);
+	pthread_mutex_unlock(&philo->meal_mutex);
 	write_status(philo, STATUS_EATING);
 	sleep_philo(table->time_to_eat, table, 1);
 	pthread_mutex_lock(&table->sim_stop_lock);
@@ -119,7 +131,7 @@ void	*routine(void *arg)
 	}
 	if (philo->id % 2 == 0)
 		sleep_philo(philo->table->time_to_eat / 2, philo->table, 0);
-	while (!philo->table->sim_stop)
+	while (!is_sim_stopped(philo->table))
 	{
 		if (!eat(philo))
 			break ;

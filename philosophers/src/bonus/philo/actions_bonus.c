@@ -63,10 +63,10 @@ static void	*philo_monitor(void *arg)
 	table = philo->table;
 	while (1)
 	{
-		pthread_mutex_lock(&philo->meal_time_lock);
+		pthread_mutex_lock(&philo->meal_mutex);
 		if (get_time_ms() - philo->last_meal >= table->time_to_die)
 		{
-			pthread_mutex_unlock(&philo->meal_time_lock);
+			pthread_mutex_unlock(&philo->meal_mutex);
 			sem_wait(table->write_sem);
 			if (!table->sim_stop)
 			{
@@ -81,7 +81,7 @@ static void	*philo_monitor(void *arg)
 					kill(table->philos[i]->pid, SIGKILL);
 			exit(1);
 		}
-		pthread_mutex_unlock(&philo->meal_time_lock);
+		pthread_mutex_unlock(&philo->meal_mutex);
 		usleep(500);
 	}
 	return (NULL);
@@ -96,9 +96,9 @@ static void	eat(t_philo *philo)
 	write_status(philo, STATUS_FORK);
 	sem_wait(table->forks);
 	write_status(philo, STATUS_FORK);
-	pthread_mutex_lock(&philo->meal_time_lock);
+	pthread_mutex_lock(&philo->meal_mutex);
 	philo->last_meal = get_time_ms();
-	pthread_mutex_unlock(&philo->meal_time_lock);
+	pthread_mutex_unlock(&philo->meal_mutex);
 	write_status(philo, STATUS_EATING);
 	sleep_philo(table->time_to_eat);
 	philo->times_ate++;

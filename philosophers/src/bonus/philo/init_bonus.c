@@ -34,7 +34,7 @@ int	init_philosophers(t_table *table)
 		table->philos[i]->times_ate = 0;
 		table->philos[i]->table = table;
 		table->philos[i]->last_meal = 0;
-		pthread_mutex_init(&table->philos[i]->meal_time_lock, NULL);
+		pthread_mutex_init(&table->philos[i]->meal_mutex, NULL);
 		i++;
 	}
 	return (1);
