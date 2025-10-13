@@ -35,8 +35,12 @@ int	write_status(t_philo *philo, const char *status)
 	if (!philo || !status)
 		return (0);
 	table = philo->table;
-	stop = is_sim_stopped(table);
+	// 🔒 Tomamos primero el write_lock
 	pthread_mutex_lock(&table->write_lock);
+	// Leemos sim_stop dentro del lock para evitar race condition
+	pthread_mutex_lock(&table->sim_stop_lock);
+	stop = table->sim_stop;
+	pthread_mutex_unlock(&table->sim_stop_lock);
 	if (!stop)
 	{
 		ts = get_timestamp(table->start_time);
