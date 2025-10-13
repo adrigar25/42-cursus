@@ -39,16 +39,14 @@ int	check_philo_dead(t_philo *philo, t_table *table)
 
 	pthread_mutex_lock(&philo->meal_mutex);
 	now = get_time_ms();
-	should_die = ((now - philo->last_meal) >= table->time_to_die + 2);
+	should_die = ((now - philo->last_meal) >= table->time_to_die);
 	pthread_mutex_unlock(&philo->meal_mutex);
 	if (should_die)
 	{
-		/* marcar sim_stop de forma protegida (solo una vez) */
 		pthread_mutex_lock(&table->sim_stop_lock);
 		if (!table->sim_stop)
 			table->sim_stop = 1;
 		pthread_mutex_unlock(&table->sim_stop_lock);
-		/* imprimir muerte de forma serializada */
 		pthread_mutex_lock(&table->write_lock);
 		printf("%ld %d %s\n", get_timestamp(table->start_time), philo->id,
 			STATUS_DIED);

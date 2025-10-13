@@ -6,25 +6,73 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 23:26:31 by agarcia           #+#    #+#             */
-/*   Updated: 2025/10/06 01:28:55 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/10/13 15:38:30 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./philo.h"
+#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+
+/* Argument checks: only digits (optional leading '+'), no overflow (> INT_MAX),
+	> 0 */
+static int	is_valid_number(const char *str)
+{
+	int	i;
+
+	if (!str || !*str)
+		return (0);
+	i = 0;
+	if (str[i] == '+')
+		i++;
+	if (!str[i])
+		return (0);
+	while (str[i])
+	{
+		if (str[i] < '0' || str[i] > '9')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+static int	is_overflow(const char *str)
+{
+	long	num;
+	int		i;
+	int		digit;
+
+	num = 0;
+	i = 0;
+	if (!str)
+		return (1);
+	if (str[i] == '+')
+		i++;
+	while (str[i])
+	{
+		digit = str[i] - '0';
+		if (num > INT_MAX / 10 || (num == INT_MAX / 10 && digit > INT_MAX % 10))
+			return (1);
+		num = num * 10 + digit;
+		i++;
+	}
+	return (0);
+}
 
 int	check_arguments(int argc, char **argv)
 {
 	int	i;
 
-	i = 1;
 	if (argc < 5 || argc > 6)
 		return (0);
+	i = 1;
 	while (i < argc)
 	{
-		if (*argv[i] < '0' || *argv[i] > '9')
+		if (!is_valid_number(argv[i]) || is_overflow(argv[i]))
+			return (0);
+		if (ft_atoi(argv[i]) <= 0)
 			return (0);
 		i++;
 	}

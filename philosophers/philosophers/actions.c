@@ -35,7 +35,7 @@ int	write_status(t_philo *philo, const char *status)
 	if (!philo || !status)
 		return (0);
 	table = philo->table;
-	stop = is_sim_stopped(table); // primero leemos esto
+	stop = is_sim_stopped(table);
 	pthread_mutex_lock(&table->write_lock);
 	if (!stop)
 	{
@@ -138,6 +138,7 @@ void	*routine(void *arg)
 		if (philo->table->must_eat_count != -1
 			&& philo->times_ate >= (unsigned int)philo->table->must_eat_count)
 			break ;
+		write_status(philo, STATUS_SLEEPING);
 		sleep_philo(philo->table->time_to_sleep, philo->table, 1);
 		time_to_think = calc_think_time(philo);
 		if (time_to_think > 0)
