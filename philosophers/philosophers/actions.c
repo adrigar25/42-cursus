@@ -52,12 +52,17 @@ void	sleep_philo(long duration_ms, t_table *table, int check_stop)
 	long	start;
 
 	start = get_time_ms();
-	if (check_stop)
-		while (!table->sim_stop && get_time_ms() - start < duration_ms)
-			usleep(200);
-	else
-		while (get_time_ms() - start < duration_ms)
-			usleep(200);
+	while (get_time_ms() - start < duration_ms)
+	{
+		pthread_mutex_lock(&table->sim_stop_lock);
+		if (check_stop && table->sim_stop)
+		{
+			pthread_mutex_unlock(&table->sim_stop_lock);
+			break ;
+		}
+		pthread_mutex_unlock(&table->sim_stop_lock);
+		usleep(200);
+	}
 }
 
 long	calc_think_time(t_philo *philo)
