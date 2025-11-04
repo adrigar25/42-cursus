@@ -5,20 +5,18 @@ CFLAGS = -Wall -Wextra -Werror -pthread
 SRC_DIR = src
 OBJ_DIR = objs
 
-SRCS = main.c \
-	   philo.c \
-	   actions.c \
-	   utils.c \
-	   time_utils.c \
-	   check.c \
-	   monitor.c \
-	   mutex_utils.c \
-	   sync.c \
-	   init.c \
+SRCS = $(SRC_DIR)/main.c \
+	   $(SRC_DIR)/philo.c \
+	   $(SRC_DIR)/actions.c \
+	   $(SRC_DIR)/utils.c \
+	   $(SRC_DIR)/time_utils.c \
+	   $(SRC_DIR)/check.c \
+	   $(SRC_DIR)/monitor.c \
+	   $(SRC_DIR)/mutex_utils.c \
+	   $(SRC_DIR)/sync.c \
+	   $(SRC_DIR)/init.c \
 
-SRC_FILES = $(addprefix $(SRC_DIR)/, $(SRCS))
-OBJS = $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
-
+OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 all: $(NAME)
 
 $(NAME): $(OBJS)
