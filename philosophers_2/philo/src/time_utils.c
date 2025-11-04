@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 17:39:04 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/03 23:29:43 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/04 03:15:22 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ long	get_time(int unit)
 
 long	get_timestamp(long start_time)
 {
-	return ((get_time(TIME_US) - start_time) / 1000);
+	return ((get_time(TIME_MS) - start_time));
 }
 
 void	ft_usleep(long usec, t_table *table)
@@ -38,6 +38,6 @@ void	ft_usleep(long usec, t_table *table)
 	{
 		if (simulation_stopped(table))
 			break ;
-		usleep(150);
+		usleep(50);
 	}
 }

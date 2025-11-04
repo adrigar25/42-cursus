@@ -7,6 +7,7 @@ OBJ_DIR = objs
 
 SRCS = main.c \
 	   philo.c \
+	   actions.c \
 	   utils.c \
 	   time_utils.c \
 	   check.c \

@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 17:18:42 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/03 23:32:59 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/04 01:30:49 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,11 @@ typedef struct s_table	t_table;
 typedef struct s_philo
 {
 	pthread_t			thread;
-	unsigned int		id;
-	unsigned int		times_ate;
-	unsigned int		left_fork;
-	unsigned int		right_fork;
-	unsigned long		last_meal_time;
+	int					id;
+	int					times_ate;
+	int					left_fork;
+	int					right_fork;
+	long				last_meal_time;
 	long				full;
 	t_table				*table;
 	pthread_mutex_t		philo_lock;
@@ -60,7 +60,7 @@ typedef struct s_table
 	pthread_t			monitor_thread;
 	int					all_threads_created;
 	pthread_mutex_t		table_lock;
-	long				threads_running;
+	int					threads_running;
 }						t_table;
 
 // PHILO
@@ -70,7 +70,7 @@ int						start_simulation(t_table *table);
 t_table					*init_data(int argc, char **argv);
 int						init_table(t_table *table, int argc, char **argv);
 int						init_forks(t_table *table);
-t_philo					*init_philos(int n_philos, t_table *table);
+int						init_philos(t_table *table);
 void					*monitor_simulation(void *arg);
 void					wait_all_threads_running(t_table *table);
 void					think(t_philo *philo, int print);
@@ -78,12 +78,6 @@ int						write_status(t_philo *philo, t_table *table,
 							const char *status);
 int						all_threads_running(t_table *table);
 void					desync_philos(t_philo *philo);
-// Acciones para mutex_handle
-# define MUTEX_INIT 1
-# define MUTEX_LOCK 2
-# define MUTEX_UNLOCK 3
-# define MUTEX_TRYLOCK 4
-# define MUTEX_DESTROY 5
 
 // CLEANUP
 
@@ -94,8 +88,12 @@ void					cleanup_table(t_table *table);
 int						ft_atoi(const char *str);
 int						ft_isdigit(int c);
 int						ft_strcmp(const char *s1, const char *s2);
+int						create_threads(t_table *table);
+void					cleanup_table(t_table *table);
 
 // PHILO ACTIONS
+void					*solo_routine(void *arg);
+void					*routine(void *arg);
 int						eat(t_philo *philo);
 int						sleep_philo(int time_to_sleep, t_table *table);
 void					think(t_philo *philo, int print);
@@ -107,7 +105,6 @@ int						is_overflow(const char *str);
 int						check_args(int argc, char **argv);
 
 // TIME UTILS
-int						mutex_handle(pthread_mutex_t *mutex, int action);
 # define TIME_MS 1
 # define TIME_US 2
 
@@ -121,16 +118,16 @@ int						get_int(pthread_mutex_t *mutex, int *src);
 void					set_long(pthread_mutex_t *mutex, long *dest,
 							long value);
 long					get_long(pthread_mutex_t *mutex, long *src);
-void					set_uint(pthread_mutex_t *mutex, unsigned int *dest,
-							unsigned int value);
 unsigned int			get_uint(pthread_mutex_t *mutex, unsigned int *src);
 void					set_ulong(pthread_mutex_t *mutex, unsigned long *dest,
 							unsigned long value);
 unsigned long			get_ulong(pthread_mutex_t *mutex, unsigned long *src);
 void					increment_int(pthread_mutex_t *mutex, int *value);
-void					increment_uint(pthread_mutex_t *mutex,
-							unsigned int *value);
 void					increment_long(pthread_mutex_t *mutex, long *value);
-int						check_bool(pthread_mutex_t *mutex, int *flag);
 int						simulation_stopped(t_table *table);
+
+// SYNC
+
+void					wait_all_threads_created(t_table *table);
+void					wait_all_threads_running(t_table *table);
 #endif
