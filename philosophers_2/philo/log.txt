@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 18:45:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/10/20 18:34:38 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/10/21 20:24:01 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	check_args(int argc, char **argv)
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 17:19:24 by agarcia           #+#    #+#             */
-/*   Updated: 2025/10/20 18:39:16 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/10/26 13:32:09 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,8 @@ int	check_args(int argc, char **argv)
 
 int	main(int argc, char **argv)
 {
+	t_table	*table;
+
 	if (argc < 5)
 	{
 		printf("./philo <number_of_philosophers> <time_to_die> <time_to_eat> <time_to_sleep> <number_of_times_each_philosopher_must_eat>\n");
@@ -99,7 +101,11 @@ int	main(int argc, char **argv)
 		printf("Error: Invalid arguments\n");
 		return (1);
 	}
-	philosophers(argc, argv);
+	table = init_data(argc, argv);
+	if (!table)
+		return (1);
+	start_simulation(table);
+	cleanup_table(table);
 	return (0);
 }
 /* ************************************************************************** */
@@ -110,85 +116,288 @@ int	main(int argc, char **argv)
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 19:10:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/10/21 16:15:31 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/03 11:24:23 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 #include <unistd.h>
 
-static int	check_all_ate(t_table *table)
+int	philo_died(t_philo *philo)
 {
-	int	i;
+	long	elapsed;
+	long	t_to_die;
+	long	last_meal;
+	int		full;
 
-	if (table->must_eat_count == -1)
+	mutex_handle(&philo->philo_lock, MUTEX_LOCK);
+	last_meal = philo->last_meal_time;
+	full = philo->full;
+	mutex_handle(&philo->philo_lock, MUTEX_UNLOCK);
+	elapsed = get_time(TIME_US) - last_meal;
+	t_to_die = (long)philo->table->time_to_die;
+	if (full)
 		return (0);
-	i = 0;
-	while (i < table->n_philos)
-	{
-		if ((int)table->philos[i].times_ate < table->must_eat_count)
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
-int	check_philo_dead(t_philo *philo, t_table *table)
-{
-	long	now;
-	long	last_meal_time;
-	long	died;
-
-	pthread_mutex_lock(&philo->meal_lock);
-	last_meal_time = philo->last_meal_time;
-	pthread_mutex_unlock(&philo->meal_lock);
-	now = get_time_ms();
-	died = now - last_meal_time;
-	if (died > (long)table->time_to_die)
-	{
-		pthread_mutex_lock(&table->sim_stop_lock);
-		table->sim_stop = 1;
-		pthread_mutex_unlock(&table->sim_stop_lock);
-		write_status(philo, table, STATUS_DIED);
+	if (elapsed > t_to_die)
 		return (1);
-	}
 	return (0);
 }
 
-int	monitor_simulation(t_table *table)
+void	*monitor_simulation(void *arg)
 {
-	int	i;
-
-	if (!table)
-		return (0);
-	while (1)
-	{
-		i = 0;
-		while (i < table->n_philos)
-		{
-			if (check_philo_dead(&table->philos[i], table))
-				return (0);
-			i++;
-		}
-		if (check_all_ate(table))
-			return (1);
-		usleep(100);
-	}
-	return (1);
-}
-
-void	*monitor_thread_fn(void *arg)
-{
+	int		i;
+	int		all_full;
 	t_table	*table;
 
+	i = 0;
 	table = (t_table *)arg;
 	if (!table)
 		return (NULL);
-	(void)monitor_simulation(table);
-	pthread_mutex_lock(&table->sim_stop_lock);
-	table->sim_stop = 1;
-	pthread_mutex_unlock(&table->sim_stop_lock);
+	while (!all_threads_running(table))
+		usleep(200);
+	while (!simulation_stopped(table))
+	{
+		i = -1;
+		all_full = (table->must_eat_count != -1);
+		while (++i < table->n_philos && !simulation_stopped(table))
+		{
+			if (philo_died(table->philos + i))
+			{
+				write_status(&table->philos[i], table, STATUS_DIED);
+				set_int(&table->sim_stop_lock, &table->sim_stop, 1);
+			}
+			if (all_full && !get_long(&table->philos[i].philo_lock,
+					&table->philos[i].full))
+				all_full = 0;
+		}
+		if (all_full && table->must_eat_count != -1)
+			set_int(&table->sim_stop_lock, &table->sim_stop, 1);
+		ft_usleep(10, table);
+	}
 	return (NULL);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   mutex_utils.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/25 00:00:00 by agarcia           #+#    #+#             */
+/*   Updated: 2025/10/27 00:16:33 by agarcia          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+/*
+** MUTEX UTILITIES - Funciones para manejo seguro de variables compartidas
+**
+** Estas funciones simplifican el acceso a variables compartidas entre hilos,
+** encapsulando el patrón lock-modify-unlock en funciones reutilizables.
+**
+** EJEMPLO DE USO:
+**
+** En lugar de escribir:
+**     pthread_mutex_lock(&table->sim_stop_lock);
+**     table->sim_stop = 1;
+**     pthread_mutex_unlock(&table->sim_stop_lock);
+**
+** Puedes simplemente usar:
+**     set_int(&table->sim_stop_lock, &table->sim_stop, 1);
+**
+** Para leer:
+** En lugar de:
+**     pthread_mutex_lock(&table->sim_stop_lock);
+**     int stop = table->sim_stop;
+**     pthread_mutex_unlock(&table->sim_stop_lock);
+**
+** Usa:
+**     int stop = get_int(&table->sim_stop_lock, &table->sim_stop);
+**
+** BENEFICIOS:
+** - Código más limpio y legible
+** - Menos posibilidad de olvidar unlock
+** - Consistencia en el manejo de mutex
+** - Menos líneas de código
+*/
+
+#include "philo.h"
+
+/*
+** Establece un valor entero de forma segura con mutex
+*/
+void	set_int(pthread_mutex_t *mutex, int *dest, int value)
+{
+	pthread_mutex_lock(mutex);
+	*dest = value;
+	pthread_mutex_unlock(mutex);
+}
+
+/*
+** Obtiene un valor entero de forma segura con mutex
+*/
+int	get_int(pthread_mutex_t *mutex, int *src)
+{
+	int	value;
+
+	pthread_mutex_lock(mutex);
+	value = *src;
+	pthread_mutex_unlock(mutex);
+	return (value);
+}
+
+/*
+** Establece un valor long de forma segura con mutex
+*/
+void	set_long(pthread_mutex_t *mutex, long *dest, long value)
+{
+	pthread_mutex_lock(mutex);
+	*dest = value;
+	pthread_mutex_unlock(mutex);
+}
+
+/*
+** Obtiene un valor long de forma segura con mutex
+*/
+long	get_long(pthread_mutex_t *mutex, long *src)
+{
+	long	value;
+
+	pthread_mutex_lock(mutex);
+	value = *src;
+	pthread_mutex_unlock(mutex);
+	return (value);
+}
+
+/*
+** Establece un valor unsigned int de forma segura con mutex
+*/
+void	set_uint(pthread_mutex_t *mutex, unsigned int *dest, unsigned int value)
+{
+	pthread_mutex_lock(mutex);
+	*dest = value;
+	pthread_mutex_unlock(mutex);
+}
+
+/*
+** Obtiene un valor unsigned int de forma segura con mutex
+*/
+unsigned int	get_uint(pthread_mutex_t *mutex, unsigned int *src)
+{
+	unsigned int	value;
+
+	pthread_mutex_lock(mutex);
+	value = *src;
+	pthread_mutex_unlock(mutex);
+	return (value);
+}
+
+/*
+** Establece un valor unsigned long de forma segura con mutex
+*/
+void	set_ulong(pthread_mutex_t *mutex, unsigned long *dest,
+		unsigned long value)
+{
+	pthread_mutex_lock(mutex);
+	*dest = value;
+	pthread_mutex_unlock(mutex);
+}
+
+/*
+** Obtiene un valor unsigned long de forma segura con mutex
+*/
+unsigned long	get_ulong(pthread_mutex_t *mutex, unsigned long *src)
+{
+	unsigned long	value;
+
+	pthread_mutex_lock(mutex);
+	value = *src;
+	pthread_mutex_unlock(mutex);
+	return (value);
+}
+
+/*
+** Incrementa un valor entero de forma segura con mutex
+*/
+void	increment_int(pthread_mutex_t *mutex, int *value)
+{
+	pthread_mutex_lock(mutex);
+	(*value)++;
+	pthread_mutex_unlock(mutex);
+}
+
+/*
+** Incrementa un valor unsigned int de forma segura con mutex
+*/
+void	increment_uint(pthread_mutex_t *mutex, unsigned int *value)
+{
+	pthread_mutex_lock(mutex);
+	(*value)++;
+	pthread_mutex_unlock(mutex);
+}
+
+/*
+** Incrementa un valor long de forma segura con mutex
+*/
+void	increment_long(pthread_mutex_t *mutex, long *value)
+{
+	pthread_mutex_lock(mutex);
+	(*value)++;
+	pthread_mutex_unlock(mutex);
+}
+
+/*
+** Verifica si un valor booleano (int) es verdadero de forma segura
+*/
+int	check_bool(pthread_mutex_t *mutex, int *flag)
+{
+	int	result;
+
+	pthread_mutex_lock(mutex);
+	result = *flag;
+	pthread_mutex_unlock(mutex);
+	return (result);
+}
+
+/*
+** Manejo genérico de mutex mediante una acción.
+** Devuelve 0 en éxito, o código de error de pthread_* en fallo.
+** Acciones soportadas (ver philo.h):
+** - MUTEX_INIT:    pthread_mutex_init(mutex, NULL)
+** - MUTEX_LOCK:    pthread_mutex_lock(mutex)
+** - MUTEX_TRYLOCK: pthread_mutex_trylock(mutex)
+** - MUTEX_UNLOCK:  pthread_mutex_unlock(mutex)
+** - MUTEX_DESTROY: pthread_mutex_destroy(mutex)
+*/
+int	mutex_handle(pthread_mutex_t *mutex, int action)
+{
+	if (!mutex)
+		return (1);
+	if (action == MUTEX_INIT)
+		return (pthread_mutex_init(mutex, NULL));
+	if (action == MUTEX_LOCK)
+		return (pthread_mutex_lock(mutex));
+	if (action == MUTEX_TRYLOCK)
+		return (pthread_mutex_trylock(mutex));
+	if (action == MUTEX_UNLOCK)
+		return (pthread_mutex_unlock(mutex));
+	if (action == MUTEX_DESTROY)
+		return (pthread_mutex_destroy(mutex));
+	return (1);
+}
+
+/*
+** Verifica si la simulación ha sido detenida de forma segura
+*/
+int	simulation_stopped(t_table *table)
+{
+	int	ret;
+
+	ret = 0;
+	mutex_handle(&table->sim_stop_lock, MUTEX_LOCK);
+	if (table->sim_stop == 1)
+		ret = 1;
+	mutex_handle(&table->sim_stop_lock, MUTEX_UNLOCK);
+	return (ret);
 }
 /* ************************************************************************** */
 /*                                                                            */
@@ -198,7 +407,7 @@ void	*monitor_thread_fn(void *arg)
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 17:18:37 by agarcia           #+#    #+#             */
-/*   Updated: 2025/10/21 19:21:46 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/02 22:49:54 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,27 +417,34 @@ void	*monitor_thread_fn(void *arg)
 #include <stdlib.h>
 #include <unistd.h>
 
+/* ---------------- PRIORIDAD POR HAMBRE -------------------
+   Cada filósofo señala su intención de comer con wants_to_eat.
+   La variable table->current_turn indica el filósofo que puede coger tenedores.
+   select_hungriest_id devuelve el filósofo que más tiempo ha esperado.
+------------------------------------------------------------ */
+
 int	init_table(t_table *table, int argc, char **argv)
 {
 	if (!table || argc < 5)
 		return (0);
 	table->n_philos = ft_atoi(argv[1]);
-	table->time_to_die = ft_atoi(argv[2]);
-	table->time_to_eat = ft_atoi(argv[3]);
-	table->time_to_sleep = ft_atoi(argv[4]);
-	table->must_eat_count = -1;
+	table->time_to_die = ft_atoi(argv[2]) * 1000;
+	table->time_to_eat = ft_atoi(argv[3]) * 1000;
+	table->time_to_sleep = ft_atoi(argv[4]) * 1000;
 	if (argc == 6)
 		table->must_eat_count = ft_atoi(argv[5]);
+	else
+		table->must_eat_count = -1;
+	if (table->n_philos <= 0 || table->time_to_die <= 0
+		|| table->time_to_eat <= 0 || table->time_to_sleep <= 0)
+		return (0);
+	mutex_handle(&table->write_lock, MUTEX_INIT);
+	mutex_handle(&table->sim_stop_lock, MUTEX_INIT);
+	mutex_handle(&table->table_lock, MUTEX_INIT);
+	table->sim_stop = 0;
+	table->all_threads_created = 0;
+	table->threads_running = 0;
 	return (1);
-}
-
-t_philo	create_philo(int id)
-{
-	t_philo	philo;
-
-	philo.id = id;
-	philo.times_ate = 0;
-	return (philo);
 }
 
 int	init_forks(t_table *table)
@@ -240,21 +456,7 @@ int	init_forks(t_table *table)
 		return (1);
 	i = 0;
 	while (i < table->n_philos)
-		pthread_mutex_init(&table->forks[i++], NULL);
-	return (0);
-}
-
-int	assign_forks(t_table *table, t_philo *philos)
-{
-	int	i;
-
-	i = 0;
-	while (i < table->n_philos)
-	{
-		philos[i].left_fork = i;
-		philos[i].right_fork = (i + 1) % table->n_philos;
-		i++;
-	}
+		mutex_handle(&table->forks[i++], MUTEX_INIT);
 	return (0);
 }
 
@@ -265,45 +467,35 @@ t_philo	*init_philos(int n_philos, t_table *table)
 
 	philos = malloc(sizeof(t_philo) * n_philos);
 	if (!philos)
-		exit(1);
+		return (NULL);
 	i = 0;
 	while (i < n_philos)
 	{
+		philos[i].table = table;
 		philos[i].id = i + 1;
 		philos[i].times_ate = 0;
-		philos[i].table = table;
+		philos[i].full = 0;
 		philos[i].last_meal_time = 0;
-		pthread_mutex_init(&philos[i].meal_lock, NULL);
+		philos[i].table = table;
+		philos[i].left_fork = i;
+		philos[i].right_fork = (i + 1) % n_philos;
+		mutex_handle(&philos[i].philo_lock, MUTEX_INIT);
 		i++;
 	}
-	assign_forks(table, philos);
 	return (philos);
 }
 
 int	write_status(t_philo *philo, t_table *table, const char *status)
 {
+	int					is_died;
+	static int			died_flag = 0;
 	static const char	*clocks[] = {"🕛", "🕐", "🕑", "🕒", "🕓", "🕔", "🕕", "🕖",
 			"🕗", "🕘", "🕙", "🕚"};
 	static int			idx = 0;
 	const char			*emoji;
 	const char			*end_emoji = "";
-	int					is_died;
 
-	static int died_flag = 0; // marca si DIET ya se imprimió
 	is_died = (ft_strcmp(status, STATUS_DIED) == 0);
-	pthread_mutex_lock(&table->sim_stop_lock);
-	if (is_died)
-		table->sim_stop = 1;
-	// para asegurarnos que otros hilos sepan que la simulación terminó
-	pthread_mutex_unlock(&table->sim_stop_lock);
-	pthread_mutex_lock(&table->write_lock);
-	if (died_flag && !is_died) // si DIET ya se imprimió, no imprimimos nada más
-	{
-		pthread_mutex_unlock(&table->write_lock);
-		return (1);
-	}
-	emoji = clocks[idx];
-	idx = (idx + 1) % (int)(sizeof(clocks) / sizeof(clocks[0]));
 	if (ft_strcmp(status, STATUS_FORK) == 0)
 		end_emoji = " [✊🍴]";
 	else if (ft_strcmp(status, STATUS_EAT) == 0)
@@ -313,98 +505,101 @@ int	write_status(t_philo *philo, t_table *table, const char *status)
 	else if (ft_strcmp(status, STATUS_THINK) == 0)
 		end_emoji = " [🤔💭]";
 	else if (is_died)
-	{
 		end_emoji = " [ ☠️  ]";
+	mutex_handle(&table->write_lock, MUTEX_LOCK);
+	emoji = clocks[idx];
+	idx = (idx + 1) % (int)(sizeof(clocks) / sizeof(clocks[0]));
+	if (is_died)
 		died_flag = 1;
-	}
-	printf("%s  %5ld ms   %2d  %-22s%s\n", emoji,
-		get_timestamp(table->start_time), philo->id, status, end_emoji);
-	pthread_mutex_unlock(&table->write_lock);
-	return (1);
-}
-
-int	sleep_philo(int duration_ms, t_table *table)
-{
-	long	start_time;
-	long	now;
-
-	start_time = get_time_ms();
-	while (1)
+	if (died_flag && !is_died)
 	{
-		pthread_mutex_lock(&table->sim_stop_lock);
-		if (table->sim_stop)
-		{
-			pthread_mutex_unlock(&table->sim_stop_lock);
-			return (0);
-		}
-		pthread_mutex_unlock(&table->sim_stop_lock);
-		now = get_time_ms();
-		if ((now - start_time) >= duration_ms)
-			break ;
-		ft_usleep(1, table);
+		mutex_handle(&table->write_lock, MUTEX_UNLOCK);
+		return (1);
 	}
+	if (debug == 10)
+		printf("%s  %5ld ms   %2d  %-22s%s\n", emoji,
+			get_timestamp(table->start_time), philo->id, status, end_emoji);
+	else
+		printf("%ld %u %s\n", get_timestamp(table->start_time), philo->id,
+			status);
+	mutex_handle(&table->write_lock, MUTEX_UNLOCK);
 	return (1);
 }
-int	solo_routine(t_table *table)
+
+void	*solo_routine(void *arg)
 {
 	t_philo	*philo;
 
-	philo = &table->philos[0];
-	if (!philo)
-		return (1);
-	write_status(philo, table, STATUS_FORK);
-	sleep_philo(table->time_to_die, table);
-	write_status(philo, table, STATUS_DIED);
-	return (0);
+	philo = (t_philo *)arg;
+	wait_all_threads_running(philo->table);
+	set_ulong(&philo->philo_lock, &philo->last_meal_time, get_time(TIME_US));
+	increment_long(&philo->table->table_lock, &philo->table->threads_running);
+	write_status(philo, philo->table, STATUS_FORK);
+	while (!simulation_stopped(philo->table))
+		usleep(1000);
+	return (NULL);
 }
-int	eat(t_philo *philo, t_table *table)
+int	eat(t_philo *philo)
 {
+	unsigned int	ate;
+
 	if (!philo)
 		return (0);
-	// Revisar si la simulación ya paró antes de agarrar tenedores
-	pthread_mutex_lock(&table->sim_stop_lock);
-	if (table->sim_stop)
-	{
-		pthread_mutex_unlock(&table->sim_stop_lock);
+	if (get_int(&philo->table->sim_stop_lock, &philo->table->sim_stop))
 		return (0);
-	}
-	pthread_mutex_unlock(&table->sim_stop_lock);
-	// Agarrar tenedores
 	if (philo->id % 2 == 0)
 	{
-		pthread_mutex_lock(&table->forks[philo->right_fork]);
-		write_status(philo, table, STATUS_FORK);
-		pthread_mutex_lock(&table->forks[philo->left_fork]);
-		write_status(philo, table, STATUS_FORK);
+		mutex_handle(&philo->table->forks[philo->right_fork], MUTEX_LOCK);
+		write_status(philo, philo->table, STATUS_FORK);
+		mutex_handle(&philo->table->forks[philo->left_fork], MUTEX_LOCK);
+		write_status(philo, philo->table, STATUS_FORK);
 	}
 	else
 	{
-		pthread_mutex_lock(&table->forks[philo->left_fork]);
-		write_status(philo, table, STATUS_FORK);
-		pthread_mutex_lock(&table->forks[philo->right_fork]);
-		write_status(philo, table, STATUS_FORK);
+		mutex_handle(&philo->table->forks[philo->left_fork], MUTEX_LOCK);
+		write_status(philo, philo->table, STATUS_FORK);
+		mutex_handle(&philo->table->forks[philo->right_fork], MUTEX_LOCK);
+		write_status(philo, philo->table, STATUS_FORK);
 	}
-	// Revisar sim_stop justo antes de comer
-	pthread_mutex_lock(&table->sim_stop_lock);
-	if (table->sim_stop)
+	if (get_int(&philo->table->sim_stop_lock, &philo->table->sim_stop))
 	{
-		pthread_mutex_unlock(&table->sim_stop_lock);
-		pthread_mutex_unlock(&table->forks[philo->right_fork]);
-		pthread_mutex_unlock(&table->forks[philo->left_fork]);
+		mutex_handle(&philo->table->forks[philo->right_fork], MUTEX_UNLOCK);
+		mutex_handle(&philo->table->forks[philo->left_fork], MUTEX_UNLOCK);
 		return (0);
 	}
-	pthread_mutex_unlock(&table->sim_stop_lock);
-	// Comer
-	pthread_mutex_lock(&philo->meal_lock);
-	philo->last_meal_time = get_time_ms();
-	write_status(philo, table, STATUS_EAT);
-	philo->times_ate++;
-	pthread_mutex_unlock(&philo->meal_lock);
-	sleep_philo(table->time_to_eat, table);
-	// Soltar tenedores
-	pthread_mutex_unlock(&table->forks[philo->right_fork]);
-	pthread_mutex_unlock(&table->forks[philo->left_fork]);
+	set_ulong(&philo->philo_lock, &philo->last_meal_time, get_time(TIME_US));
+	write_status(philo, philo->table, STATUS_EAT);
+	increment_uint(&philo->philo_lock, &philo->times_ate);
+	if (philo->table->must_eat_count != -1)
+	{
+		ate = get_uint(&philo->philo_lock, &philo->times_ate);
+		if ((int)ate >= philo->table->must_eat_count)
+			set_long(&philo->philo_lock, &philo->full, 1);
+	}
+	ft_usleep(philo->table->time_to_eat, philo->table);
+	mutex_handle(&philo->table->forks[philo->right_fork], MUTEX_UNLOCK);
+	mutex_handle(&philo->table->forks[philo->left_fork], MUTEX_UNLOCK);
 	return (1);
+}
+
+// en philo.c
+void	think(t_philo *philo, int print)
+{
+	long	time_to_think;
+	long	time_to_sleep;
+	long	time_to_eat;
+
+	if (print)
+		write_status(philo, philo->table, STATUS_THINK);
+	if (philo->table->n_philos % 2 == 0)
+		return ;
+	time_to_sleep = (long)philo->table->time_to_sleep;
+	time_to_eat = (long)philo->table->time_to_eat;
+	time_to_think = time_to_eat * 2 - time_to_sleep;
+	if (time_to_think < 0)
+		time_to_think = 0;
+	// Duerme el tiempo COMPLETO, sin factor
+	ft_usleep(time_to_think, philo->table);
 }
 
 void	*routine(void *arg)
@@ -418,27 +613,18 @@ void	*routine(void *arg)
 	table = philo->table;
 	if (!table)
 		return (NULL);
-	if (philo->id % 2)
-		ft_usleep(table->time_to_eat / 2, table);
-	while (1)
+	wait_all_threads_running(table);
+	increment_long(&table->table_lock, &table->threads_running);
+	desync_philos(philo);
+	set_ulong(&philo->philo_lock, &philo->last_meal_time, get_time(TIME_US));
+	while (!simulation_stopped(table))
 	{
-		pthread_mutex_lock(&table->sim_stop_lock);
-		if (table->sim_stop)
-		{
-			pthread_mutex_unlock(&table->sim_stop_lock);
+		if (get_long(&philo->philo_lock, &philo->full))
 			break ;
-		}
-		pthread_mutex_unlock(&table->sim_stop_lock);
-		if (!eat(philo, table))
-			break ;
-		// Si comió las veces requeridas, salir
-		if (table->must_eat_count != -1
-			&& (int)philo->times_ate >= table->must_eat_count)
-			break ;
+		eat(philo);
 		write_status(philo, table, STATUS_SLEEP);
-		if (!sleep_philo(table->time_to_sleep, table))
-			break ;
-		write_status(philo, table, STATUS_THINK);
+		ft_usleep(table->time_to_sleep, table);
+		think(philo, 1);
 	}
 	return (NULL);
 }
@@ -453,72 +639,148 @@ int	create_threads(t_table *table)
 		if (pthread_create(&table->philos[i].thread, NULL, routine,
 				(void *)&table->philos[i]) != 0)
 			return (0);
-		ft_usleep(1, table);
 		i++;
 	}
 	return (1);
 }
 
-int	philosophers(int argc, char **argv)
+void	cleanup_table(t_table *table)
+{
+	int	i;
+
+	if (!table)
+		return ;
+	i = 0;
+	if (table->forks)
+	{
+		while (i < table->n_philos)
+		{
+			mutex_handle(&table->forks[i], MUTEX_DESTROY);
+			if (table->philos)
+			{
+				mutex_handle(&table->philos[i].philo_lock, MUTEX_DESTROY);
+			}
+			i++;
+		}
+	}
+	mutex_handle(&table->write_lock, MUTEX_DESTROY);
+	mutex_handle(&table->sim_stop_lock, MUTEX_DESTROY);
+	mutex_handle(&table->table_lock, MUTEX_DESTROY);
+	if (table->forks)
+		free(table->forks);
+	if (table->philos)
+		free(table->philos);
+	free(table);
+}
+
+t_table	*init_data(int argc, char **argv)
 {
 	t_table	*table;
-	int		i;
 
 	table = malloc(sizeof(t_table));
 	if (!table)
-		return (0);
+		return (NULL);
 	if (!init_table(table, argc, argv))
-		return (0);
-	// t_philo	*philos;
-	// This line is commented out as we are using table->philos now
+	{
+		free(table);
+		return (NULL);
+	}
 	printf("MESA INICIALIZADA:\n");
-	printf("Número de filósofos: %d\n", table->n_philos);
-	printf("Tiempo para morir: %d ms\n", table->time_to_die);
-	printf("Tiempo para comer: %d ms\n", table->time_to_eat);
-	printf("Tiempo para dormir: %d ms\n", table->time_to_sleep);
-	if (table->must_eat_count != -1)
-		printf("Número de veces que cada filósofo debe comer: %d\n",
-			table->must_eat_count);
-	printf("\n");
-	printf("FORKS INICIALIZADOS:\n");
-	init_forks(table);
+	printf("\nFORKS INICIALIZADOS:\n");
+	if (init_forks(table))
+	{
+		cleanup_table(table);
+		return (NULL);
+	}
 	printf("PHILOSOFOS INICIALIZADOS:\n");
 	table->philos = init_philos(table->n_philos, table);
+	if (!table->philos)
+	{
+		cleanup_table(table);
+		return (NULL);
+	}
+	return (table);
+}
+
+int	start_simulation(t_table *table)
+{
+	int	i;
+
+	if (!table)
+		return (0);
 	i = 0;
 	while (i < table->n_philos)
 	{
-		printf("id: %d, times_ate: %d, left_fork: %d, right_fork: %d\n",
-			table->philos[i].id, table->philos[i].times_ate,
+		printf("id: %d, lfork: %d, rfork: %d\n", table->philos[i].id,
 			table->philos[i].left_fork, table->philos[i].right_fork);
 		i++;
 	}
-	pthread_mutex_init(&table->write_lock, NULL);
-	pthread_mutex_init(&table->sim_stop_lock, NULL);
-	table->sim_stop = 0;
-	table->start_time = get_time_ms();
+	set_long(&table->table_lock, &table->start_time, get_time(TIME_US));
+	i = 0;
+	while (i < table->n_philos)
+	{
+		set_ulong(&table->philos[i].philo_lock,
+			&table->philos[i].last_meal_time, table->start_time);
+		i++;
+	}
 	if (table->n_philos == 1)
-		return (solo_routine(table));
-	i = 0;
-	while (i < table->n_philos)
 	{
-		table->philos[i].last_meal_time = table->start_time;
-		i++;
+		pthread_create(&table->philos[0].thread, NULL, solo_routine,
+			(void *)&table->philos[0]);
 	}
-	if (!create_threads(table))
-		return (0);
-	i = 0;
-	if (pthread_create(&table->monitor_thread, NULL, monitor_thread_fn,
-			(void *)table))
-		return (0);
-	while (i < table->n_philos)
+	else
 	{
+		create_threads(table);
+	}
+	set_int(&table->table_lock, &table->all_threads_created, 1);
+	pthread_create(&table->monitor_thread, NULL, monitor_simulation, table);
+	i = -1;
+	while (++i < table->n_philos)
 		pthread_join(table->philos[i].thread, NULL);
-		i++;
-	}
+	set_int(&table->sim_stop_lock, &table->sim_stop, 1);
 	pthread_join(table->monitor_thread, NULL);
-	free(table->philos);
-	free(table);
 	return (1);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sync.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/26 14:05:00 by agarcia           #+#    #+#             */
+/*   Updated: 2025/10/31 18:00:19 by agarcia          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "philo.h"
+#include <unistd.h>
+
+void	wait_all_threads_running(t_table *table)
+{
+	while (!get_int(&table->table_lock, &table->all_threads_created))
+		;
+}
+
+int	all_threads_running(t_table *table)
+{
+	int	ret;
+
+	ret = 0;
+	mutex_handle(&table->table_lock, MUTEX_LOCK);
+	if (table->threads_running >= table->n_philos)
+		ret = 1;
+	mutex_handle(&table->table_lock, MUTEX_UNLOCK);
+	return (ret);
+}
+
+// en sync.c
+void	desync_philos(t_philo *philo)
+{
+	if (!philo || !philo->table)
+		return ;
+	if (philo->table->n_philos % 2 == 0 && philo->id % 2 == 0)
+		ft_usleep(3e4, philo->table); // 1000 microsegundos = 1 ms
 }
 /* ************************************************************************** */
 /*                                                                            */
@@ -528,7 +790,7 @@ int	philosophers(int argc, char **argv)
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 17:39:04 by agarcia           #+#    #+#             */
-/*   Updated: 2025/10/21 16:19:05 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/03 11:22:26 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -536,36 +798,46 @@ int	philosophers(int argc, char **argv)
 #include <sys/time.h>
 #include <unistd.h>
 
-long	get_time_ms(void)
+long	get_time(int unit)
 {
-	struct timeval	tv;
+	struct timeval	v;
 
-	gettimeofday(&tv, NULL);
-	return (tv.tv_sec * 1000L + tv.tv_usec / 1000L);
+	gettimeofday(&v, NULL);
+	if (unit == TIME_US)
+		return (v.tv_sec * 1000000L + v.tv_usec);
+	return (v.tv_sec * 1000L + v.tv_usec / 1000L);
 }
 
 long	get_timestamp(long start_time)
 {
-	return (get_time_ms() - start_time);
+	return ((get_time(TIME_US) - start_time));
 }
 
-void	ft_usleep(int ms, t_table *table)
+void	ft_usleep(long usec, t_table *table)
 {
-	long start_time;
+	long	start;
 
-	start_time = get_time_ms();
-	while (get_time_ms() - start_time < ms)
+	start = get_time(TIME_US);
+	while (get_time(TIME_US) - start < usec)
 	{
-		pthread_mutex_lock(&table->sim_stop_lock);
-		if (table->sim_stop)
-		{
-			pthread_mutex_unlock(&table->sim_stop_lock);
+		if (simulation_stopped(table))
 			break ;
-		}
-		pthread_mutex_unlock(&table->sim_stop_lock);
 		usleep(100);
 	}
-}int	ft_isdigit(int c)
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/01 23:39:38 by agarcia           #+#    #+#             */
+/*   Updated: 2025/11/01 23:39:39 by agarcia          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+int	ft_isdigit(int c)
 {
 	return (c >= '0' && c <= '9');
 }

@@ -1,31 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/20 17:19:24 by agarcia           #+#    #+#             */
-/*   Updated: 2025/10/20 18:39:16 by agarcia          ###   ########.fr       */
+/*   Created: 2025/11/01 23:39:38 by agarcia           #+#    #+#             */
+/*   Updated: 2025/11/03 23:29:41 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
-#include <stdio.h>
-#include <stdlib.h>
-
-int	main(int argc, char **argv)
+int	ft_isdigit(int c)
 {
-	if (argc < 5)
+	return (c >= '0' && c <= '9');
+}
+
+int	ft_atoi(const char *str)
+{
+	long	result;
+	int		i;
+
+	result = 0;
+	i = 0;
+	while (str[i] >= '0' && str[i] <= '9')
 	{
-		printf("./philo <number_of_philosophers> <time_to_die> <time_to_eat> <time_to_sleep> <number_of_times_each_philosopher_must_eat>\n");
-		return (1);
+		result = result * 10 + (str[i] - '0');
+		i++;
 	}
-	if (!check_args(argc, argv))
+	return ((int)result);
+}
+
+int	ft_strcmp(const char *s1, const char *s2)
+{
+	while (*s1 && (*s1 == *s2))
 	{
-		printf("Error: Invalid arguments\n");
-		return (1);
+		s1++;
+		s2++;
 	}
-	philosophers(argc, argv);
-	return (0);
+	return (*(unsigned char *)s1 - *(unsigned char *)s2);
 }

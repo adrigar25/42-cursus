@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 17:39:04 by agarcia           #+#    #+#             */
-/*   Updated: 2025/10/21 16:19:05 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/11/03 23:29:43 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,33 +14,30 @@
 #include <sys/time.h>
 #include <unistd.h>
 
-long	get_time_ms(void)
+long	get_time(int unit)
 {
-	struct timeval	tv;
+	struct timeval	v;
 
-	gettimeofday(&tv, NULL);
-	return (tv.tv_sec * 1000L + tv.tv_usec / 1000L);
+	gettimeofday(&v, NULL);
+	if (unit == TIME_US)
+		return (v.tv_sec * 1000000L + v.tv_usec);
+	return (v.tv_sec * 1000L + v.tv_usec / 1000L);
 }
 
 long	get_timestamp(long start_time)
 {
-	return (get_time_ms() - start_time);
+	return ((get_time(TIME_US) - start_time) / 1000);
 }
 
-void	ft_usleep(int ms, t_table *table)
+void	ft_usleep(long usec, t_table *table)
 {
-	long start_time;
+	long	start;
 
-	start_time = get_time_ms();
-	while (get_time_ms() - start_time < ms)
+	start = get_time(TIME_US);
+	while (get_time(TIME_US) - start < usec)
 	{
-		pthread_mutex_lock(&table->sim_stop_lock);
-		if (table->sim_stop)
-		{
-			pthread_mutex_unlock(&table->sim_stop_lock);
+		if (simulation_stopped(table))
 			break ;
-		}
-		pthread_mutex_unlock(&table->sim_stop_lock);
-		usleep(100);
+		usleep(150);
 	}
 }
