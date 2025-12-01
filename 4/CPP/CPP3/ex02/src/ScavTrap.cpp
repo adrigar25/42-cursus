@@ -1,0 +1,43 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ScavTrap.cpp                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/26 11:07:24 by agarcia           #+#    #+#             */
+/*   Updated: 2025/11/26 11:12:06 by agarcia          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "ScavTrap.hpp"
+
+ScavTrap::ScavTrap(std::string name) : ClapTrap(name), _guardMode(false)
+{
+    this->_hitPoints = 100;
+    this->_energyPoints = 50;
+    this->_attackDamage = 20;
+    std::cout << "ScavTrap " << this->_name << " has been created!" << std::endl;
+}
+
+ScavTrap::~ScavTrap()
+{
+    std::cout << "ScavTrap " << this->_name << " has been destroyed!" << std::endl;
+}
+
+void ScavTrap::attack(const std::string& tarjet)
+{
+    if(this->_energyPoints <=0 || this->_hitPoints <=0)
+    {
+        std::cout << "ScavTrap " << this->_name << " has no energy points or hit points to attack." << std::endl;
+        return;
+    }
+    std::cout << "ScavTrap " << this->_name << " attacks " << tarjet << ", causing " << this->_attackDamage << " points of damage!" << std::endl;
+    this->_energyPoints--;
+}
+
+void ScavTrap::guardGate()
+{
+    this->_guardMode = true;
+    std::cout << "ScavTrap " << this->_name << " is now in Gate Keeper mode." << std::endl;
+}
