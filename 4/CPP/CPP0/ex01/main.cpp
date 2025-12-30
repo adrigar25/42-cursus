@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 14:52:56 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/10 14:52:56 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/12/30 16:42:23 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,15 +31,15 @@ int	main(void)
 			break ;
 		}
 
-		if (command == "1")
+		if (command == "ADD")
 		{
 			book.add();
 		}
-		else if (command == "2")
+		else if (command == "SEARCH")
 		{
 			book.search();
 		}
-		else if (command == "3")
+		else if (command == "EXIT")
 		{
 			break ;
 		}

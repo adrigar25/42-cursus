@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 14:53:01 by agarcia           #+#    #+#             */
-/*   Updated: 2025/12/01 18:33:47 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/12/30 17:10:09 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	getValue(std::string prompt, std::string &var)
 
 int PhoneBook::add()
 {
-	static int	index = 1;
+	static int	index = 0;
 	int			nbr;
 
 	std::string fn;
@@ -67,8 +67,7 @@ int PhoneBook::add()
 		contacts[index].setDarkestSecret(ds);
 		contacts[index].setPhoneNumber(nbr);
 	}
-	if (index < 7)
-		index = (index + 1) % 8;
+	index = (index + 1) % 8;
 	return (0);
 }
 void	printCell(const std::string &value)
@@ -92,15 +91,21 @@ int PhoneBook::search()
 {
 	int	index;
 
+	if( contacts[0].getFirstName() == "")
+	{
+		std::cout << "❌ No contacts available. Please add contacts first.\n";
+		return (1);
+	}
+
 	std::cout << "📇 Contacts:\n";
 	printCell("INDEX");
 	printCell("FIRST NAME");
 	printCell("LAST NAME");
 	printCell("NICK NAME");
 	std::cout << "|\n";
-	for (int i = 1; i <= 8 && contacts[i].getFirstName() != ""; i++)
+	for (int i = 0; i < 8 && contacts[i].getFirstName() != ""; i++)
 	{
-		printCell(std::to_string(i));
+		printCell(std::to_string(i + 1));
 		printCell(contacts[i].getFirstName());
 		printCell(contacts[i].getLastName());
 		printCell(contacts[i].getNickName());
@@ -109,14 +114,12 @@ int PhoneBook::search()
 	std::cout << "\nEnter index to search: ";
 	std::cin >> index;
 	std::cin.ignore();
-	if (index > std::numeric_limits<int>::max()
-		|| index < std::numeric_limits<int>::min())
+	if (index < 1 || index > 8 || contacts[index - 1].getFirstName() == "")
 	{
-		std::cout << "❌ Index out of range.\n";
+		std::cout << "❌ Invalid index or contact not found.\n";
 		return (1);
 	}
-	index = static_cast<int>(index);
 	std::cout << "\n📇 Contact Details:\n";
-	printContactInfo(contacts[index]);
+	printContactInfo(contacts[index - 1]);
 	return (0);
 }
