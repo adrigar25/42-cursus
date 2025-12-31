@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 16:08:53 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/10 16:47:26 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/12/31 11:37:24 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,7 @@
 
 HumanB::HumanB(std::string name): name(name){}
 
-HumanB::~HumanB()
-{
-}
+HumanB::~HumanB(){}
 
 void HumanB::attack()
 {

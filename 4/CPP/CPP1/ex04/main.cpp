@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 01:41:25 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/10 20:46:11 by agarcia          ###   ########.fr       */
+/*   Updated: 2025/12/31 11:40:13 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	main(int argc, char **argv)
 
 
 	std::ifstream file1(filename);
-	std::ofstream file2("result.txt", std::ios::trunc);
+	std::ofstream file2(filename + ".replace", std::ios::trunc);
 	std::string line;
 
 	if(!file1.is_open())

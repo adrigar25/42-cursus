@@ -3,18 +3,19 @@ NAME		:= harlFilter
 CPP		:= c++
 CPPFLAGS	:= -Wall -Wextra -Werror -std=c++98
 
-SRCS		:=	 	main.cpp \
-					Harl.cpp
+SRC_DIR		:= src
+SRCS		:= 		$(SRC_DIR)/main.cpp \
+				$(SRC_DIR)/Harl.cpp
 OBJS_DIR	:= objs
-OBJS		:= $(SRCS:%.cpp=$(OBJS_DIR)/%.o)
+OBJS		:= $(SRCS:$(SRC_DIR)/%.cpp=$(OBJS_DIR)/%.o)
 
 all: $(NAME)
 
 $(OBJS_DIR):
 	@mkdir -p $(OBJS_DIR)
 
-$(OBJS_DIR)/%.o: %.cpp | $(OBJS_DIR)
-	$(CPP) $(CPPFLAGS) -c $< -o $@
+$(OBJS_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJS_DIR)
+	$(CPP) $(CPPFLAGS) -I includes -c $< -o $@
 
 $(NAME): $(OBJS)
 	$(CPP) $(CPPFLAGS) $(OBJS) -o $(NAME)
