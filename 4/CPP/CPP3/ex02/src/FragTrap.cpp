@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 11:07:24 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/26 11:21:20 by agarcia          ###   ########.fr       */
+/*   Updated: 2026/01/07 11:27:42 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,14 @@ FragTrap::~FragTrap()
     std::cout << "FragTrap " << this->_name << " has been destroyed!" << std::endl;
 }
 
-void FragTrap::attack(const std::string& tarjet)
+void FragTrap::attack(const std::string& target)
 {
     if(this->_energyPoints <=0 || this->_hitPoints <=0)
     {
         std::cout << "FragTrap " << this->_name << " has no energy points or hit points to attack." << std::endl;
         return;
     }
-    std::cout << "FragTrap " << this->_name << " attacks " << tarjet << ", causing " << this->_attackDamage << " points of damage!" << std::endl;
+    std::cout << "FragTrap " << this->_name << " attacks " << target << ", causing " << this->_attackDamage << " points of damage!" << std::endl;
     this->_energyPoints--;
 }
 
