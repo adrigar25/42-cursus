@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 13:55:40 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/26 13:57:50 by agarcia          ###   ########.fr       */
+/*   Updated: 2026/01/07 12:03:45 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,11 @@ WrongAnimal::WrongAnimal()
 WrongAnimal::~WrongAnimal()
 {
     std::cout << "WrongAnimal destructor called" << std::endl;
+}
+
+std::string WrongAnimal::getType() const
+{
+    return this->type;
 }
 
 void WrongAnimal::makeSound() const

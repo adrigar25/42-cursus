@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 13:55:40 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/26 13:56:30 by agarcia          ###   ########.fr       */
+/*   Updated: 2026/01/07 12:03:45 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ protected:
 public:
     WrongAnimal();
     ~WrongAnimal();
+    std::string getType() const;
     void makeSound() const;
 };
 
