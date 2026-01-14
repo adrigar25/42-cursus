@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 14:52:56 by agarcia           #+#    #+#             */
-/*   Updated: 2025/12/30 16:42:23 by agarcia          ###   ########.fr       */
+/*   Updated: 2026/01/14 16:33:21 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,31 +22,25 @@ int	main(void)
 
 	while (true)
 	{
-		std::cout << "Options:" << std::endl;
-		std::cout << "1. ADD\n2. SEARCH\n3. EXIT\n" << std::endl;
-		std::cout << "Enter command:" << std::endl;
+		std::cout << "\n" << std::string(45, '=') << std::endl;
+		std::cout << "            📱 PHONEBOOK MENU 📱" << std::endl;
+		std::cout << std::string(45, '=') << std::endl;
+		std::cout << "  1. ADD     - Add new contact" << std::endl;
+		std::cout << "  2. SEARCH  - Search contacts" << std::endl;
+		std::cout << "  3. EXIT    - Exit program" << std::endl;
+		std::cout << std::string(45, '=') << std::endl;
+		std::cout << "\nEnter command: ";
 		if (!std::getline(std::cin, command))
-		{
-			std::cout << "\n";
 			break ;
-		}
 
-		if (command == "ADD")
-		{
+		if (command == "ADD" || command == "add" || command == "1")
 			book.add();
-		}
-		else if (command == "SEARCH")
-		{
+		else if (command == "SEARCH" || command == "search" || command == "2")
 			book.search();
-		}
-		else if (command == "EXIT")
-		{
+		else if (command == "EXIT" || command == "exit" || command == "3")
 			break ;
-		}
 		else
-		{
-			std::cout << "Unknown command. Please try again.\n";
-		}
+			std::cout << "\n❌ Unknown command. Please try again.\n";
 	}
 
 	return (0);
