@@ -3,12 +3,12 @@ NAME	:= materia
 CPP	 := c++
 CPPFLAGS	:= -Wall -Wextra -Werror -std=c++98
 
-SRCS	:= src/main.cpp \
-	   src/AMateria.cpp \
-	   src/Ice.cpp \
-	   src/Cure.cpp \
-	   src/Character.cpp \
-	   src/MateriaSource.cpp
+SRCS	:=  src/main.cpp \
+			src/AMateria.cpp \
+			src/Ice.cpp \
+			src/Cure.cpp \
+			src/Character.cpp \
+			src/MateriaSource.cpp
 
 OBJS_DIR	:= objs
 OBJS	:= $(SRCS:src/%.cpp=$(OBJS_DIR)/%.o)

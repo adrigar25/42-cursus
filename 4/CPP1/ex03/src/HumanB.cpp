@@ -6,11 +6,11 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 16:08:53 by agarcia           #+#    #+#             */
-/*   Updated: 2025/12/31 11:37:24 by agarcia          ###   ########.fr       */
+/*   Updated: 2026/01/19 15:24:15 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "HumanB.hpp"
+#include "../include/HumanB.hpp"
 #include <iostream>
 
 HumanB::HumanB(std::string name): name(name){}

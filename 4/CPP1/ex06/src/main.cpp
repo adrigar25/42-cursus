@@ -6,11 +6,11 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 00:27:27 by agarcia           #+#    #+#             */
-/*   Updated: 2025/12/31 11:58:27 by agarcia          ###   ########.fr       */
+/*   Updated: 2026/01/19 15:23:02 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Harl.hpp"
+#include "../include/Harl.hpp"
 
 int main(int argc, char **argv)
 {
@@ -29,17 +29,31 @@ int main(int argc, char **argv)
             break;
         i++;
     }
-
-    if(i > 3)
-    {
-        std::cout << "[ Probably complaining about insignificant problems ]" << std::endl;
-        return (0);
-    }
     
    
-    for (int j = i; j <= 3; j++)
+    switch (i)
     {
-        harl.complain(levels[j]);
-        std::cout << std::endl;
+    case 0:
+        harl.complain("DEBUG");
+        harl.complain("INFO");
+        harl.complain("WARNING");
+        harl.complain("ERROR");
+        break;
+    case 1:
+        harl.complain("INFO");
+        harl.complain("WARNING");
+        harl.complain("ERROR");
+        break;
+    case 2:
+        harl.complain("WARNING");
+        harl.complain("ERROR");
+        break;
+    case 3:
+        harl.complain("ERROR");
+        break;
+    
+    default:
+        break;
     }
+    
 }
