@@ -4,7 +4,7 @@
 #include <string>
 #include <iostream>
 
-class Bureaucrat;  // Forward declaration
+class Bureaucrat;
 
 class Form
 {
@@ -18,7 +18,8 @@ class Form
     public:
         Form(void);
         Form(const std::string name, const int gradeToSign, const int gradeToExecute);
-        Form(Form& other);
+        Form(const Form& other);
+        Form& operator=(const Form& other);
         ~Form();
         void beSigned(const Bureaucrat& bureaucrat);
         const std::string& getName() const;

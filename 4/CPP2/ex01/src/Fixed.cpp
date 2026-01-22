@@ -6,12 +6,13 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 23:30:26 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/19 10:12:32 by agarcia          ###   ########.fr       */
+/*   Updated: 2026/01/22 15:36:06 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Fixed.hpp"
+#include "../includes/Fixed.hpp"
 #include <iostream>
+#include <cmath>
 
 Fixed::Fixed(): _fixedPointValue(0)
 {
@@ -53,6 +54,12 @@ int Fixed::getRawBits(void) const
 {
     std::cout << "getRawBits member function called" <<  std::endl;
     return this->_fixedPointValue;
+}
+
+void Fixed::setRawBits(const int raw)
+{
+    std::cout << "setRawBits member function called" <<  std::endl;
+    this->_fixedPointValue = raw;
 }
 
 float Fixed::toFloat(void) const

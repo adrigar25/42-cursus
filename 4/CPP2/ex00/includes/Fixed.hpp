@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 23:21:38 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/26 10:37:04 by agarcia          ###   ########.fr       */
+/*   Updated: 2026/01/22 14:11:31 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ public:
     Fixed& operator=(const Fixed& other);
     ~Fixed();
     int getRawBits(void) const;
+    void setRawBits(const int raw);
 };
 
 #endif

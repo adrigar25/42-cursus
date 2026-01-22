@@ -4,23 +4,32 @@
 Form::Form(const std::string name, const int gradeToSign, const int gradeToExecute):
 _name(name), _signed(false), _gradeToSign(gradeToSign), _gradeToExecute(gradeToExecute){};
 
-Form::Form(Form& other): _name(other._name), _signed(other._signed), _gradeToSign(other._gradeToSign), _gradeToExecute(other._gradeToExecute){}
+Form::Form(const Form& other): _name(other._name), _signed(other._signed), _gradeToSign(other._gradeToSign), _gradeToExecute(other._gradeToExecute){}
+
+Form& Form::operator=(const Form& other)
+{
+    if(this != &other)
+    {
+        this->_signed = other._signed;
+    }
+    return (*this);
+}
 
 Form::~Form(){};
 
 const std::string& Form::getName() const
 {
-    return _name;
+    return (_name);
 }
 
 int Form::getGradeToSign()
 {
-    return _gradeToSign;
+    return (_gradeToSign);
 }
 
 int Form::getGradeToExecute()
 {
-    return _gradeToExecute;
+    return (_gradeToExecute);
 }
 
 

@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 23:30:26 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/12 23:46:39 by agarcia          ###   ########.fr       */
+/*   Updated: 2026/01/22 14:12:06 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,10 @@ int Fixed::getRawBits(void) const
 {
     std::cout << "getRawBits member function called" <<  std::endl;
     return this->_fixedPointValue;
+}
+
+void Fixed::setRawBits(const int raw)
+{
+    std::cout << "setRawBits member function called" <<  std::endl;
+    this->_fixedPointValue = raw;
 }

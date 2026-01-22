@@ -5,25 +5,27 @@
 #                                                     +:+ +:+         +:+      #
 #    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/11/10 14:52:13 by agarcia           #+#    #+#              #
-#    Updated: 2026/01/22 17:14:04 by agarcia          ###   ########.fr        #
+#    Created: 2025/11/10 14:53:15 by agarcia           #+#    #+#              #
+#    Updated: 2026/01/20 17:30:13 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME		:= bsp
+NAME		:= newForms
 
 CPP		:= c++
-CPPFLAGS	:= -Wall -Wextra -Werror -std=c++98
+CPPFLAGS	:= -Wall -Wextra -Werror -std=c++98 -Iinclude
 
 SRC_DIR		:= src
-SRCS		:= 	$(SRC_DIR)/main.cpp \
-		   		$(SRC_DIR)/Fixed.cpp \
-		   		$(SRC_DIR)/Point.cpp \
-		   		$(SRC_DIR)/Triangle.cpp \
-		   		$(SRC_DIR)/bsp.cpp
-
+INC_DIR		:= include
 OBJS_DIR	:= objs
-OBJS		:= $(SRCS:$(SRC_DIR)/%.cpp=$(OBJS_DIR)/%.o)
+
+SRCS		:=  PresidentialPardonForm.cpp \
+				RobotomyRequestForm.cpp \
+				ShrubberyCreationForm.cpp \
+				Bureaucrat.cpp \
+				AForm.cpp \
+				main.cpp
+OBJS		:= $(SRCS:%.cpp=$(OBJS_DIR)/%.o)
 
 all: $(NAME)
 
@@ -31,7 +33,7 @@ $(OBJS_DIR):
 	@mkdir -p $(OBJS_DIR)
 
 $(OBJS_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJS_DIR)
-	$(CPP) $(CPPFLAGS) -I includes -c $< -o $@
+	$(CPP) $(CPPFLAGS) -c $< -o $@
 
 $(NAME): $(OBJS)
 	$(CPP) $(CPPFLAGS) $(OBJS) -o $(NAME)
