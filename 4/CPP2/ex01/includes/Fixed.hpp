@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 23:21:38 by agarcia           #+#    #+#             */
-/*   Updated: 2026/01/22 15:31:34 by agarcia          ###   ########.fr       */
+/*   Updated: 2026/01/29 16:59:43 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ public:
     void setRawBits(const int raw);
     float toFloat( void ) const;
     int toInt( void ) const;
-   friend std::ostream& operator<<(std::ostream& os, const Fixed& f);
 };
+
+ std::ostream& operator<<(std::ostream& os, const Fixed& f);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 23:21:38 by agarcia           #+#    #+#             */
-/*   Updated: 2026/01/22 15:37:30 by agarcia          ###   ########.fr       */
+/*   Updated: 2026/01/29 16:57:30 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,12 @@ public:
     Fixed operator++(int);
     Fixed& operator--();
     Fixed operator--(int);
-   friend std::ostream& operator<<(std::ostream& os, const Fixed& f);
    static Fixed& min(Fixed& fixed1, Fixed& fixed2);
    static Fixed& max(Fixed& fixed1, Fixed& fixed2);
    static const Fixed& min(const Fixed& fixed1, const Fixed& fixed2);
    static const Fixed& max(const Fixed& fixed1, const Fixed& fixed2);
 };
+
+std::ostream& operator<<(std::ostream& os, const Fixed& f);
 
 #endif
