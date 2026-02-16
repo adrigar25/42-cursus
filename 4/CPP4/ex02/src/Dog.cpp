@@ -6,12 +6,12 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 13:31:27 by agarcia           #+#    #+#             */
-/*   Updated: 2026/02/16 18:15:56 by agarcia          ###   ########.fr       */
+/*   Updated: 2026/02/16 18:50:13 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/Brain.hpp"
-#include "../includes/Dog.hpp"
+#include "Brain.hpp"
+#include "Dog.hpp"
 
 Dog::Dog() {
   this->brain = new Brain();

@@ -6,16 +6,16 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 13:45:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/12/01 17:32:32 by agarcia          ###   ########.fr       */
+/*   Updated: 2026/02/16 18:49:00 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 
-#include "../includes/Ice.hpp"
-#include "../includes/Cure.hpp"
-#include "../includes/Character.hpp"
-#include "../includes/MateriaSource.hpp"
+#include "Ice.hpp"
+#include "Cure.hpp"
+#include "Character.hpp"
+#include "MateriaSource.hpp"
 
 int main()
 {

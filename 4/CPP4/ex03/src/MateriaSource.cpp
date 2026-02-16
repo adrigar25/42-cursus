@@ -6,17 +6,45 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/30 02:29:35 by agarcia           #+#    #+#             */
-/*   Updated: 2025/12/01 17:27:38 by agarcia          ###   ########.fr       */
+/*   Updated: 2026/02/16 18:49:48 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/MateriaSource.hpp"
+#include "MateriaSource.hpp"
 
 MateriaSource::MateriaSource()
 {
     for(int i = 0; i < 4; i++)
         this->materias[i] = NULL;
 };
+
+MateriaSource::MateriaSource(const MateriaSource &other)
+{
+    for (int i = 0; i < 4; i++)
+    {
+        if (other.materias[i])
+            this->materias[i] = other.materias[i]->clone();
+        else
+            this->materias[i] = NULL;
+    }
+}
+
+MateriaSource& MateriaSource::operator=(const MateriaSource &other)
+{
+    if (this != &other)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            if (this->materias[i])
+                delete this->materias[i];
+            if (other.materias[i])
+                this->materias[i] = other.materias[i]->clone();
+            else
+                this->materias[i] = NULL;
+        }
+    }
+    return *this;
+}
 
 MateriaSource::~MateriaSource()
 {

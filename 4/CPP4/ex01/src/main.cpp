@@ -6,15 +6,15 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 13:45:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/28 11:19:48 by agarcia          ###   ########.fr       */
+/*   Updated: 2026/02/16 18:50:13 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/Animal.hpp"
-#include "../includes/Brain.hpp"
-#include "../includes/Cat.hpp"
-#include "../includes/Dog.hpp"
-#include "../includes/WrongAnimal.hpp"
+#include "Animal.hpp"
+#include "Brain.hpp"
+#include "Cat.hpp"
+#include "Dog.hpp"
+#include "WrongAnimal.hpp"
 
 int main() {
   std::cout << "=== Test 1: Basic array of Animals ===" << std::endl;

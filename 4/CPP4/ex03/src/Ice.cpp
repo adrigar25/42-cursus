@@ -6,18 +6,27 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/30 00:49:19 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/30 01:32:10 by agarcia          ###   ########.fr       */
+/*   Updated: 2026/02/16 18:48:54 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/Ice.hpp"
-#include "../includes/ICharacter.hpp"
+#include "Ice.hpp"
+#include "ICharacter.hpp"
 
 Ice::Ice(void): AMateria("ice"){};
 
 Ice::~Ice(void){};
 
 Ice::Ice(const Ice &other): AMateria(other){};
+
+Ice& Ice::operator=(const Ice &other)
+{
+    if (this != &other)
+    {
+        AMateria::operator=(other);
+    }
+    return *this;
+}
 
 AMateria* Ice::clone() const {
     return new Ice(*this);
