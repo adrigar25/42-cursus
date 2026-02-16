@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 15:00:00 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/28 11:19:15 by agarcia          ###   ########.fr       */
+/*   Updated: 2026/02/16 18:14:43 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,15 @@ Brain::Brain(const Brain &other) {
   std::cout << "Brain copy constructor called" << std::endl;
 }
 
+Brain& Brain::operator=(const Brain &other) {
+  if (this != &other) {
+    for (int i = 0; i < 100; ++i) {
+      this->ideas[i] = other.ideas[i];
+    }
+  }
+  return *this;
+}
+
 Brain::~Brain() { std::cout << "Brain destructor called" << std::endl; }
 
 void Brain::setIdea(int index, const std::string &idea) {
@@ -39,13 +48,4 @@ std::string Brain::getIdea(int index) const {
     return this->ideas[index];
   }
   return "";
-}
-
-Brain& Brain::operator=(const Brain &other) {
-  if (this != &other) {
-    for (int i = 0; i < 100; ++i) {
-      this->ideas[i] = other.ideas[i];
-    }
-  }
-  return *this;
 }

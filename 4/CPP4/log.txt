@@ -1,0 +1,1565 @@
+ex00
+
+
+/*   Animal.hpp                                         
+
+#ifndef ANIMAL_HPP
+#define ANIMAL_HPP
+
+#include <iostream>
+
+class Animal
+{
+protected:
+   std::string type;
+public:
+   Animal();
+   virtual ~Animal();
+   std::string getType() const;
+   virtual void makeSound() const;
+};
+
+
+#endif
+
+/*   Cat.hpp                                            
+
+#ifndef CAT_HPP
+#define CAT_HPP
+
+#include "Animal.hpp"
+
+class Cat : public Animal
+{
+public:
+    Cat();
+    ~Cat();
+    void makeSound() const;
+};
+
+
+#endif
+
+/*   Dog.hpp                                            
+
+#ifndef DOG_HPP
+#define DOG_HPP
+
+#include "Animal.hpp"
+
+class Dog : public Animal
+{
+public:
+    Dog();
+    ~Dog();
+    void makeSound() const;
+};
+
+
+#endif
+
+/*   WrongAnimal.hpp                                    
+
+#ifndef WRONGANIMAL_HPP
+#define WRONGANIMAL_HPP
+
+#include <iostream>
+
+class WrongAnimal
+{
+protected:
+    std::string type;
+public:
+    WrongAnimal();
+    ~WrongAnimal();
+    std::string getType() const;
+    void makeSound() const;
+};
+
+
+
+#endif
+
+/*   WrongCat.hpp                                       
+
+#ifndef WRONGCAT_HPP
+#define WRONGCAT_HPP
+
+#include "WrongAnimal.hpp"
+
+class WrongCat : public WrongAnimal
+{
+public:
+    WrongCat();
+    ~WrongCat();
+    void makeSound() const;
+};
+
+#endif
+
+/*   Animal.cpp                                         
+
+#include "Animal.hpp"
+
+Animal::Animal()
+{
+    this->type = "Animal";
+    std::cout << "Animal constructor called" << std::endl;
+}
+
+Animal::~Animal()
+{
+    std::cout << "Animal destructor called" << std::endl;
+}
+
+std::string Animal::getType() const
+{
+    return this->type;
+}
+
+void Animal::makeSound() const
+{
+    std::cout << "Animal sound" << std::endl;
+}
+
+/*   Cat.cpp                                            
+
+#include "Cat.hpp"
+
+Cat::Cat()
+{
+    this->type = "Cat";
+    std::cout << "Cat constructor called" << std::endl;
+}
+
+Cat::~Cat()
+{
+    std::cout << "Cat destructor called" << std::endl;
+}
+
+void Cat::makeSound() const
+{
+    std::cout << "Meow Meow" << std::endl;
+}
+
+/*   Dog.cpp                                            
+
+#include "Dog.hpp"
+
+Dog::Dog()
+{
+    this->type = "Dog";
+    std::cout << "Dog constructor called" << std::endl;
+}
+
+Dog::~Dog()
+{
+    std::cout << "Dog destructor called" << std::endl;
+}
+
+void Dog::makeSound() const
+{
+    std::cout << "Woof Woof" << std::endl;
+}
+
+/*   main.cpp                                           
+
+#include "Animal.hpp"
+#include "Dog.hpp"
+#include "Cat.hpp"
+#include "WrongAnimal.hpp"
+#include "WrongCat.hpp"
+
+int main()
+{
+const Animal* meta = new Animal();
+const Animal* dog = new Dog();
+const Animal* cat = new Cat();
+std::cout << dog->getType() << " " << std::endl;
+std::cout << cat->getType() << " " << std::endl;
+cat->makeSound();
+dog->makeSound();   
+meta->makeSound();
+
+std::cout << "\n=== Testing Wrong Classes ===" << std::endl;
+const WrongAnimal* wrongAnimal = new WrongAnimal();
+const WrongAnimal* wrongCat = new WrongCat();
+std::cout << wrongCat->getType() << " " << std::endl;
+wrongCat->makeSound(); // Will output WrongAnimal sound!
+wrongAnimal->makeSound();
+
+delete meta;
+delete dog;
+delete cat;
+delete wrongAnimal;
+delete wrongCat;
+return 0;
+}
+
+
+/*   WrongAnimal.cpp                                    
+
+#include "WrongAnimal.hpp"
+
+WrongAnimal::WrongAnimal()
+{
+    this->type = "WrongAnimal";
+    std::cout << "WrongAnimal constructor called" << std::endl;
+}
+
+WrongAnimal::~WrongAnimal()
+{
+    std::cout << "WrongAnimal destructor called" << std::endl;
+}
+
+std::string WrongAnimal::getType() const
+{
+    return this->type;
+}
+
+void WrongAnimal::makeSound() const
+{
+    std::cout << "WrongAnimal sound" << std::endl;
+}
+
+/*   WrongCat.cpp                                       
+
+#include "WrongCat.hpp"
+
+WrongCat::WrongCat()
+{
+    this->type = "WrongCat";
+    std::cout << "WrongCat constructor called" << std::endl;
+}
+
+WrongCat::~WrongCat()
+{
+    std::cout << "WrongCat destructor called" << std::endl;
+}
+
+void WrongCat::makeSound() const
+{
+    std::cout << "WrongCat sound" << std::endl;
+}
+ex01
+
+
+/*   Animal.hpp                                         
+
+#ifndef ANIMAL_HPP
+#define ANIMAL_HPP
+
+#include <iostream>
+
+class Brain;
+#include "Brain.hpp"
+
+class Animal
+{
+protected:
+   std::string type;
+public:
+   Animal();
+   Animal(const Animal &other);
+   virtual ~Animal();
+   std::string getType() const;
+   virtual void makeSound() const;
+   Animal& operator=(const Animal &other);
+};
+
+
+#endif
+
+/*   Brain.hpp                                          
+
+#ifndef BRAIN_H
+#define BRAIN_H
+
+#include <iostream>
+
+class Brain {
+private:
+  std::string ideas[100];
+
+public:
+  Brain();
+  Brain(const Brain &other);
+  ~Brain();
+  void setIdea(int index, const std::string &idea);
+  std::string getIdea(int index) const;
+  Brain& operator=(const Brain &other); 
+};
+
+#endif
+
+/*   Cat.hpp                                            
+
+#ifndef CAT_HPP
+#define CAT_HPP
+    
+#include "Animal.hpp"
+#include "Brain.hpp"
+
+class Cat : public Animal
+{
+    private:
+        Brain* brain;
+    public:
+        Cat();
+        Cat(const Cat &other);
+        Cat& operator=(const Cat &other);
+        ~Cat();
+        void makeSound() const;
+        Brain* getBrain() const;
+};
+
+
+#endif
+
+/*   Dog.hpp                                            
+
+#ifndef DOG_HPP
+#define DOG_HPP
+
+#include "Animal.hpp"
+#include "Brain.hpp"
+
+class Dog : public Animal
+{
+    private:
+        Brain* brain;
+    public:
+        Dog();
+        Dog(const Dog &other);
+        Dog& operator=(const Dog &other);
+        ~Dog();
+        void makeSound() const;
+        Brain* getBrain() const;
+};
+
+
+#endif
+
+/*   WrongAnimal.hpp                                    
+
+#ifndef WRONGANIMAL_HPP
+#define WRONGANIMAL_HPP
+
+#include <iostream>
+
+class WrongAnimal
+{
+protected:
+    std::string type;
+public:
+    WrongAnimal();
+    ~WrongAnimal();
+    std::string getType() const;
+    void makeSound() const;
+};
+
+
+
+#endif
+
+/*   WrongCat.hpp                                       
+
+#ifndef WRONGCAT_HPP
+#define WRONGCAT_HPP
+
+#include "WrongAnimal.hpp"
+
+class WrongCat : public WrongAnimal
+{
+public:
+    WrongCat();
+    ~WrongCat();
+    void makeSound() const;
+};
+
+#endif
+
+/*   Animal.cpp                                         
+
+#include "Animal.hpp"
+
+Animal::Animal()
+{
+    this->type = "Animal";
+    std::cout << "Animal constructor called" << std::endl;
+}
+
+Animal::Animal(const Animal &other)
+{
+    this->type = other.type;
+    std::cout << "Animal copy constructor called" << std::endl;
+}
+
+Animal::~Animal()
+{
+    std::cout << "Animal destructor called" << std::endl;
+}
+
+std::string Animal::getType() const
+{
+    return this->type;
+}
+
+void Animal::makeSound() const
+{
+    std::cout << "Animal sound" << std::endl;
+}
+
+Animal& Animal::operator=(const Animal &other)
+{
+    if (this != &other)
+    {
+        this->type = other.type;
+    }
+    return *this;
+}
+
+/*   Brain.cpp                                          
+
+#include "Brain.hpp"
+
+Brain::Brain() {
+  for (int i = 0; i < 100; ++i) {
+    this->ideas[i] = "empty";
+  }
+  std::cout << "Brain constructor called" << std::endl;
+}
+
+Brain::Brain(const Brain &other) {
+  for (int i = 0; i < 100; ++i) {
+    this->ideas[i] = other.ideas[i];
+  }
+  std::cout << "Brain copy constructor called" << std::endl;
+}
+
+Brain::~Brain() { std::cout << "Brain destructor called" << std::endl; }
+
+void Brain::setIdea(int index, const std::string &idea) {
+  if (index >= 0 && index < 100) {
+    this->ideas[index] = idea;
+  }
+}
+
+std::string Brain::getIdea(int index) const {
+  if (index >= 0 && index < 100) {
+    return this->ideas[index];
+  }
+  return "";
+}
+
+Brain& Brain::operator=(const Brain &other) {
+  if (this != &other) {
+    for (int i = 0; i < 100; ++i) {
+      this->ideas[i] = other.ideas[i];
+    }
+  }
+  return *this;
+}
+
+/*   Cat.cpp                                            
+
+#include "../includes/Brain.hpp"
+#include "../includes/Cat.hpp"
+
+Cat::Cat() {
+  this->brain = new Brain();
+  this->type = "Cat";
+  std::cout << "Cat constructor called" << std::endl;
+}
+
+Cat::Cat(const Cat &other) : Animal(other) {
+  this->brain = new Brain(*other.brain);
+  std::cout << "Cat copy constructor called" << std::endl;
+}
+
+Cat::~Cat() {
+  delete this->brain;
+  std::cout << "Cat destructor called" << std::endl;
+}
+
+void Cat::makeSound() const { std::cout << "Meow Meow" << std::endl; }
+
+Brain* Cat::getBrain() const { return this->brain; }
+
+Cat& Cat::operator=(const Cat &other) {
+  if (this != &other) {
+    Animal::operator=(other);
+    delete this->brain;
+    this->brain = new Brain(*other.brain);
+  }
+  std::cout << "Cat assignment operator called" << std::endl;
+  return *this;
+}
+
+/*   Dog.cpp                                            
+
+#include "../includes/Brain.hpp"
+#include "../includes/Dog.hpp"
+
+Dog::Dog() {
+  this->brain = new Brain();
+  this->type = "Dog";
+  std::cout << "Dog constructor called" << std::endl;
+}
+
+Dog::Dog(const Dog &other) : Animal(other) {
+  this->brain = new Brain(*other.brain);
+  std::cout << "Dog copy constructor called" << std::endl;
+}
+
+Dog::~Dog() {
+  delete this->brain;
+  std::cout << "Dog destructor called" << std::endl;
+}
+
+void Dog::makeSound() const { std::cout << "Woof Woof" << std::endl; }
+
+Brain* Dog::getBrain() const { return this->brain; }
+
+Dog& Dog::operator=(const Dog &other) {
+  if (this != &other) {
+    Animal::operator=(other);
+    delete this->brain;
+    this->brain = new Brain(*other.brain);
+  }
+  std::cout << "Dog assignment operator called" << std::endl;
+  return *this;
+}
+
+/*   main.cpp                                           
+
+#include "../includes/Animal.hpp"
+#include "../includes/Brain.hpp"
+#include "../includes/Cat.hpp"
+#include "../includes/Dog.hpp"
+#include "../includes/WrongAnimal.hpp"
+
+int main() {
+  std::cout << "=== Test 1: Basic array of Animals ===" << std::endl;
+  const Animal *animals[4] = {new Dog(), new Cat(), new Dog(), new Cat()};
+
+  for (int i = 0; i < 4; ++i) {
+    delete animals[i];
+  }
+
+  std::cout << "\n=== Test 2: Deep Copy Test ===" << std::endl;
+  
+  // Create original dog
+  Dog original;
+  original.getBrain()->setIdea(0, "Original idea 1");
+  original.getBrain()->setIdea(1, "Original idea 2");
+  
+  std::cout << "\nOriginal Dog ideas:" << std::endl;
+  std::cout << "  " << original.getBrain()->getIdea(0) << std::endl;
+  std::cout << "  " << original.getBrain()->getIdea(1) << std::endl;
+  
+  std::cout << "\n--- Testing Copy Constructor ---" << std::endl;
+  Dog copy1(original);
+  
+  std::cout << "Copy1 Dog ideas (should be same):" << std::endl;
+  std::cout << "  " << copy1.getBrain()->getIdea(0) << std::endl;
+  std::cout << "  " << copy1.getBrain()->getIdea(1) << std::endl;
+  
+  // Modify original - copy should NOT change (deep copy test)
+  std::cout << "\nModifying original..." << std::endl;
+  original.getBrain()->setIdea(0, "Modified idea 1");
+  
+  std::cout << "Original after modification:" << std::endl;
+  std::cout << "  " << original.getBrain()->getIdea(0) << std::endl;
+  
+  std::cout << "Copy1 after original modification (should be unchanged):" << std::endl;
+  std::cout << "  " << copy1.getBrain()->getIdea(0) << std::endl;
+  
+  // Test assignment operator
+  std::cout << "\n--- Testing Assignment Operator ---" << std::endl;
+  Dog copy2;
+  copy2 = original;
+  
+  std::cout << "Copy2 after assignment:" << std::endl;
+  std::cout << "  " << copy2.getBrain()->getIdea(0) << std::endl;
+  
+  // Modify original again
+  original.getBrain()->setIdea(0, "Modified again");
+  
+  std::cout << "\nOriginal after second modification:" << std::endl;
+  std::cout << "  " << original.getBrain()->getIdea(0) << std::endl;
+  
+  std::cout << "Copy2 (should still have first modified value):" << std::endl;
+  std::cout << "  " << copy2.getBrain()->getIdea(0) << std::endl;
+  
+  std::cout << "\n=== Deep copy test passed if copies are independent! ===" << std::endl;
+  
+  return 0;
+}
+
+
+/*   WrongAnimal.cpp                                    
+
+#include "WrongAnimal.hpp"
+
+WrongAnimal::WrongAnimal()
+{
+    this->type = "WrongAnimal";
+    std::cout << "WrongAnimal constructor called" << std::endl;
+}
+
+WrongAnimal::~WrongAnimal()
+{
+    std::cout << "WrongAnimal destructor called" << std::endl;
+}
+
+std::string WrongAnimal::getType() const
+{
+    return this->type;
+}
+
+void WrongAnimal::makeSound() const
+{
+    std::cout << "WrongAnimal sound" << std::endl;
+}
+
+/*   WrongCat.cpp                                       
+
+#include "WrongCat.hpp"
+
+WrongCat::WrongCat()
+{
+    this->type = "WrongCat";
+    std::cout << "WrongCat constructor called" << std::endl;
+}
+
+WrongCat::~WrongCat()
+{
+    std::cout << "WrongCat destructor called" << std::endl;
+}
+
+void WrongCat::makeSound() const
+{
+    std::cout << "WrongCat sound" << std::endl;
+}
+ex02
+
+
+/*   Animal.hpp                                         
+
+#ifndef ANIMAL_HPP
+#define ANIMAL_HPP
+
+#include <iostream>
+
+class Brain;
+#include "Brain.hpp"
+
+class Animal
+{
+protected:
+   std::string type;
+public:
+   Animal();
+   Animal(const Animal &other);
+   virtual ~Animal();
+   std::string getType() const;
+   virtual void makeSound() const = 0;
+   Animal& operator=(const Animal &other);
+};
+
+
+#endif
+
+/*   Brain.hpp                                          
+
+#ifndef BRAIN_H
+#define BRAIN_H
+
+#include <iostream>
+
+class Brain {
+private:
+  std::string ideas[100];
+
+public:
+  Brain();
+  Brain(const Brain &other);
+  ~Brain();
+  void setIdea(int index, const std::string &idea);
+  std::string getIdea(int index) const;
+  Brain& operator=(const Brain &other); 
+};
+
+#endif
+
+/*   Cat.hpp                                            
+
+#ifndef CAT_HPP
+#define CAT_HPP
+    
+#include "Animal.hpp"
+#include "Brain.hpp"
+
+class Cat : public Animal
+{
+    private:
+        Brain* brain;
+    public:
+        Cat();
+        Cat(const Cat &other);
+        Cat& operator=(const Cat &other);
+        ~Cat();
+        void makeSound() const;
+        Brain* getBrain() const;
+};
+
+
+#endif
+
+/*   Dog.hpp                                            
+
+#ifndef DOG_HPP
+#define DOG_HPP
+
+#include "Animal.hpp"
+#include "Brain.hpp"
+
+class Dog : public Animal
+{
+    private:
+        Brain* brain;
+    public:
+        Dog();
+        Dog(const Dog &other);
+        Dog& operator=(const Dog &other);
+        ~Dog();
+        void makeSound() const;
+        Brain* getBrain() const;
+};
+
+
+#endif
+
+/*   WrongAnimal.hpp                                    
+
+#ifndef WRONGANIMAL_HPP
+#define WRONGANIMAL_HPP
+
+#include <iostream>
+
+class WrongAnimal
+{
+protected:
+    std::string type;
+public:
+    WrongAnimal();
+    ~WrongAnimal();
+    std::string getType() const;
+    void makeSound() const;
+};
+
+
+
+#endif
+
+/*   WrongCat.hpp                                       
+
+#ifndef WRONGCAT_HPP
+#define WRONGCAT_HPP
+
+#include "WrongAnimal.hpp"
+
+class WrongCat : public WrongAnimal
+{
+public:
+    WrongCat();
+    ~WrongCat();
+    void makeSound() const;
+};
+
+#endif
+
+/*   Animal.cpp                                         
+
+#include "Animal.hpp"
+
+Animal::Animal()
+{
+    this->type = "Animal";
+    std::cout << "Animal constructor called" << std::endl;
+}
+
+Animal::Animal(const Animal &other)
+{
+    this->type = other.type;
+    std::cout << "Animal copy constructor called" << std::endl;
+}
+
+Animal::~Animal()
+{
+    std::cout << "Animal destructor called" << std::endl;
+}
+
+std::string Animal::getType() const
+{
+    return this->type;
+}
+
+Animal& Animal::operator=(const Animal &other)
+{
+    if (this != &other)
+    {
+        this->type = other.type;
+    }
+    return *this;
+}
+
+/*   Brain.cpp                                          
+
+#include "Brain.hpp"
+
+Brain::Brain() {
+  for (int i = 0; i < 100; ++i) {
+    this->ideas[i] = "empty";
+  }
+  std::cout << "Brain constructor called" << std::endl;
+}
+
+Brain::Brain(const Brain &other) {
+  for (int i = 0; i < 100; ++i) {
+    this->ideas[i] = other.ideas[i];
+  }
+  std::cout << "Brain copy constructor called" << std::endl;
+}
+
+Brain::~Brain() { std::cout << "Brain destructor called" << std::endl; }
+
+void Brain::setIdea(int index, const std::string &idea) {
+  if (index >= 0 && index < 100) {
+    this->ideas[index] = idea;
+  }
+}
+
+std::string Brain::getIdea(int index) const {
+  if (index >= 0 && index < 100) {
+    return this->ideas[index];
+  }
+  return "";
+}
+
+Brain& Brain::operator=(const Brain &other) {
+  if (this != &other) {
+    for (int i = 0; i < 100; ++i) {
+      this->ideas[i] = other.ideas[i];
+    }
+  }
+  return *this;
+}
+
+/*   Cat.cpp                                            
+
+#include "../includes/Brain.hpp"
+#include "../includes/Cat.hpp"
+
+Cat::Cat() {
+  this->brain = new Brain();
+  this->type = "Cat";
+  std::cout << "Cat constructor called" << std::endl;
+}
+
+Cat::Cat(const Cat &other) : Animal(other) {
+  this->brain = new Brain(*other.brain);
+  std::cout << "Cat copy constructor called" << std::endl;
+}
+
+Cat::~Cat() {
+  delete this->brain;
+  std::cout << "Cat destructor called" << std::endl;
+}
+
+void Cat::makeSound() const { std::cout << "Meow Meow" << std::endl; }
+
+Brain* Cat::getBrain() const { return this->brain; }
+
+Cat& Cat::operator=(const Cat &other) {
+  if (this != &other) {
+    Animal::operator=(other);
+    delete this->brain;
+    this->brain = new Brain(*other.brain);
+  }
+  std::cout << "Cat assignment operator called" << std::endl;
+  return *this;
+}
+
+/*   Dog.cpp                                            
+
+#include "../includes/Brain.hpp"
+#include "../includes/Dog.hpp"
+
+Dog::Dog() {
+  this->brain = new Brain();
+  this->type = "Dog";
+  std::cout << "Dog constructor called" << std::endl;
+}
+
+Dog::Dog(const Dog &other) : Animal(other) {
+  this->brain = new Brain(*other.brain);
+  std::cout << "Dog copy constructor called" << std::endl;
+}
+
+Dog::~Dog() {
+  delete this->brain;
+  std::cout << "Dog destructor called" << std::endl;
+}
+
+void Dog::makeSound() const { std::cout << "Woof Woof" << std::endl; }
+
+Brain* Dog::getBrain() const { return this->brain; }
+
+Dog& Dog::operator=(const Dog &other) {
+  if (this != &other) {
+    Animal::operator=(other);
+    delete this->brain;
+    this->brain = new Brain(*other.brain);
+  }
+  std::cout << "Dog assignment operator called" << std::endl;
+  return *this;
+}
+
+/*   main.cpp                                           
+
+#include "../includes/Animal.hpp"
+#include "../includes/Brain.hpp"
+#include "../includes/Cat.hpp"
+#include "../includes/Dog.hpp"
+#include "../includes/WrongAnimal.hpp"
+
+int main() {
+  std::cout << "=== Test 1: Animal is abstract (cannot be instantiated) ===" << std::endl;
+  
+  // This should NOT compile if uncommented:
+  // Animal animal;  // Error: cannot instantiate abstract class
+  // Animal* ptr = new Animal();  // Error: cannot instantiate abstract class
+  
+  std::cout << "Animal class is abstract - cannot create Animal objects directly" << std::endl;
+  
+  std::cout << "\n=== Test 2: Can create Dog and Cat (concrete classes) ===" << std::endl;
+  
+  Dog dog;
+  Cat cat;
+  //Animal animal = new Animal(); // This line is just to show Animal cannot be instantiated
+  
+  std::cout << "\nDog type: " << dog.getType() << std::endl;
+  std::cout << "Cat type: " << cat.getType() << std::endl;
+  
+  std::cout << "\nDog sound: ";
+  dog.makeSound();
+  std::cout << "Cat sound: ";
+  cat.makeSound();
+  
+  std::cout << "\n=== Test 3: Polymorphism still works with Animal pointers ===" << std::endl;
+  
+  const Animal *animals[4] = {new Dog(), new Cat(), new Dog(), new Cat()};
+  
+  for (int i = 0; i < 4; ++i) {
+    std::cout << "Animal " << i << " (" << animals[i]->getType() << ") says: ";
+    animals[i]->makeSound();
+  }
+  
+  std::cout << "\n=== Test 4: Deep copy test ===" << std::endl;
+  
+  Dog original;
+  original.getBrain()->setIdea(0, "Original idea");
+  
+  Dog copy(original);
+  
+  std::cout << "Original idea: " << original.getBrain()->getIdea(0) << std::endl;
+  std::cout << "Copy idea: " << copy.getBrain()->getIdea(0) << std::endl;
+  
+  original.getBrain()->setIdea(0, "Modified");
+  
+  std::cout << "\nAfter modifying original:" << std::endl;
+  std::cout << "Original idea: " << original.getBrain()->getIdea(0) << std::endl;
+  std::cout << "Copy idea (should be unchanged): " << copy.getBrain()->getIdea(0) << std::endl;
+  
+  std::cout << "\n=== Cleaning up ===" << std::endl;
+  
+  for (int i = 0; i < 4; ++i) {
+    delete animals[i];
+  }
+  
+  std::cout << "\n=== All tests passed! ===" << std::endl;
+  
+  return 0;
+}
+
+/*   WrongAnimal.cpp                                    
+
+#include "WrongAnimal.hpp"
+
+WrongAnimal::WrongAnimal()
+{
+    this->type = "WrongAnimal";
+    std::cout << "WrongAnimal constructor called" << std::endl;
+}
+
+WrongAnimal::~WrongAnimal()
+{
+    std::cout << "WrongAnimal destructor called" << std::endl;
+}
+
+std::string WrongAnimal::getType() const
+{
+    return this->type;
+}
+
+void WrongAnimal::makeSound() const
+{
+    std::cout << "WrongAnimal sound" << std::endl;
+}
+
+/*   WrongCat.cpp                                       
+
+#include "WrongCat.hpp"
+
+WrongCat::WrongCat()
+{
+    this->type = "WrongCat";
+    std::cout << "WrongCat constructor called" << std::endl;
+}
+
+WrongCat::~WrongCat()
+{
+    std::cout << "WrongCat destructor called" << std::endl;
+}
+
+void WrongCat::makeSound() const
+{
+    std::cout << "WrongCat sound" << std::endl;
+}
+ex03
+
+
+/*   AMateria.hpp                                       
+
+#ifndef AMATERIA_HPP
+#define AMATERIA_HPP
+
+#include <iostream>
+
+class ICharacter;
+
+class AMateria
+{
+    protected:
+    std::string type;
+    public:
+    AMateria(std::string const & type);
+    virtual ~AMateria();
+    AMateria(const AMateria &other);
+    AMateria& operator=(const AMateria &other);
+    std::string const & getType() const; 
+    virtual AMateria* clone() const = 0;
+    virtual void use(ICharacter& target);
+};
+
+#endif
+
+/*   Character.hpp                                      
+
+#ifndef CHARACTER_HPP
+#define CHARACTER_HPP
+
+#include "ICharacter.hpp"
+#include "AMateria.hpp"
+
+class Character : public ICharacter
+{
+private:
+    std::string name;
+    AMateria* inventory[4];
+public:
+    Character(const std::string& name);
+    Character(const Character& other);
+    Character& operator=(const Character& other);
+    ~Character();
+    std::string const & getName() const;
+    void equip(AMateria* m);
+    void unequip(int idx);
+    void use(int idx, ICharacter& target);
+};
+
+#endif
+
+/*   Cure.hpp                                           
+
+#ifndef CURE_HPP
+#define CURE_HPP
+
+#include "AMateria.hpp"
+#include "ICharacter.hpp"
+
+
+class Cure: public AMateria
+{
+public:
+    Cure();
+    Cure(const Cure &other);
+    ~Cure();
+    AMateria* clone() const;
+    void use(ICharacter& target);
+};
+
+#endif
+
+/*   Ice.hpp                                            
+
+#ifndef ICE_HPP
+#define ICE_HPP
+
+#include "AMateria.hpp"
+#include "ICharacter.hpp"
+
+
+class Ice: public AMateria
+{
+public:
+    Ice();
+    Ice(const Ice &other);
+    ~Ice();
+    AMateria* clone() const;
+    void use(ICharacter& target);
+};
+
+#endif
+
+/*   ICharacter.hpp                                     
+
+#ifndef ICHARACTER_HPP
+#define ICHARACTER_HPP
+
+#include <iostream>
+
+class AMateria;
+
+class ICharacter
+{
+    public:
+    virtual ~ICharacter() {}
+    virtual std::string const & getName() const = 0;
+    virtual void equip(AMateria* m) = 0;
+    virtual void unequip(int idx) = 0;
+    virtual void use(int idx, ICharacter& target) = 0;
+};
+
+#endif
+
+/*   iMateriaSource.hpp                                 
+
+#ifndef IMATERIASOURCE_HPP
+#define IMATERIASOURCE_HPP
+
+#include "./AMateria.hpp"
+
+class IMateriaSource
+{
+    public:
+    virtual ~IMateriaSource() {}
+    virtual void learnMateria(AMateria*) = 0;
+    virtual AMateria* createMateria(std::string const & type) = 0;
+};
+
+#endif
+
+/*   MateriaSource.hpp                                  
+
+#ifndef MATERIASOURCE_HPP
+#define MATERIASOURCE_HPP
+
+#include "./iMateriaSource.hpp"
+#include "./AMateria.hpp"
+
+class MateriaSource: public IMateriaSource
+{
+    private:
+        AMateria* materias[4];
+    public:
+     MateriaSource();
+     ~MateriaSource();
+     void learnMateria(AMateria*);
+     AMateria* createMateria(std::string const & type);
+};
+
+#endif
+
+/*   Amateria.cpp                                       
+
+#include "../includes/AMateria.hpp"
+#include "../includes/ICharacter.hpp"
+
+AMateria::AMateria(std::string const &type): type(type){};
+
+AMateria::AMateria(const AMateria &other): type(other.type){};
+
+AMateria& AMateria::operator=(const AMateria &other) {
+    if (this != &other) {
+        this->type = other.type;
+    }
+    return *this;
+}
+
+AMateria::~AMateria(){};
+
+std::string const & AMateria::getType() const {
+    return this->type;
+}
+
+void AMateria::use(ICharacter& target) {
+    std::cout << "* uses " << this->type << " on " << target.getName() << " *" << std::endl;
+}
+
+/*   Character.cpp                                      
+
+#include "../includes/Character.hpp"
+
+Character::Character(const std::string& name) : name(name)
+{
+    for (int i = 0; i < 4; ++i)
+        inventory[i] = NULL;
+}
+
+Character::Character(const Character &other) : name(other.name)
+{
+    for(int i = 0; i < 4; i++)
+    {
+        if (other.inventory[i])
+            this->inventory[i] = other.inventory[i]->clone();
+        else
+            this->inventory[i] = NULL;
+    }
+}
+
+Character& Character::operator=(const Character &other)
+{
+    if (this != &other)
+    {
+        this->name = other.name;
+        for (int i = 0; i < 4; i++)
+        {
+            if (this->inventory[i])
+            {
+                delete this->inventory[i];
+                this->inventory[i] = NULL;
+            }
+        }
+        for (int i = 0; i < 4; i++)
+        {
+            if (other.inventory[i])
+                this->inventory[i] = other.inventory[i]->clone();
+            else
+                this->inventory[i] = NULL;
+        }
+    }
+    return *this;
+}
+
+Character::~Character()
+{
+    for (int i = 0; i < 4; i++)
+    {
+        if (this->inventory[i])
+            delete this->inventory[i];
+    }
+}
+
+std::string const & Character::getName() const
+{
+    return this->name;
+}
+
+void Character::equip(AMateria* m)
+{
+    if (!m)
+        return;
+    for (int i = 0; i < 4; i++)
+    {
+        if (!this->inventory[i])
+        {
+            this->inventory[i] = m;
+            return;
+        }
+    }
+}
+
+void Character::unequip(int idx)
+{
+    if (idx >= 0 && idx < 4 && this->inventory[idx])
+    {
+        this->inventory[idx] = NULL;
+    }
+}
+
+void Character::use(int idx, ICharacter& target)
+{
+    if (idx >= 0 && idx < 4 && this->inventory[idx])
+    {
+        this->inventory[idx]->use(target);
+    }
+}
+
+
+/*   Cure.cpp                                           
+
+#include "../includes/Cure.hpp"
+#include "../includes/ICharacter.hpp"
+
+Cure::Cure(void): AMateria("cure"){};
+
+Cure::~Cure(void){};
+    
+Cure::Cure(const Cure &other): AMateria(other){};
+
+AMateria* Cure::clone() const {
+    return new Cure(*this);
+}
+
+void Cure::use(ICharacter& target) {
+    std::cout << "* heals " << target.getName() << "'s wounds *" << std::endl;
+}
+
+/*   Ice.cpp                                            
+
+#include "../includes/Ice.hpp"
+#include "../includes/ICharacter.hpp"
+
+Ice::Ice(void): AMateria("ice"){};
+
+Ice::~Ice(void){};
+
+Ice::Ice(const Ice &other): AMateria(other){};
+
+AMateria* Ice::clone() const {
+    return new Ice(*this);
+}
+
+void Ice::use(ICharacter& target) {
+    std::cout << "* shoots an ice bolt at " << target.getName() << " *" << std::endl;
+}
+
+/*   main.cpp                                           
+
+#include "../includes/Ice.hpp"
+#include "../includes/Cure.hpp"
+#include "../includes/Character.hpp"
+#include "../includes/MateriaSource.hpp"
+
+int main()
+{
+  std::cout << "=== Test 1: Subject test ===" << std::endl;
+  IMateriaSource* src = new MateriaSource();
+  src->learnMateria(new Ice());
+  src->learnMateria(new Cure());
+  ICharacter* me = new Character("me");
+  AMateria* tmp;
+  tmp = src->createMateria("ice");
+  me->equip(tmp);
+  tmp = src->createMateria("cure");
+  me->equip(tmp);
+  ICharacter* bob = new Character("bob");
+  me->use(0, *bob);
+  me->use(1, *bob);
+  delete bob;
+  delete me;
+  delete src;
+  
+  std::cout << "\n=== Test 2: Full inventory (4 slots) ===" << std::endl;
+  IMateriaSource* src2 = new MateriaSource();
+  src2->learnMateria(new Ice());
+  src2->learnMateria(new Cure());
+  
+  ICharacter* alice = new Character("Alice");
+  tmp = src2->createMateria("ice");
+  alice->equip(tmp);
+  tmp = src2->createMateria("cure");
+  alice->equip(tmp);
+  tmp = src2->createMateria("ice");
+  alice->equip(tmp);
+  tmp = src2->createMateria("cure");
+  alice->equip(tmp);
+  
+  // Try to equip 5th (should do nothing)
+  tmp = src2->createMateria("ice");
+  alice->equip(tmp);
+  delete tmp; // Clean up since it wasn't equipped
+  
+  ICharacter* charlie = new Character("Charlie");
+  alice->use(0, *charlie);
+  alice->use(1, *charlie);
+  alice->use(2, *charlie);
+  alice->use(3, *charlie);
+  
+  delete charlie;
+  delete alice;
+  delete src2;
+  
+  std::cout << "\n=== Test 3: Unequip and use ===" << std::endl;
+  IMateriaSource* src3 = new MateriaSource();
+  src3->learnMateria(new Ice());
+  src3->learnMateria(new Cure());
+  
+  ICharacter* david = new Character("David");
+  AMateria* floor[10]; // To store unequipped materias
+  int floorCount = 0;
+  
+  AMateria* ice_materia = src3->createMateria("ice");
+  david->equip(ice_materia);
+  tmp = src3->createMateria("cure");
+  david->equip(tmp);
+  
+  ICharacter* eve = new Character("Eve");
+  david->use(0, *eve);
+  david->use(1, *eve);
+  
+  // Unequip slot 0 and save to floor
+  floor[floorCount++] = ice_materia;
+  david->unequip(0);
+  
+  // Try to use unequipped slot (should do nothing)
+  david->use(0, *eve);
+  
+  // Use slot 1 (still equipped)
+  david->use(1, *eve);
+  
+  // Clean up floor
+  for (int i = 0; i < floorCount; i++)
+    delete floor[i];
+  
+  delete eve;
+  delete david;
+  delete src3;
+  
+  std::cout << "\n=== Test 4: Unknown materia type ===" << std::endl;
+  IMateriaSource* src4 = new MateriaSource();
+  src4->learnMateria(new Ice());
+  
+  ICharacter* frank = new Character("Frank");
+  tmp = src4->createMateria("fire"); // Unknown type
+  if (!tmp)
+    std::cout << "Cannot create unknown materia type 'fire'" << std::endl;
+  
+  tmp = src4->createMateria("ice");
+  frank->equip(tmp);
+  
+  ICharacter* grace = new Character("Grace");
+  frank->use(0, *grace);
+  
+  delete grace;
+  delete frank;
+  delete src4;
+  
+  std::cout << "\n=== Test 5: Deep copy of Character ===" << std::endl;
+  IMateriaSource* src5 = new MateriaSource();
+  src5->learnMateria(new Ice());
+  src5->learnMateria(new Cure());
+  
+  ICharacter* original = new Character("Original");
+  tmp = src5->createMateria("ice");
+  original->equip(tmp);
+  tmp = src5->createMateria("cure");
+  original->equip(tmp);
+  
+  // Copy constructor
+  Character copy1(*(Character*)original);
+  
+  // Assignment operator
+  Character copy2("Copy2");
+  copy2 = *(Character*)original;
+  
+  ICharacter* target = new Character("Target");
+  
+  std::cout << "Original uses materias:" << std::endl;
+  original->use(0, *target);
+  original->use(1, *target);
+  
+  std::cout << "Copy1 uses materias:" << std::endl;
+  copy1.use(0, *target);
+  copy1.use(1, *target);
+  
+  std::cout << "Copy2 uses materias:" << std::endl;
+  copy2.use(0, *target);
+  copy2.use(1, *target);
+  
+  delete target;
+  delete original;
+  delete src5;
+  
+  std::cout << "\n=== Test 6: Learn more than 4 materias ===" << std::endl;
+  IMateriaSource* src6 = new MateriaSource();
+  src6->learnMateria(new Ice());
+  src6->learnMateria(new Cure());
+  src6->learnMateria(new Ice());
+  src6->learnMateria(new Cure());
+  src6->learnMateria(new Ice()); // 5th - should do nothing
+  
+  ICharacter* harry = new Character("Harry");
+  tmp = src6->createMateria("ice");
+  harry->equip(tmp);
+  
+  ICharacter* iris = new Character("Iris");
+  harry->use(0, *iris);
+  
+  delete iris;
+  delete harry;
+  delete src6;
+  
+  std::cout << "\n=== All tests completed ===" << std::endl;
+  return 0;
+}
+
+
+/*   MateriaSource.cpp                                  
+
+#include "../includes/MateriaSource.hpp"
+
+MateriaSource::MateriaSource()
+{
+    for(int i = 0; i < 4; i++)
+        this->materias[i] = NULL;
+};
+
+MateriaSource::~MateriaSource()
+{
+    for(int i = 0; i < 4; i++)
+    {
+        if(this->materias[i])
+            delete this->materias[i];
+    }
+};
+
+void MateriaSource::learnMateria(AMateria* m)
+{
+    if(!m)
+        return;
+    for (int i = 0; i < 4; i++)
+    {
+        if (this->materias[i] == NULL)
+        {
+            this->materias[i] = m->clone();
+            return;
+        }
+    }
+}
+
+
+AMateria* MateriaSource::createMateria(std::string const & type)
+{
+    for (int i = 0; i < 4; i++)
+    {
+        if (this->materias[i] && this->materias[i]->getType() == type)
+        {
+            return this->materias[i]->clone();
+        }
+    }
+    return 0;
+}

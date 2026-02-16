@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 10:33:01 by agarcia           #+#    #+#             */
-/*   Updated: 2026/02/11 18:45:49 by agarcia          ###   ########.fr       */
+/*   Updated: 2026/02/11 18:55:46 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ protected:
     int _energyPoints;
     int _attackDamage;
 public:
+    ClapTrap();
     ClapTrap(std::string name);
     ClapTrap(const ClapTrap& other);
     ClapTrap& operator=(const ClapTrap& other);

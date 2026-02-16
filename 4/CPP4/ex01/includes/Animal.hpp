@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 13:27:57 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/28 16:26:24 by agarcia          ###   ########.fr       */
+/*   Updated: 2026/02/16 18:14:01 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@ protected:
 public:
    Animal();
    Animal(const Animal &other);
+   Animal& operator=(const Animal &other);
    virtual ~Animal();
    std::string getType() const;
    virtual void makeSound() const;
-   Animal& operator=(const Animal &other);
 };
 
 

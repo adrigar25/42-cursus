@@ -6,11 +6,19 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 11:07:24 by agarcia           #+#    #+#             */
-/*   Updated: 2026/02/11 18:27:58 by agarcia          ###   ########.fr       */
+/*   Updated: 2026/02/11 18:55:17 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "FragTrap.hpp"
+#include "../includes/FragTrap.hpp"
+
+FragTrap::FragTrap() : ClapTrap("Default")
+{
+    this->_hitPoints = 100;
+    this->_energyPoints = 100;
+    this->_attackDamage = 30;
+    std::cout << "FragTrap " << this->_name << " has been created with default constructor!" << std::endl;
+}
 
 FragTrap::FragTrap(std::string name) : ClapTrap(name)
 {
