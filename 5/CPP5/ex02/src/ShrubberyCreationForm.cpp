@@ -1,9 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ShrubberyCreationForm.cpp                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/02/23 19:09:39 by agarcia           #+#    #+#             */
+/*   Updated: 2026/02/23 19:09:40 by agarcia          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/AForm.hpp"
 #include "../include/ShrubberyCreationForm.hpp"
 #include "../include/Bureaucrat.hpp"
 #include <fstream>
 #include <iostream>
 #include <stdexcept>
+
+ShrubberyCreationForm::ShrubberyCreationForm()
+    : AForm("shrubbery creation", 145, 137), _target("default"){}
 
 ShrubberyCreationForm::ShrubberyCreationForm(const std::string& target) 
     : AForm("shrubbery creation", 145, 137), _target(target){}

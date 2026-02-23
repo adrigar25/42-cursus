@@ -6,6 +6,9 @@
 #include <stdexcept>
 
 
+RobotomyRequestForm::RobotomyRequestForm()
+    : AForm("robotomy request", 75, 45), _target("default"){}
+
 RobotomyRequestForm::RobotomyRequestForm(const std::string& target) 
     : AForm("robotomy request", 75, 45), _target(target){}
 

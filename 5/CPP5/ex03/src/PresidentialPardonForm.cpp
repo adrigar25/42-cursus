@@ -5,6 +5,9 @@
 #include <iostream>
 #include <stdexcept>
 
+PresidentialPardonForm::PresidentialPardonForm()
+    : AForm("presidential pardon", 25, 5), _target("default"){}
+
 PresidentialPardonForm::PresidentialPardonForm(const std::string& target) 
     : AForm("presidential pardon", 25, 5), _target(target){}
 

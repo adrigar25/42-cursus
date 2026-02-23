@@ -1,9 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   PresidentialPardonForm.cpp                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/02/23 19:09:36 by agarcia           #+#    #+#             */
+/*   Updated: 2026/02/23 19:09:36 by agarcia          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/AForm.hpp"
 #include "../include/PresidentialPardonForm.hpp"
 #include "../include/Bureaucrat.hpp"
 #include <fstream>
 #include <iostream>
 #include <stdexcept>
+
+PresidentialPardonForm::PresidentialPardonForm()
+    : AForm("presidential pardon", 25, 5), _target("default"){}
 
 PresidentialPardonForm::PresidentialPardonForm(const std::string& target) 
     : AForm("presidential pardon", 25, 5), _target(target){}
