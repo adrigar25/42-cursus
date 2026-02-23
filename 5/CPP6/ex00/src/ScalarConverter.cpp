@@ -1,5 +1,12 @@
 #include "../includes/ScalarConverter.hpp"
 #include <iostream>
+#include <limits>
+#include <sstream>
+
+ScalarConverter::ScalarConverter() {}
+ScalarConverter::ScalarConverter(const ScalarConverter&) {}
+ScalarConverter& ScalarConverter::operator=(const ScalarConverter&) { return *this; }
+ScalarConverter::~ScalarConverter() {}
 
 static int is_char(const std::string& literal)
 {
@@ -11,15 +18,17 @@ static int is_int(const std::string& literal)
     int len = static_cast<int>(literal.length());
     int i = 0;
 
+    if(len == 0)
+        return (0);
     if(literal[i] == '-' || literal[i] == '+')
         i++;
-
+    if(i == len)
+        return (0);
     for(; i < len; i++)
     {
         if(!isdigit(literal[i]))
             return (0);
     }
-    
     return (1);
 }
  
@@ -27,26 +36,24 @@ static int is_double(const std::string& literal)
 {
     int len = static_cast<int>(literal.length());
     int i = 0;
+    int hasDot = 0;
 
     if(len < 3)
         return (0);
-
     if(literal[i] == '-' || literal[i] == '+')
         i++;
-
     for(; i < len; i++)
     {
-        if(literal[i] == '.')
+        if(literal[i] == '.' && !hasDot)
         {
             if(i == 0 || i == len - 1)
                 return (0);
-            i++;
-            break;
+            hasDot = 1;
         }
-        if(!isdigit(literal[i]))
+        else if(!isdigit(literal[i]))
             return (0);
     }
-    return (1);
+    return (hasDot);
 }
 
 static int is_float(const std::string& literal)
@@ -82,72 +89,79 @@ static int getType(const std::string& literal)
     return (-1);
 }
 
+static bool hasDecimalOrExp(double num)
+{
+    std::ostringstream oss;
+    oss << num;
+    std::string s = oss.str();
+    return (s.find('.') != std::string::npos || s.find('e') != std::string::npos);
+}
 
+static void printResult(float f, double d)
+{
+    if (d < 0 || d > 127)
+        std::cout << "char: impossible\n";
+    else if (!isprint(static_cast<int>(d)))
+        std::cout << "char: Non displayable\n";
+    else
+        std::cout << "char: '" << static_cast<char>(d) << "'\n";
+
+    if (d < std::numeric_limits<int>::min() || d > std::numeric_limits<int>::max())
+        std::cout << "int: impossible\n";
+    else
+        std::cout << "int: " << static_cast<int>(d) << '\n';
+
+    std::cout << "float: " << f;
+    if (!hasDecimalOrExp(static_cast<double>(f)))
+        std::cout << ".0f\n";
+    else
+        std::cout << "f\n";
+
+    std::cout << "double: " << d;
+    if (!hasDecimalOrExp(d))
+        std::cout << ".0\n";
+    else
+        std::cout << "\n";
+}
+
+static void printImpossible(float f, double d)
+{
+    std::cout << "char: impossible\n";
+    std::cout << "int: impossible\n";
+    std::cout << "float: " << f << "f\n";
+    std::cout << "double: " << d << "\n\n";
+}
 
 void ScalarConverter::convert(const std::string& literal)
 {
-    char character = '\0';
-    int integerNum = 0;
-    double doubleNum = 0.0;
-    float floatNum = 0.0f;
-
+    float   f = 0.0f;
+    double  d = 0.0;
 
     switch (getType(literal))
     {
-        case -1:
-            std::cout << "Error: Invalid literal" << std::endl;
-            return;
+        case -1: std::cout << "Error: Invalid literal\n"; return;
         case 0:
-            character = literal[0];
-            integerNum = static_cast<int>(character);
-            floatNum = static_cast<float>(character);
-            doubleNum = static_cast<double>(character);
+            d = static_cast<double>(literal[0]);
+            f = static_cast<float>(literal[0]);
             break;
         case 1:
-            integerNum = std::stoi(literal);
-            character = static_cast<char>(integerNum);
-            floatNum = static_cast<float>(integerNum);
-            doubleNum = static_cast<double>(integerNum);
+            try { d = std::stod(literal); }
+            catch (std::out_of_range&) { std::cout << "Error: out of range\n"; return; }
+            f = static_cast<float>(d);
             break;
         case 2:
-            floatNum = std::stof(literal);
-            character = static_cast<char>(floatNum);
-            integerNum = static_cast<int>(floatNum);
-            doubleNum = static_cast<double>(floatNum);
+            try { f = std::stof(literal); }
+            catch (std::out_of_range&) { std::cout << "Error: out of range\n"; return; }
+            d = static_cast<double>(f);
             break;
         case 3:
-            doubleNum = std::stod(literal);
-            character = static_cast<char>(doubleNum);
-            integerNum = static_cast<int>(doubleNum);
-            floatNum = static_cast<float>(doubleNum);
+            try { d = std::stod(literal); }
+            catch (std::out_of_range&) { std::cout << "Error: out of range\n"; return; }
+            f = static_cast<float>(d);
             break;
-        case 4:
-            doubleNum = std::stod(literal);
-            floatNum = static_cast<float>(doubleNum);
-            std::cout << "char: impossible\n";
-            std::cout << "int: impossible\n";
-            std::cout << "float: " << floatNum << "f\n";
-            std::cout << "double: " << doubleNum << "\n" << std::endl;
-            return;
-        case 5:
-            floatNum = std::stof(literal);
-            doubleNum = static_cast<double>(floatNum);
-            std::cout << "char: impossible\n";
-            std::cout << "int: impossible\n";
-            std::cout << "float: " << floatNum << "f\n";
-            std::cout << "double: " << doubleNum << "\n" << std::endl;
-            return;
-        default:
-            break;
+        case 4: d = std::stod(literal); f = static_cast<float>(d); printImpossible(f, d); return;
+        case 5: f = std::stof(literal); d = static_cast<double>(f); printImpossible(f, d); return;
+        default: break;
     }
-
-    std::cout << "char: ";
-        if (isprint(character))
-            std::cout << "'" << character << "'\n";
-        else
-            std::cout << "Non displayable" << '\n';
-
-        std::cout << "int: " << integerNum << '\n';
-        std::cout << "float: " << floatNum << "f" << '\n';
-        std::cout << "double: " << doubleNum << '\n' << std::endl;
+    printResult(f, d);
 }
