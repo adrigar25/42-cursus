@@ -4,10 +4,10 @@ Path:            /Users/USER/Desktop/*/so_long
 Load Address:    0x102d38000
 Identifier:      so_long
 Version:         0
-Code Type:       ARM64
+Code T:       ARM64
 Platform:        macOS
 Parent Process:  leaks [78167]
-Target Type:     live task
+Target T:     live task
 
 Date/Time:       2025-11-07 9:39:17.398 +0100
 Launch Time:     2025-11-07 9:39:14.893 +0100

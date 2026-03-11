@@ -6,11 +6,11 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 14:52:31 by agarcia           #+#    #+#             */
-/*   Updated: 2026/01/19 15:17:45 by agarcia          ###   ########.fr       */
+/*   Updated: 2026/02/26 19:04:24 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/Zombie.hpp"
+#include "Zombie.hpp"
 
 
 

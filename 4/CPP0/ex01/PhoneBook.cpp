@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 14:53:01 by agarcia           #+#    #+#             */
-/*   Updated: 2026/01/14 16:47:56 by agarcia          ###   ########.fr       */
+/*   Updated: 2026/02/26 18:44:39 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ PhoneBook::~PhoneBook(){}
 static int	getString(std::string prompt, std::string &var)
 {
 	std::cout << prompt;
-	std::getline(std::cin, var);
+	if(!std::getline(std::cin, var))
+		return (0);
 	return (!var.empty());
 }
 

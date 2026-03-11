@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 19:08:51 by agarcia           #+#    #+#             */
-/*   Updated: 2026/02/23 19:08:51 by agarcia          ###   ########.fr       */
+/*   Updated: 2026/03/05 18:46:20 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ class Form
 
 
     public:
-        Form(void);
+        Form();
         Form(const std::string name, const int gradeToSign, const int gradeToExecute);
         Form(const Form& other);
         Form& operator=(const Form& other);

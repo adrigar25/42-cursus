@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 19:09:01 by agarcia           #+#    #+#             */
-/*   Updated: 2026/02/23 19:09:01 by agarcia          ###   ########.fr       */
+/*   Updated: 2026/03/05 18:46:27 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ class AForm
 
 
     public:
-        AForm(void);
+        AForm();
         AForm(const std::string name, const int gradeToSign, const int gradeToExecute);
         AForm(const AForm& other);
         AForm& operator=(const AForm& other);
