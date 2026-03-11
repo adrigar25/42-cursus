@@ -1,8 +1,16 @@
 #include "Form.hpp"
 #include "Bureaucrat.hpp"
 
+Form::Form() : _name("default"), _signed(false), _gradeToSign(150), _gradeToExecute(150) {}
+
 Form::Form(const std::string name, const int gradeToSign, const int gradeToExecute):
-_name(name), _signed(false), _gradeToSign(gradeToSign), _gradeToExecute(gradeToExecute){};
+_name(name), _signed(false), _gradeToSign(gradeToSign), _gradeToExecute(gradeToExecute)
+{
+    if (gradeToSign < 1 || gradeToExecute < 1)
+        throw Form::GradeTooHighException();
+    if (gradeToSign > 150 || gradeToExecute > 150)
+        throw Form::GradeTooLowException();
+};
 
 Form::Form(const Form& other): _name(other._name), _signed(other._signed), _gradeToSign(other._gradeToSign), _gradeToExecute(other._gradeToExecute){}
 
@@ -22,14 +30,19 @@ const std::string& Form::getName() const
     return (_name);
 }
 
-int Form::getGradeToSign()
+int Form::getGradeToSign() const
 {
     return (_gradeToSign);
 }
 
-int Form::getGradeToExecute()
+int Form::getGradeToExecute() const
 {
     return (_gradeToExecute);
+}
+
+bool Form::getSigned() const
+{
+    return (_signed);
 }
 
 
@@ -45,7 +58,16 @@ const char* Form::GradeTooLowException::what() const throw()
 
 void Form::beSigned(const Bureaucrat& bureaucrat)
 {
-    if(bureaucrat.getGrade() >= this->_gradeToSign)
+    if (bureaucrat.getGrade() > this->_gradeToSign)
         throw Form::GradeTooLowException();
     this->_signed = true;
+}
+
+std::ostream& operator<<(std::ostream& out, const Form& form)
+{
+    out << "Form " << form.getName()
+        << " | signed: " << (form.getSigned() ? "yes" : "no")
+        << " | grade to sign: " << form.getGradeToSign()
+        << " | grade to execute: " << form.getGradeToExecute();
+    return out;
 }

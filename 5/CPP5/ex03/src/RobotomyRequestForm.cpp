@@ -4,10 +4,10 @@
 #include <fstream>
 #include <iostream>
 #include <stdexcept>
-
+#include <cstdlib>
 
 RobotomyRequestForm::RobotomyRequestForm(const std::string& target) 
-    : AForm("robotomy request", 75, 45), _target(target){}
+    : AForm("robotomy request", 72, 45), _target(target){}
 
 RobotomyRequestForm::RobotomyRequestForm(const RobotomyRequestForm& other) 
     : AForm(other), _target(other._target){}
