@@ -7,7 +7,7 @@
 #include <cstdlib>
 
 RobotomyRequestForm::RobotomyRequestForm()
-    : AForm("robotomy request", 75, 45), _target("default"){}
+    : AForm("robotomy request", 72, 45), _target("default"){}
 
 RobotomyRequestForm::RobotomyRequestForm(const std::string& target) 
     : AForm("robotomy request", 72, 45), _target(target){}
