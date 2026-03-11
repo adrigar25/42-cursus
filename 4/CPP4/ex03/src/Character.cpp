@@ -6,11 +6,11 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/30 01:45:57 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/30 01:58:11 by agarcia          ###   ########.fr       */
+/*   Updated: 2026/02/16 18:48:41 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/Character.hpp"
+#include "Character.hpp"
 
 Character::Character(const std::string& name) : name(name)
 {

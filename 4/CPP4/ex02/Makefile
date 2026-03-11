@@ -6,14 +6,14 @@
 #    By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/26 13:45:00 by agarcia           #+#    #+#              #
-#    Updated: 2025/11/26 14:48:10 by agarcia          ###   ########.fr        #
+#    Updated: 2026/02/16 18:47:48 by agarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		:= animal
 
 CPP			:= c++
-CPPFLAGS	:= -Wall -Wextra -Werror -std=c++98
+CPPFLAGS	:= -Wall -Wextra -Werror -std=c++98 -I includes
 
 SRC_DIR		:= src
 SRCS		:= 	$(SRC_DIR)/main.cpp \

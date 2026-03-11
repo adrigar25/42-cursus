@@ -6,7 +6,7 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 13:32:56 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/28 16:41:09 by agarcia          ###   ########.fr       */
+/*   Updated: 2026/02/16 18:15:34 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,15 @@ Animal::Animal(const Animal &other)
     std::cout << "Animal copy constructor called" << std::endl;
 }
 
+Animal& Animal::operator=(const Animal &other)
+{
+    if (this != &other)
+    {
+        this->type = other.type;
+    }
+    return *this;
+}
+
 Animal::~Animal()
 {
     std::cout << "Animal destructor called" << std::endl;
@@ -32,13 +41,4 @@ Animal::~Animal()
 std::string Animal::getType() const
 {
     return this->type;
-}
-
-Animal& Animal::operator=(const Animal &other)
-{
-    if (this != &other)
-    {
-        this->type = other.type;
-    }
-    return *this;
 }

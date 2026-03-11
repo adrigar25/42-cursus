@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Amateria.cpp                                       :+:      :+:    :+:   */
+/*   AMateria.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/30 00:51:57 by agarcia           #+#    #+#             */
-/*   Updated: 2025/11/30 01:32:50 by agarcia          ###   ########.fr       */
+/*   Updated: 2026/02/16 18:48:36 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/AMateria.hpp"
-#include "../includes/ICharacter.hpp"
+#include "AMateria.hpp"
+#include "ICharacter.hpp"
 
 AMateria::AMateria(std::string const &type): type(type){};
 

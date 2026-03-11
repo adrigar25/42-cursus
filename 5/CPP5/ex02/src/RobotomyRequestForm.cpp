@@ -16,6 +16,7 @@
 #include <fstream>
 #include <iostream>
 #include <stdexcept>
+#include <cstdlib>
 
 RobotomyRequestForm::RobotomyRequestForm()
     : AForm("robotomy request", 72, 45), _target("default"){}

@@ -13,7 +13,15 @@
 #include "../include/Bureaucrat.hpp"
 #include "../include/AForm.hpp"
 
-Bureaucrat::Bureaucrat(const std::string& name, int grade) : _name(name), _grade(grade) {};
+Bureaucrat::Bureaucrat() : _name("default"), _grade(150) {}
+
+Bureaucrat::Bureaucrat(const std::string& name, int grade) : _name(name), _grade(grade)
+{
+    if (grade < 1)
+        throw Bureaucrat::GradeTooHighException();
+    if (grade > 150)
+        throw Bureaucrat::GradeTooLowException();
+};
 
 Bureaucrat::~Bureaucrat() {};
 
@@ -40,16 +48,16 @@ int Bureaucrat::getGrade() const
 
 void Bureaucrat::incrementGrade()
 {
-    this->_grade--;
-    if(this->_grade < 1)
+    if (this->_grade - 1 < 1)
         throw Bureaucrat::GradeTooHighException();
+    this->_grade--;
 }
 
 void Bureaucrat::decrementGrade()
 {
-    this->_grade++;
-    if(this->_grade > 150)
+    if (this->_grade + 1 > 150)
         throw Bureaucrat::GradeTooLowException();
+    this->_grade++;
 }
 
 const char* Bureaucrat::GradeTooHighException::what() const throw()
@@ -83,12 +91,12 @@ void Bureaucrat::signForm(AForm& form)
 void Bureaucrat::executeForm(AForm const & form)
 {
     try {
-        std::cout << this->_name << " executed " << form.getName() << std::endl;
         form.execute(*this);
+        std::cout << this->_name << " executed " << form.getName() << std::endl;
     }
     catch(std::exception& e)
     {
-        std::cout << "Error: An error ocurred executing the ";
-        std::cout << form.getName() << ": " << e.what() << std::endl;;
+        std::cout << this->_name << " couldn't execute " << form.getName()
+                  << " because " << e.what() << std::endl;
     }
 }

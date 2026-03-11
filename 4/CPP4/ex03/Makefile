@@ -1,7 +1,8 @@
 NAME	:= materia
 
 CPP	 := c++
-CPPFLAGS	:= -Wall -Wextra -Werror -std=c++98
+CPPFLAGS	:= -Wall -Wextra -Werror -std=c++98 -I includes
+
 
 SRCS	:=  src/main.cpp \
 			src/AMateria.cpp \

@@ -6,11 +6,19 @@
 /*   By: agarcia <agarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 11:07:24 by agarcia           #+#    #+#             */
-/*   Updated: 2026/01/07 11:27:42 by agarcia          ###   ########.fr       */
+/*   Updated: 2026/02/11 18:53:44 by agarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ScavTrap.hpp"
+#include "../includes/ScavTrap.hpp"
+
+ScavTrap::ScavTrap() : ClapTrap("Default"), _guardMode(false)
+{
+    this->_hitPoints = 100;
+    this->_energyPoints = 50;
+    this->_attackDamage = 20;
+    std::cout << "ScavTrap " << this->_name << " has been created with default constructor!" << std::endl;
+}
 
 ScavTrap::ScavTrap(std::string name) : ClapTrap(name), _guardMode(false)
 {
@@ -18,6 +26,23 @@ ScavTrap::ScavTrap(std::string name) : ClapTrap(name), _guardMode(false)
     this->_energyPoints = 50;
     this->_attackDamage = 20;
     std::cout << "ScavTrap " << this->_name << " has been created!" << std::endl;
+}
+
+ScavTrap::ScavTrap(const ScavTrap& other) : ClapTrap(other), _guardMode(other._guardMode)
+{
+    this->_hitPoints = other._hitPoints;
+    this->_energyPoints = other._energyPoints;
+    this->_attackDamage = other._attackDamage;
+}
+
+ScavTrap& ScavTrap::operator=(const ScavTrap& other)
+{
+    if (this != &other)
+    {
+        ClapTrap::operator=(other);
+        this->_guardMode = other._guardMode;
+    }
+    return *this;
 }
 
 ScavTrap::~ScavTrap()
