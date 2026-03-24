@@ -3,6 +3,7 @@
 #include "../include/RobotomyRequestForm.hpp"
 #include "../include/PresidentialPardonForm.hpp"
 #include "../include/Intern.hpp"
+#include <stdexcept>
 
 int main()
 {
