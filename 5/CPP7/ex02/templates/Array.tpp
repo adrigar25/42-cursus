@@ -5,13 +5,13 @@
 #include <stdexcept>
 
 template <typename T>
-Array<T>::Array() : _data(nullptr), _size(0) {}
+Array<T>::Array() : _data(NULL), _size(0) {}
 
 template <typename T>
 Array<T>::Array(unsigned int n) : _data(new T[n]()), _size(n) {}
 
 template <typename T>
-Array<T>::Array(Array const &other) : _data(nullptr), _size(0)
+Array<T>::Array(Array const &other) : _data(NULL), _size(0)
 {
     *this = other;
 }
@@ -32,6 +32,14 @@ Array<T>& Array<T>::operator=(const Array<T> &other)
 
 template <typename T>
 T& Array<T>::operator[](unsigned int index)
+{
+    if (index >= _size)
+        throw OutOfBoundsException();
+    return (_data[index]);
+}
+
+template <typename T>
+const T& Array<T>::operator[](unsigned int index) const
 {
     if (index >= _size)
         throw OutOfBoundsException();
