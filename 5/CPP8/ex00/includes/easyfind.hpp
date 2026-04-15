@@ -1,9 +1,10 @@
 #ifndef EASYFIND_HPP
 #define EASYFIND_HPP
 
+#include <stdexcept>
 
 template <typename T>
-T& easyfind(const T *t, int n);
+typename T::iterator easyfind(T& container, int n);
 
 #include "../templates/easyfind.tpp"
 

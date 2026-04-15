@@ -26,8 +26,8 @@ public:
             throw SpanFullException();
         _values.insert(_values.end(), first, last);
     }
-    int shortestSpan();
-    int longestSpan();
+    long long shortestSpan();
+    long long longestSpan();
 
     class NoSpanFoundException : public std::exception
     {
