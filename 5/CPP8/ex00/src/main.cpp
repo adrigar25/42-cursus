@@ -1,20 +1,20 @@
 #include "easyfind.hpp"
-#include <vector>
+#include <map>
 #include <iostream>
 
 int main()
 {
     try
     {
-        std::vector<int> nums;
-        nums.push_back(1);
-        nums.push_back(2);
-        nums.push_back(3);
-        nums.push_back(4);
-        nums.push_back(5);
+        std::map<int, int> nums;
+        nums[1] = 1;
+        nums[2] = 2;
+        nums[3] = 3;
+        nums[4] = 4;
+        nums[5] = 5;
 
-        std::vector<int>::iterator it = easyfind(nums, 3);
-        std::cout << "Element found: " << *it << std::endl;
+        std::map<int, int>::iterator it = easyfind(nums, 3);
+        std::cout << "Element found: " << it->second << std::endl;
     }
     catch (const std::exception& e)
     {

@@ -3,6 +3,11 @@
 #include <vector>
 #include <list>
 #include <ctime>
+#include <sys/time.h>
+#include <cstdlib>
+#include <climits>
+#include <cctype>
+#include <iomanip>
 
 static int isVectorSorted(const std::vector<int> &vec)
 {
@@ -36,39 +41,59 @@ int main(int argc, char **argv)
 {
     std::vector<int> vec;
     std::list<int> lst;
-    std::clock_t start;
+    struct timeval tstart, tend;
     double elapsed_list;
     double elapsed_vec;
 
-    if(argc < 2)
+    if (argc < 2)
     {
-        std::cout << "Error: no arguments" << std::endl;
-        return (1);
+        std::cerr << "Error: no arguments" << std::endl;
+        return 1;
     }
 
-    for(int i = 1; i < argc; i++)
+    for (int i = 1; i < argc; ++i)
     {
-        if(!std::isdigit(*argv[i]))
+        const char *s = argv[i];
+        if (!s || s[0] == '\0')
         {
-            std::cout << "Error: invalid value: " << argv[i] << std::endl;
-            return (1); 
+            std::cerr << "Error: invalid value: " << argv[i] << std::endl;
+            return 1;
         }
-        vec.push_back(std::atoi(argv[i]));
-        lst.push_back(std::atoi(argv[i]));
+        
+        for (const char *p = s; *p; ++p)
+        {
+            if (!std::isdigit(static_cast<unsigned char>(*p)))
+            {
+                std::cerr << "Error: invalid value: " << argv[i] << std::endl;
+                return 1;
+            }
+        }
+        char *endptr = NULL;
+        unsigned long val = std::strtoul(s, &endptr, 10);
+        if (endptr == NULL || *endptr != '\0' || val > (unsigned long)INT_MAX)
+        {
+            std::cerr << "Error: invalid value: " << argv[i] << std::endl;
+            return 1;
+        }
+        int iv = static_cast<int>(val);
+        vec.push_back(iv);
+        lst.push_back(iv);
     }
 
-    std:: cout << "Before: ";
-    for(size_t i = 0; i < vec.size(); i++)
+    std:: cout << "Before:";
+    for (size_t i = 0; i < vec.size(); i++)
         std::cout << " " << vec[i];
     std::cout << std::endl;
 
-    start = std::clock();
+    gettimeofday(&tstart, NULL);
     PmergeMe::sortList(lst);
-    elapsed_list = (std::clock() - start) / (double)CLOCKS_PER_SEC * 1e6;
+    gettimeofday(&tend, NULL);
+    elapsed_list = (tend.tv_sec - tstart.tv_sec) * 1000.0 + (tend.tv_usec - tstart.tv_usec) / 1000.0;
 
-    start = std::clock();
+    gettimeofday(&tstart, NULL);
     PmergeMe::sortVector(vec);
-    elapsed_vec = (std::clock() - start) / (double)CLOCKS_PER_SEC * 1e6;
+    gettimeofday(&tend, NULL);
+    elapsed_vec = (tend.tv_sec - tstart.tv_sec) * 1000.0 + (tend.tv_usec - tstart.tv_usec) / 1000.0;
 
     std:: cout << "After (Vector): ";
     for(std::vector<int>::iterator it = vec.begin(); it != vec.end(); ++it)
@@ -79,18 +104,18 @@ int main(int argc, char **argv)
         std::cout << " " << *it;
     std::cout << std::endl;
 
-    if(!isListSorted(lst))
+    if (!isListSorted(lst))
     {
-        std::cout << "Error: list is not sorted" << std::endl;
-        return (1);
+        std::cerr << "Error: list is not sorted" << std::endl;
+        return 1;
     }
-    if(!isVectorSorted(vec))
+    if (!isVectorSorted(vec))
     {
-        std::cout << "Error: vector is not sorted" << std::endl;
-        return (1);
+        std::cerr << "Error: vector is not sorted" << std::endl;
+        return 1;
     }
     std::cout << "Time to process a range of " << lst.size()
-              << " elements with std::list : " << elapsed_list << " us" << std::endl;
+              << " elements with std::list : " << std::fixed << std::setprecision(3) << elapsed_list << " ms" << std::endl;
     std::cout << "Time to process a range of " << vec.size()
-              << " elements with std::vector : " << elapsed_vec << " us" << std::endl;
+              << " elements with std::vector : " << std::fixed << std::setprecision(3) << elapsed_vec << " ms" << std::endl;
 }

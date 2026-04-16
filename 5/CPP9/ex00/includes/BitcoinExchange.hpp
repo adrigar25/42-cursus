@@ -2,6 +2,7 @@
 #define BITCOINEXCHANGE_HPP
 
 #include <map>
+#include <string>
 
 
 class BitcoinExchange

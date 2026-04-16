@@ -9,21 +9,21 @@ BitcoinExchange::BitcoinExchange()
     std::ifstream csv("./data.csv");
     std::string line;
     std::string date;
-    size_t sep;
+    size_t comma;
     double exchange_rate;
 
     if(!csv.is_open())
     {
-        std::cout << "Error: could not open CSV file" << std::endl;
+        std::cout << "Error: could not open file." << std::endl;
         return ;
     }
 
     std::getline(csv, line);
     while (std::getline(csv, line))
     {
-        sep = line.find(',');
-        date = line.substr(0, sep);
-        exchange_rate = std::atof(line.substr(sep + 1).c_str());
+        comma = line.find(',');
+        date = line.substr(0, comma);
+        exchange_rate = std::atof(line.substr(comma + 1).c_str());
         _prices[date] = exchange_rate;
     }
 

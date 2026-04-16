@@ -13,7 +13,9 @@ public:
     RPN& operator=(const RPN &other);
     void pushNumber(const int num);
     int compute(const char op);
-    int  top();
+    int top() const;
+    bool empty() const;
+    int size() const;
     ~RPN();
 };
 

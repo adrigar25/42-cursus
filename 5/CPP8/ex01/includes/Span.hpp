@@ -18,6 +18,13 @@ public:
     Span& operator=(const Span& other);
     ~Span();
     void addNumber(int n);
+    void addNumbers(const std::vector<int>& nums)
+    {
+        unsigned int count = static_cast<unsigned int>(nums.size());
+        if (_values.size() + count > _maxSize)
+            throw SpanFullException();
+        _values.insert(_values.end(), nums.begin(), nums.end());
+    }
     template <typename Iterator>
     void addRange(Iterator first, Iterator last)
     {
