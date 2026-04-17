@@ -1,6 +1,8 @@
 #include "BitcoinExchange.hpp"
 #include <iostream>
 #include <fstream>
+#include <sstream>
+#include <cerrno>
 #include <string>
 
 static std::string trim(const std::string &s)
@@ -30,7 +32,7 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    std::getline(input, line); // skip header
+    std::getline(input, line);
     while (std::getline(input, line))
     {
         size_t sep = line.find('|');
@@ -46,7 +48,14 @@ int main(int argc, char **argv)
             std::cout << "Error: bad input => " << line << std::endl;
             continue;
         }
-        btc.getPriceByDate(date, std::atof(value_str.c_str()));
+        std::stringstream ss(value_str.c_str());
+        double value;
+        if (!(ss >> value) || value < 0)
+        {
+            std::cout << "Error: bad input => " << line << std::endl;
+            continue;
+        }
+        btc.getPriceByDate(date, value);
     }
     return 0;
 }
